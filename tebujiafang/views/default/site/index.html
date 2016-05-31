@@ -1,0 +1,152 @@
+{set:
+	$site_config=new Config('site_config');
+	$seo_data=array();
+	$seo_data['title']=$site_config->name;
+	$seo_data['title'].=$site_config->index_seo_title;
+	$seo_data['keywords']=$site_config->index_seo_keywords;
+	$seo_data['description']=$site_config->index_seo_description;
+	seo::set($seo_data);
+}
+	<style>
+		.title h3 { color:#fff; font-size:17px; font-weight:bold; float:left; width:42px; text-align:center; height:20px;padding-top:3px;}
+		.title div { float:left; font-size:22px; font-weight:bold;}
+	</style>
+
+    <div id="main"> 
+    <!-- 筛选出首页产品分类 -->
+    {foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',0),50) item=$origin}
+	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$origin[id]),50) item=$first key=$kk}
+	<?php $kk = $kk + 1; ?>
+
+	<div class="textPannel_01 noFloat">
+		<div id="effect{$kk}F" class="titleField TT_01 noFloat">
+  			<div class="title" style="color:#870e38;">
+  				<div>{$first['name']}</div>
+  			</div>
+  			<div class="link">
+  				<em class="on" id="cat{$kk}-0" onclick="floor({$kk},0)">热门推荐</em>
+  				<!-- 筛选出该分类下子分类 -->
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first[id]),6) item=$second key=$key}
+				<em id="cat{$kk}-<?php echo $key+1; ?>" onclick="floor({$kk},<?php echo $key+1; ?>)" class="">{$second['name']}</em>{/foreach}
+				<a href="/index.php?controller=site&action=pro_list&cat={$first[id]}" class="more">更多&gt;&gt;</a> 
+			</div>
+        </div>
+        <div class="textField_01 CC_0{$kk} noFloat">
+  		<div class="right">
+			<ul class="ul ul_01">
+				<div id="box{$kk}_0" class="hidden oddf" style="display: block;">
+					<!-- 筛选出该分类下所有热门标签产品 -->
+					{foreach:items=Api::run('getCommendRecomEx',array('#categroy_id#',$first[id]),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}" target="view_window">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+                </div>
+                <!-- 筛选出子分类产品 -->
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first[id]),6) item=$second key=$key}
+				<div id="box{$kk}_<?php echo $key+1;?>" class="hidden oddf" style="display: none;">
+					{foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$second['id']),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}" target="view_window">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+				</div>
+				{/foreach}
+			</ul>
+        </div>
+        </div>
+    </div>
+	{/foreach}
+	{/foreach}
+
+
+</div>
+<!--main end-->
+<!-- 右侧导航 -->
+<!-- <div class="rightNav" id="rightNav">
+	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',0),10) item=$first key=$kk}
+	<?php $kk = $kk+1; ?>
+	<a href="#effect{$kk}F"><em>{$kk}F</em>
+		{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first[id]),10) item=$second}
+			{$second[name]}
+		{/foreach}
+	</a>
+	{/foreach}
+	<a href="#" id="top"><em></em>回到顶部</a>
+</div>	 -->
+
+
+
+<!-- 代码 开始 -->
+<link href="{theme:javascript/kf/css/lrtk.css}" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{theme:javascript/kf/js/jquery-1.8.0.min.js}"></script>
+<script type="text/javascript" src="{theme:javascript/kf/js/lrtk.js}"></script>
+<div class="scrollsidebar" id="scrollsidebar">
+    <div class="side_content">
+        <div class="side_list">
+            <div class="side_title"><a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+            <div class="side_center">            	
+                <div class="custom_service">
+                    <p>
+                        <a title="点击这里给我发消息" href="http://wpa.qq.com/msgrd?v=3&amp;uin=3391759168&amp;site=www.cactussoft.cn&amp;menu=yes" target="_blank"><img src="http://wpa.qq.com/pa?p=2:3391759168:41"></a>
+                    </p>
+                    <p>
+                        <a title="点击这里给我发消息" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2917378560&amp;site=www.cactussoft.cn&amp;menu=yes" target="_blank"><img src="http://wpa.qq.com/pa?p=2:2917378560:41"></a>
+                    </p>
+                </div>               
+                <div class="other">
+                    <p><img src="/apk/download.png" width="100" height="100"/></p>
+                </div>
+            </div>
+            <div class="side_bottom"></div>
+        </div>
+    </div>
+    <div class="show_btn"><span>在线客服</span></div>
+</div>
+<script type="text/javascript"> 
+$(function() { 
+	$("#scrollsidebar").fix({
+		float : 'left',	//default.left or right
+		// minStatue : true,
+		skin : 'green',	//default.gray or blue
+		durationTime : 600
+	});
+});
+</script> 
+
+
+<script type="text/javascript"> 
+	//右侧导航
+	var btb=$(".rightNav");
+	var tempS;
+	$(".rightNav").hover(function(){
+		var thisObj = $(this);
+		tempS = setTimeout(function(){
+		thisObj.find("a").each(function(i){
+		var tA=$(this);
+		setTimeout(function(){ tA.animate({right:"0"},200);},50*i);
+	});
+	},200);
+	},function(){
+	if(tempS){ clearTimeout(tempS); }
+	$(this).find("a").each(function(i){
+	var tA=$(this);
+	setTimeout(function(){ tA.animate({right:"-70"},200,function(){
+	});},50*i);
+	});
+	});
+	var isIE6 = !!window.ActiveXObject&&!window.XMLHttpRequest;
+</script>
+<!-- 代码 结束 -->

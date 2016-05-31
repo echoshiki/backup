@@ -1,0 +1,498 @@
+{set:
+	$myCartObj  = new Cart();
+	$myCartInfo = $myCartObj->getMyCart();
+	$siteConfig = new Config("site_config");
+	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{echo:$siteConfig->name}</title>
+	<link type="image/x-icon" href="favicon.ico" rel="icon">
+	<link rel="stylesheet" href="{skin:bubugao/css/public.css}" />
+	<link rel="stylesheet" href="{skin:bubugao/css/index.css}" />
+	<link rel="stylesheet" href="{skin:bubugao/css/hl.css}" />
+	<link rel="stylesheet" href="{skin:bubugao/css/cssgrids-responsive.css}" />
+	<meta name="renderer" content="webkit">
+	{js:jquery}
+	{js:form}
+	{js:validate}
+	{js:dialog}
+	{js:artTemplate}
+	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
+	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
+	{set:$sonline = new Sonline();$sonline->show($siteConfig->phone,$siteConfig->service_online);}
+
+	<style type="text/css">
+	#floatPanel .ctrolPanel{width:36px;height:166px;background:#fff url(/views/hahmsh/skin/default/bubugao/images/panel_bg.gif) no-repeat left top;border:solid 1px #ddd;position:fixed;right:25px;top:300px;overflow:hidden;z-index:10000;} 
+#floatPanel .ctrolPanel a{width:34px;font-size:12px;color:#ff6600;letter-spacing:1px;text-align:center;overflow:hidden;} 
+#floatPanel .ctrolPanel .arrow{height:29px;line-height:28px;display:block;margin:1px auto;} 
+#floatPanel .ctrolPanel .arrow span{display:none;} 
+#floatPanel .ctrolPanel .arrow:hover{background:#f4f4f4;} 
+#floatPanel .ctrolPanel .arrow:hover span{display:block;} 
+#floatPanel .ctrolPanel .contact{height:60px;display:block;margin:2px auto;} 
+#floatPanel .ctrolPanel .contact span{line-height:90px;} 
+#floatPanel .ctrolPanel .qrcode{height:40px;display:block;margin:2px auto;} 
+#floatPanel .ctrolPanel .qrcode span{display:none;} 
+ 
+.popPanel{width:205px;height:214px; position:fixed;right:90px;top:300px;z-index:10000;overflow:hidden;display:none; } 
+.popPanel-inner{width:205px;height:220px;position:relative;overflow:hidden;} 
+.arrowPanel{width:10px;height:210px;position:absolute;right:1px;top:102px;} 
+.arrowPanel .arrow01{width:0;height:0;font-size:0;line-height:0;border-top:10px solid transparent;_border-top:10px solid black;_filter:chroma(color=black);border-right:10px solid transparent;_border-right:10px solid black;_filter:chroma(color=black);border-bottom:10px solid transparent;_border-bottom:10px solid black;_filter:chroma(color=black);border-left:10px solid #ddd;position:absolute;bottom:0;position:absolute;left:2px;top:0;} 
+.arrowPanel .arrow02{width:0;height:0;font-size:0;line-height:0;border-top:10px solid transparent;_border-top:10px solid black;_filter:chroma(color=black);border-right:10px solid transparent;_border-right:10px solid black;_filter:chroma(color=black);border-bottom:10px solid transparent;_border-bottom:10px solid black;_filter:chroma(color=black);border-left:10px solid #fff;position:absolute;bottom:0;position:absolute;left:0;top:0;} 
+.qrcodePanel{width:194px; height:212px; background:#fff;text-align:center;border:solid 1px #ddd;position:absolute;left:0;top:0;overflow:hidden;} 
+.qrcodePanel img{width:174px;height:174px;border:none;padding:5px 5px 0px 5px;} 
+.qrcodePanel p{font-size:12px;color:#666;line-height:20px;letter-spacing:1px;}
+	</style>
+</head>
+<body>
+<div id="floatPanel"> 
+    <div class="ctrolPanel" style="right:20px;"> 
+        <a class="arrow" href="#"><span>顶部</span></a> 
+        <a class="contact" href="http://wpa.qq.com/msgrd?V=1&uin=71512398&Site=上海生活网&Menu=yes" target=""><span>咨询</span></a> 
+        <a class="qrcode" href="#"><span>二维码</span></a> 
+        <a class="arrow" href="#"><span>底部</span></a> 
+    </div> 
+     
+    <div class="popPanel" style="right:66px;"> 
+        <div class="popPanel-inner"> 
+            <div class="qrcodePanel"><img src="/upload/2015/09/16/20150916142158558.jpg" /><p>扫描二维码用手机购物</p></div> 
+            <div class="arrowPanel"> 
+                <div class="arrow01"></div> 
+                <div class="arrow02"></div> 
+            </div> 
+        </div> 
+    </div> 
+</div>
+
+<!--site-nav-->
+<div class="site-nav">
+	<!--w1190 clearfix-->
+	<div class="w1190 clearfix">
+		<!--sn-login f-l-->
+		<div class="sn-login f-l">
+			<!--small-signin-->
+			<div id="login_5717" class="small-signin" style="">
+				欢迎您来到{echo:$siteConfig->name}！
+			{if:$this->user}
+				<a href="{url:/ucenter/index}">个人中心</a>
+				<span class="split"></span>
+				<a href="{url:/simple/logout}">退出</a>
+			{else:}
+			  请<a href="{url:/simple/login?callback=$callback}">登录</a>
+				<span class="split"></span>
+			  <a href="{url:/simple/reg?callback=$callback}">免费注册</a>
+			{/if}
+
+			</div>
+			<!--small-signin-->
+		</div>
+		<!--sn-login f-l-->
+		<!--sn-quick f-r-->
+
+		<ul class="sn-quick f-r" id="jSiteNavQuick">
+			<li>
+				<a class="menu-hd quick-item" href="{url:ucenter/index}" rel="nofollow">个人中心<b></b></a>
+				<div class="menu-bd ">
+					<a href="{url:ucenter/order}" rel="nofollow">我的订单</a>
+					<span class="line"></span>
+					<a href="{url:ucenter/address}" rel="nofollow">我的收货地址</a>
+					<span class="line"></span>
+					<a href="{url:ucenter/integral}" rel="nofollow">我的积分</a>
+					<span class="line"></span>
+					<a href="{url:ucenter/account_log}" rel="nofollow">我的资金</a>
+				</div>
+			</li>
+			<li class="split"></li>
+			<!-- <li>
+				<a class="quick-item" href="{url:/simple/seller}" rel="nofollow">申请开店</a>
+			</li>
+			<li class="split"></li>
+			<li>
+				<a class="quick-item"  href="{url:/seller/index}">商家管理</a>
+			</li>
+			<li class="split"></li> -->
+			<li>
+				<a class="quick-item" href="{url:/site/help_list}">使用帮助</a>
+			</li>
+			<li class="split"></li>
+			<li class="phone">
+				<span class="quick-item">客服电话：<span>400-888-1888</span></span>
+			</li>
+			</ul>
+
+		<!--sn-quick f-r-->
+	</div>
+	<!--w1190 clearfix-->
+</div>
+<!--site-nav-->
+
+<!--search-->
+<div class="search" style="background: #fff; height: 120px;">
+	<!--w1190 clearfix-->
+	<div class="w1190 clearfix">
+		<!--logo-->
+		<div class="logo" style="height:90px; width:auto;">
+			<a href="{url:}" class="go-home">
+				<img src="{skin:bubugao/images/logo.png}" alt="" class="png">
+			</a>
+		</div>
+		<!--logo-->
+
+		<!--cart f-r-->
+		<div class="cart f-r mycart" id="jCart">
+			<span class="cart-count"><span name="mycart_count">{$myCartInfo['count']}</span></span>
+			<a href="{url:simple/cart}" class="cart-buying"><span class="cart-account">去购物车结算</span></a>
+			<div class="cart-cnt" id="div_mycart" style="display: none;">
+		        <span class="line"></span>
+		        <div class="cart-panel"><div class="cart-no-goods">您的购物车是空的哦~</div></div>
+		    </div>
+		</div>
+
+		<!--购物车模板 开始-->
+			<script type='text/html' id='cartTemplete'>
+			 <span class='line'></span>
+			 <div class='cart-panel'>
+			 	<ul class='cart-list'>
+				<%for(var item in goodsData){%>
+				<%var data = goodsData[item]%>
+
+
+				<li class="goods-info clearfix" id="site_cart_dd_<%=item%>">
+				<span class="goods-num">共<%=data['count']%>件</span>
+				<a target="_blank" class="goods-img f-l" href="{url:/site/products/id/<%=data['goods_id']%>}">
+				<img alt="<%=data['name']%>" src="{webroot:<%=data['img']%>}">
+				</a>
+				<div class="goods-detail f-r">
+				<a target="_blank" class="goods-name" href="{url:/site/products/id/<%=data['goods_id']%>}" title="<%=data['name']%>">
+				<%=data['name']%>
+				</a>
+				<div class="goods-price">
+				<span class="p-normal f-l">
+				<em>￥</em><%=data['sell_price']%></span>
+				<a href="javascript:void(0)" onclick="removeCart('{url:/simple/removeCart}','<%=data['id']%>','<%=data['type']%>');$('#site_cart_dd_<%=item%>').hide('slow');"  class="f-r goods-del">删除</a>
+				</div>
+				</div>
+				</li>
+				<%}%>
+				<%if(goodsCount){%>
+					<div class="cart-total">
+					<p>共<span class="txt-red" name="mycart_count"><%=goodsCount%></span>件商品</p>
+					<p class="p-money">商品总额：<span class="p-normal" name="mycart_sum"><em>￥</em><%=goodsSum%></span></p>
+					<p><a href="{url:simple/cart}" class="btn-bbg"><span>去购物车结算</span></a></p>
+					</div>
+				<%}else{%>
+						<div class='cart-no-goods'>您的购物车是空的哦~</div>
+				<%}%>
+
+				</ul>
+				</div>
+			</script>
+		<!--cart f-r-->
+
+		<!--s-box f-r-->
+		<div class="s-box f-r">
+			<!--s-main-->
+			<form method='get' action='{url:/}'>
+			<input type='hidden' name='controller' value='site' />
+			<input type='hidden' name='action' value='search_list' />
+			<div class="s-main">
+				<input class="ipt-key" type="text" name='word' autocomplete="off" value="输入关键字..." />
+				<input class="btn-search" type="submit" value="搜索" onclick="checkInput('word','输入关键字...');" />
+			</div>
+			</form>
+			<!--s-main-->
+			<!--kw-suggest-->
+			<div class="kw-suggest">
+				<span style="color:#999">热门搜索：</span>
+				{foreach:items=Api::run('getKeywordList') }
+				{set:$tmpWord = urlencode($item['word']);}
+				<a href="{url:/site/search_list/word/$tmpWord}">{$item['word']}</a>
+				{/foreach}
+			</div>
+			<!--kw-suggest-->
+		</div>
+		<!--s-box f-r-->
+
+	</div>
+	<!--w1190 clearfix-->
+</div>
+<!--search-->
+
+<!--nav-->
+<div class="nav">
+	<!--w1190 nav-main-->
+	<div class="w1190 nav-main">
+		<!--nav-cat-pos-->
+		<div class="nav-cat-pos">
+			<!--category-->
+			<div class="category {if:IWeb::$app->getController()->getId() == 'site' && IWeb::$app->getController()->getAction()->getId() == 'index'}{else:}category-hide{/if}" id="jCat">
+				<h2 class="cat-title"><a class="t14" href="">全部商品分类<b class="png"></b></a></h2>
+				<!--cat-list-->
+				<ul class="cat-list">
+					{foreach:items=Api::run('getCategoryListTop')  item=$first }
+					<li class="list-item " style="line-height:22px;height:44px;">
+					<h3 class="cat-type-{echo:$key+1}">
+						<a href="{url:/site/pro_list/cat/$first[id]}">{$first['name']}</a>
+					</h3>
+					<p class="cat-rcmd" style="line-height:22px;height:22px;">
+					{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+						<a href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a>
+					{/foreach}
+					</p>
+
+                    <div class="cat-pop">
+                    <!--cat-layer-->
+					<div class="cat-layer clearfix ">
+                        <ul class="cat-col">
+                        {foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+                        <li class="cat-item">
+                        <h3 class="level-title"><a href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a></h3>
+                        <p class="level-list clearfix">
+						{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$second['id']))  item=$third}
+						<a href="{url:/site/pro_list/cat/$third[id]}">{$third['name']}</a>
+						{/foreach}
+                        </p>
+                        </li>
+                       {/foreach}
+                        </ul>
+					</div>
+					<!--cat-layer-->
+                    </div>
+			      </li>
+			      {/foreach}
+
+			<style>
+				.door {  width:100%; height:260px; background: url('{skin:bubugao/images/qrcode.png}');}
+				.btn-door { width:100%; height:50px; position:relative; bottom:-77%; display:block;}
+			</style>
+			      <li>
+					   <div class="door">
+					   		<a class="btn-door" href="#"></a>
+					   </div>
+			      </li>
+				</ul>
+				<!--cat-list-->
+				
+
+
+
+		  </div>
+			<!--category-->
+		</div>
+		<!--nav-cat-pos-->
+
+		<!--nav-cnt-->
+		<div class="nav-cnt">
+			<li class="nav-item"><a href="{url:/site/index}">首页</a></li>
+			{foreach:items=Api::run('getGuideList')}
+			<li class="nav-item"><a href="{url:$item[link]}">{$item['name']}</a></li>
+			{/foreach}
+		</div>
+		<!--nav-cnt-->
+
+	</div>
+	<!--w1190 nav-main-->
+</div>
+<!--nav-->
+
+{viewcontent}
+
+<!-- help-->
+<div class="help">
+	<div class="w1190 clearfix">
+		{set:$catIco = array('help-new','help-delivery','help-pay','help-user','help-service')}
+		{foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat}
+		<dl class="{$catIco[$key]}">
+			<dt class="t14">{$helpCat['name']}</dt>
+			{foreach:items=Api::run('getHelpListByCatidAll',array('#cat_id#',$helpCat['id']))}
+				<dd><a href="{url:/site/help/id/$item[id]}">{$item['name']}</a></dd>
+			{/foreach}
+		</dl>
+		{/foreach}
+		<div class="contact f-l">
+			<div class="contact-border clearfix">
+				<span class="ic tel t20">400-888-1888</span>
+				<span class="ic mail">71512398@QQ.com</span>
+			</div>
+		</div>
+    </div>
+</div>
+<!-- help-->
+
+
+<!-- service-->
+<div class="service">
+		<ul class="w1190 clearfix">
+			<li class="item1">
+				<p class="t18">正品优选</p>
+				<span>共享集团供应链</span>
+			</li>
+			<li class="item2">
+				<p class="t18">集团公司 </p>
+				<span>诚信服务 品质保证</span>
+			</li>
+			<li class="item3">
+				<p class="t18">300家连锁门店 </p>
+				<span>门店体验 网上下单</span>
+			</li>
+			<li class="item4">
+				<p class="t18">立即送达 </p>
+				<span>专业物流 及时送达</span>
+			</li>
+			<li class="item5">
+				<p class="t18">满58包邮 </p>
+				<span>轻松购物，超值贴心</span>
+			</li>
+		</ul>
+	</div>
+<!-- service-->
+
+<div class="copyright">
+{echo:IFilter::stripSlash($siteConfig->site_footer_code)}
+</div>
+
+
+<script type='text/javascript'>
+$(function()
+{
+	{set:$word = IReq::get('word') ? IFilter::act(IReq::get('word'),'text') : '输入关键字...'}
+	$('input:text[name="word"]').val("{$word}");
+
+	$('input:text[name="word"]').bind({
+		keyup:function(){autoComplete('{url:/site/autoComplete}','{url:/site/search_list/word/@word@}','{$siteConfig->auto_finish}');}
+	});
+
+	var mycartLateCall = new lateCall(200,function(){showCart('{url:/simple/showCart}')});
+
+	//购物车div层
+	$('.mycart').hover(
+		function(){
+			mycartLateCall.start();
+		},
+		function(){
+			mycartLateCall.stop();
+			$('#div_mycart').hide('slow');
+		}
+	);
+
+
+	 {if:IReq::get('controller') == 'site' && IReq::get('action') == 'index' || IReq::get('controller') == ''}
+	 {else:}
+	 $('.nav-cat-pos .category').hover(
+			function(){
+				$(this).removeClass("category-hide")
+			},
+			function(){
+				$(this).addClass("category-hide")
+			}
+		);
+
+	 {/if}
+
+
+
+	   $("#jCat .list-item").hover(function(){
+	    $(this).addClass("cat-hover");
+	  	$(this).children(".cat-pop").show();
+	  },function(){
+		 $(this).removeClass("cat-hover");
+		 $(this).children(".cat-pop").hide();
+	  });
+
+	  $("#jSiteNavQuick li:first").hover(function(){
+	    $(this).children("a").addClass("menu-hd-hover");
+		$(this).children(".menu-bd").addClass("menu-bd-hover");
+	  },function(){
+		 $(this).children("a").removeClass("menu-hd-hover");
+		$(this).children(".menu-bd").removeClass("menu-bd-hover");
+	  });
+
+
+	   $(".tab-title li").hover(function(){
+	   	$(this).addClass('tab-title-hover').siblings().removeClass('tab-title-hover');
+		var p= $(this).index();
+		$(this).parent().parent().children(".tab-cnt").children(".tab-item").eq(p).show().siblings().hide();
+
+	  });
+
+
+$("#floatPanel a.arrow").eq(0).click(function(){ 
+        $("html,body").animate({scrollTop :0}, 300); 
+        return false; 
+    }); 
+    $("#floatPanel a.arrow").eq(1).click(function(){ 
+        $("html,body").animate({scrollTop : $(document).height()}, 300); 
+        return false; 
+    }); 
+ 
+    var panel = $(".popPanel");     
+    var w = panel.outerWidth(); 
+     
+    $(".qrcode").hover(function(){ 
+        panel.css("width","0px").show(); 
+        panel.animate({"width" : w + "px"},300); 
+    },function(){ 
+        panel.animate({"width" : "0px"},300); 
+    }); 
+
+});
+
+//[ajax]加入购物车
+function joinCart_ajax(id,type)
+{
+	$.getJSON("{url:/simple/joinCart}",{"goods_id":id,"type":type,"random":Math.random()},function(content){
+		if(content.isError == false)
+		{
+			var count = parseInt($('[name="mycart_count"]').html()) + 1;
+			$('[name="mycart_count"]').html(count);
+			$('.msgbox').hide();
+			alert(content.message);
+		}
+		else
+		{
+			alert(content.message);
+		}
+	});
+}
+
+//列表页加入购物车统一接口
+function joinCart_list(id)
+{
+	$.getJSON('{url:/simple/getProducts}',{"id":id},function(content){
+		if(!content)
+		{
+			joinCart_ajax(id,'goods');
+		}
+		else
+		{
+			var url = "{url:/block/goods_list/goods_id/@goods_id@/type/radio/is_products/1}";
+			url = url.replace('@goods_id@',id);
+			artDialog.open(url,{
+				id:'selectProduct',
+				title:'选择货品到购物车',
+				okVal:'加入购物车',
+				ok:function(iframeWin, topWin)
+				{
+					var goodsList = $(iframeWin.document).find('input[name="id[]"]:checked');
+
+					//添加选中的商品
+					if(goodsList.length == 0)
+					{
+						alert('请选择要加入购物车的商品');
+						return false;
+					}
+					var temp = $.parseJSON(goodsList.attr('data'));
+
+					//执行处理回调
+					joinCart_ajax(temp.product_id,'product');
+					return true;
+				}
+			})
+		}
+	});
+}
+</script>
+</body>
+</html>

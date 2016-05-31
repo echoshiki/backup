@@ -1,0 +1,289 @@
+{set:
+	$site_config=new Config('site_config');
+	$seo_data=array();
+	$seo_data['title']=$site_config->name;
+	$seo_data['title'].=$site_config->index_seo_title;
+	$seo_data['keywords']=$site_config->index_seo_keywords;
+	$seo_data['description']=$site_config->index_seo_description;
+	seo::set($seo_data);
+}
+
+	<!-- 中间部分开始 -->
+	<center class="clearfix">
+		<div class="banner">
+			<div class="banner-img">
+				<div class="flicker-example" data-block-text="false">			
+					<ul>
+						{foreach:items=$this->index_slide}	
+			      <li data-background="{webroot:$item[img]}"></li>
+			      {/foreach}		
+					</ul>		
+				</div>
+			</div>
+			<div class="banner-word clearfix">
+				<ul>
+					<li>
+						<a class="circle">
+							<P class="name">技术成果</P>
+							<p class="num">259,518项</p>
+						</a>
+					</li>
+					<li>
+						<a class="circle">
+						<P class="name">累积对接</P>
+						<p class="num">146062次</p>
+						</a>
+					</li>
+					<li>
+						<a class="circle">
+						<P class="name">合作院所</P>
+						<p class="num">1065所</p>
+						</a>
+					</li>
+					<li>
+						<a>
+						<P class="name">在线交易</P>
+						<p class="num">34330.71万</p>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="cgwgood clearfix">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>创冠的优势</h1>
+					<p>公司以诚实、信用、专业、高效为服务宗旨，充分发挥法律、技术、信息为一体的独特优势</p>
+				</div>
+				<ul class="list-good">
+					<li>
+						<i class="gongyin"></i>
+						<p class="china">供应发布</p>
+						<p class="english">Supply post</p>
+					</li>					
+					<li>
+						<i class="xqfb"></i>
+						<p class="china">需求发布</p>
+						<p class="english">Release</p>
+					</li>
+					<li>
+						<i class="hzsq"></i>
+						<p class="china">合作申请</p>
+						<p class="english">Cooperation</p>
+					</li>
+					<li>
+						<i class="jyjl"></i>
+						<p class="china">交易奖励</p>
+						<p class="english">Trading Rewards</p>
+					</li>
+					<li>
+						<i class="hdsb"></i>
+						<p class="china">活动申办</p>
+						<p class="english">Activity</p>
+					</li>
+					<li>
+						<i class="jscp"></i>
+						<p class="china">技术测评</p>
+						<p class="english">Technology</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="cgwgood clearfix bg">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>专利交易</h1>					
+						<ul class="clearfix">
+							<li><a href="javascript:void(0);" class="on" id="tab-all" onclick="tabSw('all');">所有专利</a></li>
+							<!-- 列出专列产品分类列表 -->
+							{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',0),7) item=$first key=$key}
+							<li><a href="javascript:void(0);" id="tab-{$first[id]}" onclick="tabSw({$first[id]});">{$first[name]}</a></li>
+							{/foreach}
+						</ul>					
+				</div>
+				<!-- 循环列出专利产品分类，展现一个，其余隐藏 -->
+				<ul class="product clearfix" id="zl-all" >
+					<!-- 获取分类下的专利产品列表 -->
+					{foreach:items=Api::run('getCategoryAllList',8)}
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{url:/pic/thumb/img/$item[img]/w/276/h/257}">
+							</div>
+							<div class="introduce">
+								<p class="name">{$item['name']}</p>
+								<p><span class="price">￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></span><span class="type">能源动力类</span></p>
+							</div>
+							<a href="{url:/site/products/id/$item[id]}"><button>我需要</button></a>
+						</div>
+					</li>					
+					{/foreach}
+					<button class="more">查看更多></button>
+				</ul>
+
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',0),7) item=$first key=$key}	
+				<?php $key = $key + 1; ?>			
+				<ul class="product clearfix" id="zl-{$first[id]}" style="display:none;" >
+					<!-- 获取分类下的推荐专利产品列表 -->
+					{foreach:items=Api::run('getCategoryExtendByCommendid',array('#childId#',$first['id']),8)}
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{url:/pic/thumb/img/$item[img]/w/276/h/257}">
+							</div>
+							<div class="introduce">
+								<p class="name">{$item['name']}</p>
+								<p><span class="price">￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></span><span class="type">能源动力类</span></p>
+							</div>
+							<a href="{url:/site/products/id/$item[id]}"><button>我需要</button></a>
+						</div>
+					</li>					
+					{/foreach}
+					<button class="more">查看更多></button>
+				</ul>
+				{/foreach}
+			</div>
+		</div>
+		<div class="cgwgood clearfix bgb">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>项目交易</h1>					
+					<p>让您的信息得到完美定制展示</p>					
+				</div>
+				<ul class="product clearfix product-jy">
+					{foreach:items=Api::run('getProjectListAll',array('#top#',1),3)}
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{$item['pic']}">
+							</div>
+							<div class="introduce">
+								<p class="name">{$item['title']}</p>
+								<div class="nameword">{$item['content']}</div>
+								<p><span class="price">￥{$item['t_amount']}</span><span class="type">{$item['name']}</span></p>
+							</div>
+							<button class="zixun">项目咨询</button><button class="xianqing">查看详情</button>
+						</div>
+					</li>
+					{/foreach}					
+				</ul>
+				<button class="more">查看更多></button>
+			</div>
+		</div>
+		<div class="cgwgood clearfix bg">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>人才展示</h1>					
+					<p>让您的信息得到完美定制展示</p>						
+				</div>
+				<ul class="product clearfix people">
+					{foreach:items=Api::run('getRencaiListAll',array('#top#',1),4)}
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{$item['pic']}">
+								<div class="introduce">
+								<p class="name">{$item['title']}</p>
+								<p class="name f-12">{$item['content']}</p>
+							</div>
+							</div>
+						</div>
+					</li>
+					{/foreach}
+				</ul>
+				<button class="more">查看更多></button>
+			</div>
+		</div>
+		<div class="cgwgood clearfix bgb">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>项目众筹</h1>					
+					<p>一起携手，让我们一起成就一些梦想</p>					
+				</div>
+				<ul class="product clearfix product-zc">
+
+					{foreach:items=Api::run('getFundListAll',array('#top#',1),4)}
+					<li>
+						<div class="biao">
+							<div class="sanjiao"></div>
+							<a class="biaoqian">优质标</a>
+						</div>
+						<div class="cgwl-zc clearfix">
+							<div class="cgwl-zc-tit clearfix">
+								<h1>{$item['title']}</h1>
+								<span>2016-4-9</span>
+							</div>
+							<ul class="list-pro">
+								<li><div class="span">剩余:<a href="#">20</a>天</div></li>
+								<li><div class="span">参与数:<a href="#" class="color">184</a>人次</div></li>
+								<li><div class="span">众筹金额:<a href="#">188</a>万</div></li>
+								<li>
+									<div class="span"><div class="left">进度:</div>
+										<div class="loading">
+									        <div class="progress">
+									 
+									        </div>
+									    </div>
+									    <div class="left">
+									    33.59%</div>
+									</div>
+    							</li>
+							</ul>
+							<button class="hdbj">马上参与</button>
+						</div>
+					</li>
+					{/foreach}
+				</ul>
+				<button class="more">查看更多></button>
+			</div>
+		</div>
+		<div class="cgwgood clearfix bg">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>热门资讯</h1>	
+				</div>
+				<div class="new">
+					<div class="left">
+							<div class="list">
+								<div class="pic">
+									<img src="images/pro/people.jpg">
+									<div class="introduce">
+										<p class="name">组合式电动车组合式电动车组合式电动车组合式电动车组合式电动车组合式电动车组合式电动车组合式电动车组合式电动车组合式电动车组合式电动车组合式电动车</p>								
+									</div>
+								</div>
+							</div>
+							<ul class="new-list">
+								{foreach:items=Api::run('getArticleListByCategory',array('#categroy_id#',4),5)}
+								<li>
+									<a href="/index.php?controller=site&action=article_detail&id={$item['id']}">{$item['title']}</a>
+								</li>
+								{/foreach}
+						</ul>
+													 
+					</div>
+					<div class="center">						
+						<ul class="new-list">
+							{foreach:items=Api::run('getArticleListByCategory',array('#categroy_id#',3),8)}
+								<li><a href="/index.php?controller=site&action=article_detail&id={$item['id']}"><span class="xuhao">{$key}</span>{$item['title']}</a></li>
+							{/foreach}
+							</ul>
+					</div>
+					<div class="right">
+						<div class="img1">
+							<img src="images/pro/zhineng.jpg">
+						</div>
+						<div class="img2">
+							<img src="images/pro/tao.jpg">
+						</div>
+					</div>
+				</div>
+				<button class="more">查看更多></button>
+			</div>
+		</div>
+

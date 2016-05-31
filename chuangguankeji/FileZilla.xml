@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileZilla3 version="3.17.0.1" platform="windows">
+	<Servers>
+		<Folder expanded="0">其他<Server>
+				<Host>125.65.77.108</Host>
+				<Port>52121</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>liucheng</User>
+				<Pass encoding="base64">biZSUCZzNllYbmFYelc5Iw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>四季式</Name>
+				<Comments />
+				<LocalDir>C:\Studio\wamp\www\dreamcast\</LocalDir>
+				<RemoteDir>1 0 8 liucheng 9 dreamcast</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>四季式</Server>
+		</Folder>
+		<Folder expanded="1">已完成<Server>
+				<Host>122.195.132.102</Host>
+				<Port>8624</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>root</User>
+				<Pass encoding="base64">c2R3MTMxMDg5NDd+IUAjJFlaU0RX</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>两化融合</Name>
+				<Comments />
+				<LocalDir>E:\WORK\APMServ5.2.6\www\htdocs\lhrh</LocalDir>
+				<RemoteDir>1 0 3 usr 5 local 4 drbd 6 apache 6 htdocs 4 lhrh 3 web</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>两化融合</Server>
+			<Server>
+				<Host>112.80.5.199</Host>
+				<Port>22</Port>
+				<Protocol>1</Protocol>
+				<Type>0</Type>
+				<User>zhrd</User>
+				<Pass encoding="base64">Q3pkMjAxNC1bJw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>中国银行</Name>
+				<Comments />
+				<LocalDir>C:\Studio\wamp\www\zhrd</LocalDir>
+				<RemoteDir>1 0 4 data 3 www 6 htdocs 4 zhrd</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>中国银行</Server>
+			<Server>
+				<Host>58.210.136.194</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>wangjun</User>
+				<Pass encoding="base64">Vm5wdWxsMndwYWRLNHhZbA==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>借书系统</Name>
+				<Comments />
+				<LocalDir />
+				<RemoteDir />
+				<SyncBrowsing>0</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>借书系统</Server>
+			<Server>
+				<Host>221.224.50.234</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>wuying</User>
+				<Pass encoding="base64">dmthOTNlOThzYWRmUVV2Mw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>凤凰语文网</Name>
+				<Comments>http://221.224.50.234:9500/
+ftp、mysql
+账户wuying 密码vka93e98sadfQUv3
+</Comments>
+				<LocalDir>C:\Studio\wamp\www\yuwenwang\</LocalDir>
+				<RemoteDir>1 0</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>凤凰语文网</Server>
+			<Server>
+				<Host>61.155.174.165</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>glqsfj</User>
+				<Pass encoding="base64">MzQ5QkMxMjBBQTI1MjM=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>司法局普法平台正式</Name>
+				<Comments>glqsfj.sk71.sdwlsym.com
+yzglpf.gov.cn 
+www.yzglpf.gov.cn 
+glqsfj
+349BC120AA2523
+连接FTP	 61.155.174.165
+</Comments>
+				<LocalDir>C:\Studio\wamp\www\20150105_glqsfj\</LocalDir>
+				<RemoteDir>1 0 6 glqsfj 3 web</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>司法局普法平台正式</Server>
+			<Server>
+				<Host>58.210.136.194</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>glsfj</User>
+				<Pass encoding="base64">WGVDa2JtbUJBdEt6OGFFcQ==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>司法局普法平台测试</Name>
+				<Comments>ip：58.210.136.194 
+ftp、数据 
+账户：glsfj 
+密码：XeCkbmmBAtKz8aEq 
+访问方式：http://58.210.136.194:9498/
+</Comments>
+				<LocalDir>C:\Studio\wamp\www\20150105_glqsfj</LocalDir>
+				<RemoteDir>1 0 5 glsfj</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>司法局普法平台测试</Server>
+			<Server>
+				<Host>61.155.174.165</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>mg2571</User>
+				<Pass encoding="base64">MURFMUJEQzYwOTNlZTU=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>宿迁美购网</Name>
+				<Comments>http://221.224.50.234:9501/
+ftp、mysql
+账户mobile	密码vng93e98sadsadf1</Comments>
+				<LocalDir>C:\Studio\wamp\www\20150701_youlicp</LocalDir>
+				<RemoteDir>1 0 6 mg2571 3 web</RemoteDir>
+				<SyncBrowsing>0</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>宿迁美购网</Server>
+			<Server>
+				<Host>211.149.196.116</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>yzsbd</User>
+				<Pass encoding="base64">QTVpQ2JUQUQxNmlqSG9LNw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>扬州三把刀</Name>
+				<Comments>yzsbd	
+A5iCbTAD16ijHoK7
+211.149.196.116</Comments>
+				<LocalDir>C:\Studio\wamp\www\20141010_yzsbd\</LocalDir>
+				<RemoteDir>1 0 5 yzsbd</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>扬州三把刀</Server>
+			<Server>
+				<Host>211.149.196.116</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>xxk</User>
+				<Pass encoding="base64">Q1JpZnphWllZZWM1WnI1Yw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>扬州发改委</Name>
+				<Comments />
+				<LocalDir>C:\Studio\wamp\www\20140510_yzfgw</LocalDir>
+				<RemoteDir>1 0 3 xxk</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>扬州发改委</Server>
+			<Server>
+				<Host>61.155.174.165</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>yxrbjp</User>
+				<Pass encoding="base64">QTdFOUEyNDIwODk3OWE=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>江苏元祥保健品</Name>
+				<Comments>SQL数据库
+PC端IP地址：61.155.174.165     PC端口号： 0 PC端FTP账号：yxrbjp PC端FTP密码：A7E9A24208979a PC端三级域名：
+普通空间
+PC端IP地址：61.155.174.165     PC端口号： 0 PC端FTP账号：yxrbjp PC端FTP密码：A7E9A24208979a PC端三级域名：yxrbjp.sk71.sdwlsym.com</Comments>
+				<LocalDir>C:\Studio\wamp\www\201511217_baojianpin</LocalDir>
+				<RemoteDir>1 0 6 yxrbjp 3 web</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>江苏元祥保健品</Server>
+			<Server>
+				<Host>211.149.196.116</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>jsdwb</User>
+				<Pass encoding="base64">T2tJSFp5Y21aRmVuNzdoRQ==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>江苏德威堡</Name>
+				<Comments />
+				<LocalDir>C:\Studio\wamp\www\20150108_jsdwb</LocalDir>
+				<RemoteDir>1 0 5 jsdwb</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>江苏德威堡</Server>
+			<Server>
+				<Host>61.155.209.230</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>dn158</User>
+				<Pass encoding="base64">N0M3QURBMzQzRWEzZjc=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>淮安大宁百货</Name>
+				<Comments />
+				<LocalDir />
+				<RemoteDir />
+				<SyncBrowsing>0</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>淮安大宁百货</Server>
+			<Server>
+				<Host>121.198.204.151</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>hmu147151</User>
+				<Pass encoding="base64">ODg4MDAwMDU=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>淮安惠民网</Name>
+				<Comments>主机名：hmu147151
+密码：88800005
+IP地址：121.198.204.151
+小陈同学BH4RAF 16:22:26 
+ 淮安站后台：http://www.0517hmsh.com/admin/index.php
+帐号：adminhmsh
+密码：hm9527
+
+
+221.224.50.234
+ftp\mysql
+账户luxh
+密码vka93e98sadfQUv5</Comments>
+				<LocalDir>C:\Studio\wamp\www\20150915_huimingwang</LocalDir>
+				<RemoteDir />
+				<SyncBrowsing>0</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>淮安惠民网</Server>
+			<Server>
+				<Host>211.149.196.116</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>0517hmsh</User>
+				<Pass encoding="base64">Q1JpZnphWllZZWlmemFaeg==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>淮安惠民网正式</Name>
+				<Comments>账户0517hmsh	密码CRifzaZYYeifzaZz	
+域名www.0517hmsh.com
+
+此服务为双ip（电信：211.149.196.116  香港：103.24.249.116）
+ftp 数据库连接地址请用电信ip
+域名解析地址请用香港ip</Comments>
+				<LocalDir>C:\Studio\wamp\www\20150915_huimingwang\</LocalDir>
+				<RemoteDir>1 0 8 0517hmsh</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>淮安惠民网正式</Server>
+			<Server>
+				<Host>221.224.50.234</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>luxh</User>
+				<Pass encoding="base64">dmthOTNlOThzYWRmUVV2NQ==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>淮安惠民网测试</Name>
+				<Comments>http://221.224.50.234:9508/
+
+221.224.50.234
+ftp\mysql
+账户luxh
+密码vka93e98sadfQUv5</Comments>
+				<LocalDir>C:\Studio\wamp\www\20150915_huimingwang</LocalDir>
+				<RemoteDir>1 0</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>淮安惠民网测试</Server>
+			<Server>
+				<Host>221.224.50.234</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>liuc9509</User>
+				<Pass encoding="base64">a2F2ZHNyNDM1YWRmUVV2Nw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>淮安惠民网进销存</Name>
+				<Comments>ip：221.224.50.234
+ftp、mysql  账户liuc9509  密码kavdsr435adfQUv7
+http://221.224.50.234:9509
+</Comments>
+				<LocalDir>C:\Studio\wamp\www\20151014_huimingwang_jxc\</LocalDir>
+				<RemoteDir>1 0</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>淮安惠民网进销存</Server>
+			<Server>
+				<Host>sk49.sdwlsym.com</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>xuyicity</User>
+				<Pass encoding="base64">QzI2MTRBN0VDQjIzMDk=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>盱眙房产网</Name>
+				<Comments />
+				<LocalDir />
+				<RemoteDir />
+				<SyncBrowsing>0</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>盱眙房产网</Server>
+			<Server>
+				<Host>kangji1.sk45.sdwlsym.com</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>kangji1</User>
+				<Pass encoding="base64">MkJFMzU3RjAxMTQxYjk=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>苏州康记蟹庄</Name>
+				<Comments />
+				<LocalDir>C:\Studio\wamp\www\20140601_kangjixiezhuang</LocalDir>
+				<RemoteDir>1 0 7 kangji1 3 web</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>苏州康记蟹庄</Server>
+			<Server>
+				<Host>wenbaozaixian.sk45.sdwlsym.com</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>wenbaozaixian</User>
+				<Pass encoding="base64">OURCNEJFODgwQTM1OWQ=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>苏州文宝竞拍网</Name>
+				<Comments />
+				<LocalDir />
+				<RemoteDir />
+				<SyncBrowsing>0</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>苏州文宝竞拍网</Server>
+			<Server>
+				<Host>61.155.174.165</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>alading</User>
+				<Pass encoding="base64">RkE2QTdFNjU0QTFmNzY=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>阿拉丁商城</Name>
+				<Comments>FTP:alading
+密码：FA6A7E654A1f76	
+61.155.174.165
+alading.sk71.sdwlsym.com
+
+admin 123123</Comments>
+				<LocalDir>C:\Studio\wamp\www\20150811_alading</LocalDir>
+				<RemoteDir>1 0 7 alading 3 web</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>阿拉丁商城</Server>
+			<Server>
+				<Host>114.80.156.179</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>gyyouli</User>
+				<Pass encoding="base64">Z3l5b3VsaSo3NmlpOWk4Nw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>高邮邮利网旧</Name>
+				<Comments>主机名称:
+ gyyouli
+免费网址:
+  http://gyyouli.w171.mc-test.com
+上传地址:
+  114.80.156.179 （建议使用域名作为地址，便于记忆）
+上传帐号:
+  gyyouli
+上传密码:
+  gyyouli*76ii9i87 （本系统独有的各项管理也基于此密码）</Comments>
+				<LocalDir>C:\Studio\wamp\www\20150425_youliwang\youliwang_old\</LocalDir>
+				<RemoteDir>1 0 7 wwwroot</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>高邮邮利网旧</Server>
+		</Folder>
+		<Folder expanded="1">进行中<Server>
+				<Host>112.84.178.103</Host>
+				<Port>222</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>tebujiafang</User>
+				<Pass encoding="base64">dGVidWppYWZhbmc4ODg=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>南通分销正式站点</Name>
+				<Comments>112.84.178.103
+ftp端口222  mysql端口3306
+tebujiafang
+tebujiafang888</Comments>
+				<LocalDir>C:\Users\shiki\Desktop\Projects\nantongfenxiao\</LocalDir>
+				<RemoteDir>1 0</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>南通分销正式站点</Server>
+			<Server>
+				<Host>118.123.8.222</Host>
+				<Port>54521</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>iwebfenxiao</User>
+				<Pass encoding="base64">aXdlYmZlbnhpYW8xMjE=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>1</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>南通分销测试站点</Name>
+				<Comments>118.123.8.222:54521
+iwebfenxiao
+iwebfenxiao121</Comments>
+				<LocalDir>C:\Studio\wamp\www\nantongfenxiao\</LocalDir>
+				<RemoteDir>1 0 11 public_html</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>南通分销测试站点</Server>
+			<Server>
+				<Host>221.224.50.234</Host>
+				<Port>21</Port>
+				<Protocol>6</Protocol>
+				<Type>0</Type>
+				<User>liuc</User>
+				<Pass encoding="base64">dmthOTNlOThzYWRmUVV2Mw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>宝应德众进销存</Name>
+				<Comments />
+				<LocalDir>C:\Users\shiki\Desktop\Projects\dezhong</LocalDir>
+				<RemoteDir>1 0</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>宝应德众进销存</Server>
+			<Server>
+				<Host>linshikongjian.sk71.sdwlsym.com</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>linshikongjian</User>
+				<Pass encoding="base64">QjA1MTBCMDM4RGY1MTk=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>扬州优化办政府评价</Name>
+				<Comments>linshikongjian.sk71.sdwlsym.com 
+linshikongjian
+B0510B038Df519
+连接FTP 61.155.174.165 
+数据库一样</Comments>
+				<LocalDir>C:\Users\shiki\Desktop\Projects\zhengfupingjia\</LocalDir>
+				<RemoteDir>1 0 14 linshikongjian 3 web</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>扬州优化办政府评价<Bookmark>
+					<Name>Admin控制器</Name>
+					<LocalDir>C:\Studio\wamp\www\20160405_zhengfupingjia\Application\Admin\Controller\</LocalDir>
+					<RemoteDir>1 0 14 linshikongjian 3 web 11 Application 5 Admin 10 Controller</RemoteDir>
+					<SyncBrowsing>1</SyncBrowsing>
+					<DirectoryComparison>0</DirectoryComparison>
+				</Bookmark>
+				<Bookmark>
+					<Name>Admin模板</Name>
+					<LocalDir>C:\Studio\wamp\www\20160405_zhengfupingjia\Application\Admin\View\Project\</LocalDir>
+					<RemoteDir>1 0 14 linshikongjian 3 web 11 Application 5 Admin 4 View 7 Project</RemoteDir>
+					<SyncBrowsing>0</SyncBrowsing>
+					<DirectoryComparison>0</DirectoryComparison>
+				</Bookmark>
+				<Bookmark>
+					<Name>Home控制器</Name>
+					<LocalDir>C:\Studio\wamp\www\20160405_zhengfupingjia\Application\Home\Controller\</LocalDir>
+					<RemoteDir>1 0 14 linshikongjian 3 web 11 Application 4 Home 10 Controller</RemoteDir>
+					<SyncBrowsing>1</SyncBrowsing>
+					<DirectoryComparison>0</DirectoryComparison>
+				</Bookmark>
+			</Server>
+			<Server>
+				<Host>58.210.136.194</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>yzmls</User>
+				<Pass encoding="base64">UWc3UXNEM2QzSW42dEQySw==</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>扬州马拉松</Name>
+				<Comments />
+				<LocalDir>C:\Studio\wamp\www\yzmls</LocalDir>
+				<RemoteDir>1 0 5 yzmls</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>扬州马拉松</Server>
+			<Server>
+				<Host>ipboss.sk71.sdwlsym.com</Host>
+				<Port>21</Port>
+				<Protocol>0</Protocol>
+				<Type>0</Type>
+				<User>ipboss</User>
+				<Pass encoding="base64">RTRDNEZFOTFBRDIzYWY=</Pass>
+				<Logontype>1</Logontype>
+				<TimezoneOffset>0</TimezoneOffset>
+				<PasvMode>MODE_DEFAULT</PasvMode>
+				<MaximumMultipleConnections>0</MaximumMultipleConnections>
+				<EncodingType>Auto</EncodingType>
+				<BypassProxy>0</BypassProxy>
+				<Name>镇江众筹</Name>
+				<Comments>ipboss.sk71.sdwlsym.com
+ipboss
+E4C4FE91AD23af
+连接FTP	61.155.174.165</Comments>
+				<LocalDir>C:\Users\shiki\Desktop\Projects\chuangguanwangluo</LocalDir>
+				<RemoteDir>1 0 6 ipboss 3 web</RemoteDir>
+				<SyncBrowsing>1</SyncBrowsing>
+				<DirectoryComparison>0</DirectoryComparison>镇江众筹<Bookmark>
+					<Name>创冠控制器</Name>
+					<LocalDir>C:\Users\shiki\Desktop\Projects\chuangguanwangluo\controllers\</LocalDir>
+					<RemoteDir>1 0 6 ipboss 3 web 11 controllers</RemoteDir>
+					<SyncBrowsing>0</SyncBrowsing>
+					<DirectoryComparison>0</DirectoryComparison>
+				</Bookmark>
+				<Bookmark>
+					<Name>创冠模板</Name>
+					<LocalDir>C:\Users\shiki\Desktop\Projects\chuangguanwangluo\views\default\</LocalDir>
+					<RemoteDir>1 0 6 ipboss 3 web 5 views 7 default</RemoteDir>
+					<SyncBrowsing>1</SyncBrowsing>
+					<DirectoryComparison>0</DirectoryComparison>
+				</Bookmark>
+			</Server>
+		</Folder>
+	</Servers>
+</FileZilla3>

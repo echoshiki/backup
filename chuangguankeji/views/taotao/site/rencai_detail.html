@@ -1,0 +1,176 @@
+{set:
+	$seo_data=array();
+	$site_config=new Config('site_config');
+	$seo_data['title']=$title."_".$site_config->name;
+	$seo_data['keywords']=$keywords;
+	$seo_data['description']=$description;
+	seo::set($seo_data);
+}
+{js:artTemplate}
+{js:cookie}
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artdialog/artDialog.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artdialog/plugins/iframeTools.js"></script>
+<link rel="stylesheet" type="text/css" href="/runtime/_systemjs/artdialog/skins/aero.css" />
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artTemplate/artTemplate.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artTemplate/artTemplate-plugin.js"></script>
+<style type="text/css">
+	div.pop_win tr,div.pop_win td{border-bottom: 1px solid #ccc;line-height: 30px;}
+	div.aui_content{padding: 0px 25px;}
+	div.pop_win{margin-top: -25px;font-family:"MicrosoftYaHei";font-size: 13px;}
+	.name a { color:#fff;}
+</style>
+
+	<script type='text/javascript' src="/views/sysdefault/javascript/common.js"></script>
+	
+	
+	<!-- 中间部分开始 -->
+	<center class="clearfix">
+		<div class="banner">
+			<div class="personnel">
+				<div class="per-name">
+					<div class="per-name-cent">
+						<img src="{url:/pic/thumb/img/$pic/w/170/h/170}">
+						<div class="project_details">
+							<div class="pd_center">
+								<div class="right">
+									<div class="top-people">
+										<div class="name nametit">{$title}</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>					
+				</div>
+			</div>
+		</div>
+		<div class="personnel-cen">
+			<div class="project_details">
+				<div class="pd_center">
+					<div class="left-right">
+						<div class="left">
+							<div class="cenci">
+								<span class="tit">
+									<i></i>
+									<span class="name">基本信息</span>
+								</span>
+								<div class="wordall">
+									<ul class="word">
+										<li style="height:auto">{$content}</li>
+										
+									</ul>
+									<div class="erweima">
+										<img src="{url:/pic/thumb/img/$ewm/w/137/h/137}">
+										<p>扫描关注，对接专家更容易</p>
+									</div>
+								</div>
+							</div>
+							<div class="cenci">
+								<span class="tit">
+									<i></i>
+									<span class="name">技术能力信息</span>
+								</span>
+								<div class="wordall">
+									{$content2}						
+								</div>
+							</div>
+							<div class="cenci">
+								<span class="tit">
+									<i></i>
+									<span class="name">供需信息</span>
+								</span>
+								<div class="wordall">
+									{$content3}							
+								</div>
+							</div>
+							<div class="cenci">
+								<span class="tit">
+									<i></i>
+									<span class="name">个人介绍</span>
+								</span>
+								<div class="wordall">
+									{$content4}								
+								</div>
+							</div>						
+						</div>
+						<div class="right">
+							<div class="top-service clearfix">
+								<h3><a>推荐专利</a></h3>
+								<div class="cgwgood">
+									<div class="cgwcenter">
+										<div class="center-tit">
+											<ul class="product clearfix">
+											
+
+											{query:name=goods as go join=left join commend_goods as co on co.goods_id eq go.id fields=go.* where=go.is_del eq 0 and co.commend_id eq 4 order=go.id desc pagesize=5}
+											{set:$tmpId=$item['id'];}
+
+											<?php
+$categoryObj = new IModel('category_extend as ca,category as c');
+		$categoryRow = $categoryObj->getObj('ca.goods_id = '.$item[id].' and ca.category_id = c.id','c.id,c.name');
+											?>
+												<a title="{$item['name']}" target="_blank" href="{url:/site/products/id/$tmpId}"><li>
+													<div class="img">
+														<img src="{url:/pic/thumb/img/$item[img]/w/89/h/89}">
+													</div>
+													<div class="inclu">
+														<p>{$item['name']}</p>
+														<p class="f-14">从事领域：{$categoryRow[name]}</p>
+													</div>
+												</li></a>
+												{/query}
+												
+												
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+						
+				</div>
+			</div>
+		</div>
+	</center>
+	<!-- 中间部分结束 -->
+
+
+<script type="text/javascript">
+	function sendbook(id,tite,seller_id)
+{
+	
+	if(!isNaN(id))
+	{
+	
+
+		
+			var templateHtml = template.render("goodsCommendTemplate",{'templateData':tite,'templateid':id,'seller_id':seller_id});
+			art.dialog(
+			{
+				title:'项目咨询',
+				okVal:"保存",
+			    content: templateHtml,
+			    ok:function(iframeWin)
+			    {
+			    	var formObj = iframeWin.document.forms['commendForm'];
+			    	$.getJSON("/index.php?controller=site&action=feedback_act",$(formObj).serialize(),function(content)
+			    	{
+			    		if(content.result == 'fail')
+			    		{
+			    			alert(content.data);
+			    			
+			    		}else{
+			    			alert("您的咨询内容已经成功提交！");
+			    		}
+			    	});
+			    }
+			});
+		
+	}
+	else
+	{
+		alert("请选择您要操作的项目");
+	}
+}
+</script>

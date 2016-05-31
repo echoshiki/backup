@@ -1,0 +1,276 @@
+{set:$orderStatus = Order_class::getOrderStatus(array('status' => $status,'pay_type' => $pay_type))}
+
+<div class="headbar clearfix">
+	<div class="position">众筹<span>></span><span>记录管理</span><span>></span><span>记录查看</span></div>
+	
+</div>
+
+<div id="tab-1" name="table" style="display:none">
+	<div class="content">
+		<table class="list_table">
+			<colgroup>
+				<col />
+				<col width="90px" />
+				<col width="90px" />
+				<col width="90px" />
+				
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th>项目名称</th>
+					<th>目标筹资金额</th>
+					<th>已筹款金额</th>
+					<th>支持数</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				{query:name=fund where=id eq $fund_id}
+				<tr>
+					<td>
+						
+						<a href="{url:/site/fund_detail/id/$item['id']}" target="_blank">{$item['title']} &nbsp;&nbsp;</a>
+					</td>
+					<td>￥{$item['t_amount']}</td>
+					<td>￥{$item['a_amount']}</td>
+					<td>{$item['sup_count']}</td>
+					
+				</tr>
+				{/query}
+			</tbody>
+		</table>
+
+		<table style="width:300px;margin-right:20px;" class="border_table f_l">
+			<col width="80px" />
+			<col />
+			<thead>
+				<tr><th colspan="2">支持金额明细</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>支付状态:</th><td>
+					<?php
+					$ddd = array('pay_status' => $pay_status);
+					$paymentObj = new IModel('payment');
+            		$paymentRow = $paymentObj->getObj('id = '.$pay_type,'type,name');
+		            $paymentName= $paymentRow['name'];
+
+		            $user = new IModel('user');
+            		$userA = $user->getObj('id = '.$user_id);
+					?>
+					{echo:Order_Class::getOrderPayStatusText($ddd)}</td>
+				</tr>
+				<tr>
+					<th>支付方式:</th><td>{$paymentName}</td>
+				</tr>
+				
+				<tr>
+					<th>支持金额:</th><td>￥{$order_amount}</td>
+				</tr>
+				
+			</tbody>
+		</table>
+
+		<table style="width:300px;margin-right:20px;" class="border_table f_l">
+			<col width="80px" />
+			<col />
+			<thead>
+				<tr><th colspan="2">支持人信息</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>支持时间:</th><td>{$create_time}</td>
+				</tr>
+				<tr>
+					<th>姓名:</th><td>{$accept_name}</td>
+				</tr>
+				
+				<tr>
+					<th>手机 :</th><td>{$mobile}</td>
+				</tr>
+				
+				<tr>
+					<th>用户名:</th><td>{$userA['username']}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		
+
+		
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type='text/javascript'>
+//DOM加载完毕后运行
+$(function()
+{
+	selectTab(1);
+	initButton();
+});
+
+/**
+ * 订单操作按钮初始化
+ */
+function initButton()
+{
+	//全部操作区域的按钮锁定
+	$('#ctrlButtonArea button').attr('disabled','disabled');
+	$('#ctrlButtonArea button').addClass('inactive');
+
+	//作废
+	$('#to_cancel').removeAttr('disabled');
+	$('#to_cancel').removeClass('inactive');
+
+	//完成
+	{if:in_array($orderStatus,array(11,3))}
+	$('#to_finish').removeAttr('disabled');
+	$('#to_finish').removeClass('inactive');
+	{/if}
+
+	//付款
+	{if:in_array($orderStatus,array(11,2))}
+	$('#to_pay').removeAttr('disabled');
+	$('#to_pay').removeClass('inactive');
+	{/if}
+
+	//发货
+	{if:in_array($orderStatus,array(1,4,8,9))}
+	$('#to_deliver').removeAttr('disabled');
+	$('#to_deliver').removeClass('inactive');
+	{/if}
+
+	//退款
+	{if:in_array($orderStatus,array(4,6,9,10))}
+	$('#to_refundment').removeAttr('disabled');
+	$('#to_refundment').removeClass('inactive');
+	{/if}
+}
+
+//选择当前Tab
+function selectTab(curr_tab)
+{
+	$("div[name='table']").hide();
+	$("#tab-"+curr_tab).show();
+	$("ul[name=menu1] > li").removeClass('selected');
+	$('#li_'+curr_tab).addClass('selected');
+}
+
+//完成或作废订单
+function complete(id,statusVal)
+{
+	$.get("{url:/order/order_complete}",{'order_no':"{$order_no}",'type':statusVal,'id':id}, function(data)
+	{
+		if(data=='success')
+		{
+			actionCallback();
+		}
+		else
+		{
+			alert('发生错误');
+		}
+	});
+}
+
+//退款
+function refundment(id)
+{
+	var tempUrl = '{url:/order/order_refundment/id/@id@}';
+	tempUrl     = tempUrl.replace('@id@',id);
+	art.dialog.open(tempUrl,{
+		id:'refundment',
+		cancelVal:'关闭',
+		okVal:'退款',
+	    title: '订单号:{$order_no}【退款到余额账户】',
+	    ok:function(iframeWin, topWin){
+	    	iframeWin.document.forms[0].submit();
+	    	return false;
+	    },
+	    cancel:function(){
+	    	return true;
+		}
+	});
+}
+
+//付款
+function pay(id)
+{
+	var tempUrl = '{url:/order/order_collection/id/@id@}';
+	tempUrl     = tempUrl.replace('@id@',id);
+
+	art.dialog.open(tempUrl,{
+		id:'pay',
+	    title: '订单号:{$order_no}【付款】',
+	    cancelVal:'关闭',
+		okVal:'付款',
+	    ok:function(iframeWin, topWin){
+			iframeWin.document.forms[0].submit();
+			return false;
+	    },
+	    cancel:function (){
+	    	return true;
+		}
+	});
+}
+
+//发货
+function deliver(id)
+{
+	var tempUrl = '{url:/order/order_deliver/id/@id@}';
+	tempUrl     = tempUrl.replace('@id@',id);
+
+	var deliv = art.dialog.open(tempUrl,{
+		id:'deliver',
+	    title: '订单号:{$order_no}【发货】',
+	    cancelVal:'关闭',
+		okVal:'发货',
+	    ok:function(iframeWin, topWin){
+	    	var checkedNums = $(iframeWin.document).find('[name="sendgoods[]"]:checked').length;
+	    	if(checkedNums == 0)
+	    	{
+	    		alert('请选择要发货的商品');
+	    		return false;
+	    	}
+	    	iframeWin.document.forms[0].submit();
+	    	return false;
+	    },
+	    cancel:function (){
+	    	return true;
+		}
+	});
+}
+
+//执行回调处理
+function actionCallback(msg)
+{
+	msg ? alert(msg) : window.location.reload();
+}
+
+//操作失败回调
+function actionFailCallback(msg)
+{
+	var alertText = msg ? msg : '操作失败';
+	alert(alertText);
+}
+
+//快递跟踪
+function freightLine(doc_id)
+{
+	var urlVal = "{url:/block/freight/id/@id@}";
+	urlVal = urlVal.replace("@id@",doc_id);
+	art.dialog.open(urlVal,{title:'轨迹查询'});
+}
+</script>

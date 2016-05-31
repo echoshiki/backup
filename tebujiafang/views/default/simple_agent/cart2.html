@@ -1,0 +1,300 @@
+{js:artTemplate}
+<script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
+<script type='text/javascript' src='{theme:javascript/orderFormClass.js}'></script>
+<script type='text/javascript'>
+//创建订单表单实例
+orderFormInstance = new orderFormClass();
+sellerList = {echo:JSON::encode($this->seller)};
+ticketList = {echo:JSON::encode($this->prop)};
+
+//DOM加载完毕
+jQuery(function(){
+
+	//支付方式
+	orderFormInstance.paymentInit("{$this->custom['payment']}");
+
+	//商品价格
+	orderFormInstance.goodsSum = "{$this->final_sum}";
+});
+
+/**
+ * 生成地域js联动下拉框
+ * @param name
+ * @param parent_id
+ * @param select_id
+ */
+function createAreaSelect(name,parent_id,select_id)
+{
+	//生成地区
+	$.getJSON("{url:/block/area_child}",{"aid":parent_id,"random":Math.random()},function(json)
+	{
+		$('[name="'+name+'"]').html(template.render('areaTemplate',{"select_id":select_id,"data":json}));
+	});
+}
+
+//[address]保存到常用的收货地址
+function address_save()
+{
+	if(orderFormInstance.addressCheck())
+	{
+		$.getJSON('{url:/simple/address_add}',$('form[name="order_form"]').serialize(),function(content){
+			if(content.data)
+			{
+				var addressLiHtml = template.render('addressLiTemplate',{"item":content.data});
+				$('.addr_list').prepend(addressLiHtml);
+				$('input:radio[name="radio_address"]:first').trigger('click');
+			}
+			orderFormInstance.addressSave();
+		});
+	}
+}
+
+//[delivery]根据省份地区ajax获取配送方式
+function get_delivery()
+{
+	var province = $('[name="province"]').val();
+	var delivery = $('[name="delivery_id"]:checked').val();
+	if(!province || !delivery)
+	{
+		return;
+	}
+
+	var goodsId   = [];
+	var productId = [];
+	var num       = [];
+	$('[id^="deliveryFeeBox_"]').each(function(i)
+	{
+		var idValue = $(this).attr('id');
+		var dataArray = idValue.split("_");
+
+		goodsId.push(dataArray[1]);
+		productId.push(dataArray[2]);
+		num.push(dataArray[3]);
+	});
+
+	$.getJSON("{url:/block/order_delivery}",{"province":province,"distribution":delivery,"goodsId":goodsId,"productId":productId,"num":num},function(content){
+		//地区无法送达
+		if(content.if_delivery == 1)
+		{
+			$("#deliveryPrice").html('您选择地区部分商品无法送达');
+			alert('您选择地区部分商品无法送达');
+		}
+		else
+		{
+			$("#deliveryPrice").html('￥'+content.price);
+			orderFormInstance.protectPrice  = parseFloat(content.protect_price);
+			orderFormInstance.deliveryPrice = parseFloat(content.price);
+			orderFormInstance.doAccount();
+		}
+	});
+}
+
+//选择自提点
+function selectTakeself(deliveryId)
+{
+	art.dialog.open("{url:/block/takeself}",{
+		title:'选择自提点',
+		okVal:'选择',
+		ok:function(iframeWin, topWin)
+		{
+			var takeselfJson = $(iframeWin.document).find('[name="takeselfItem"]:checked').val();
+
+			if(!takeselfJson)
+			{
+				alert('请选择自提点');
+				return false;
+			}
+			var json = $.parseJSON(takeselfJson);
+			$('#takeself'+deliveryId).empty();
+			$('[name="takeself"]').val(json.id);
+			$('#takeself'+deliveryId).html(template.render('takeselfTemplate',{"item":json}));
+			return true;
+		}
+	});
+}
+</script>
+
+<div class="wrapper clearfix">
+	<!-- <div class="position mt_10"><span>您当前的位置：</span> <a href="{url:}"> 首页</a> » 填写核对订单信息</div> -->
+	<div class="myshopping m_10">
+		<ul class="order_step">
+			<li class="current_prev"><span class="first"><a href='{if:IReq::get('id')}javascript:window.history.go(-1);{else:}{url:/simple/cart}{/if}'>1、查看购物车</a></span></li>
+			<li class="current"><span>2、填写核对订单信息</span></li>
+			<li class="last"><span>3、成功提交订单</span></li>
+		</ul>
+	</div>
+
+	<form action='{url:/simple_agent/cart3}' method='post' name='order_form' callback='orderFormInstance.isSubmit();'>
+
+		<input type='hidden' name='timeKey' value='{echo:time()}' />
+		<input type='hidden' name='direct_gid' value='{$this->gid}' />
+		<input type='hidden' name='direct_type' value='{$this->type}' />
+		<input type='hidden' name='direct_num' value='{$this->num}' />
+		<input type='hidden' name='direct_promo' value='{$this->promo}' />
+		<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
+		<input type='hidden' name='takeself' value='0' />
+
+		<div class="cart_box m_10">
+			<div class="title">填写核对订单信息</div>
+			<div class="cont">
+
+				<!--支付方式 开始-->
+				<div class="wrap_box" id='paymentBox' >
+					<h3>
+						<span class="orange">支付方式</span>
+						<a class="normal f12" href="javascript:void(0)" id='paymentToggleButton' onclick="orderFormInstance.paymentModToggle();">[关闭]</a>
+					</h3>
+
+					<table width="100%" class="border_table" id='payment_form'>
+						<colgroup>
+							<col width="200px" />
+							<col />
+						</colgroup>
+						{set:$paymentList=Api::run('getPaymentList')}
+						{foreach:items = $paymentList}
+						{set:$paymentPrice = CountSum::getGoodsPaymentPrice($item['id'],$this->sum);}
+						<tr>
+							<th><label><input class="radio" name="payment" alt="{$paymentPrice}" onclick='orderFormInstance.paymentSelected({echo:JSON::encode($item)});' title="{$item['name']}" type="radio" value="{$item['id']}" />{$item['name']}</label></th>
+							<td>{$item['note']} 支付手续费：￥{$paymentPrice}</td>
+						</tr>
+						{/foreach}
+					</table>
+
+					<table class="form_table" id="payment_show_box" style='display:none'>
+						<col width="120px" />
+						<col />
+						<tbody id="paymentShowBox"></tbody>
+					</table>
+
+					<!--支付方式模板-->
+					<script type='text/html' id='paymentShowTemplate'>
+						<tr>
+							<th>支付方式：</th>
+							<td><%=name%></td>
+						</tr>
+					</script>
+
+					<label class="btn_orange3" id='payment_save_button'><input type="button" onclick="orderFormInstance.paymentSave();" value="保存支付方式" /></label>
+				</div>
+				<!--支付方式 结束-->
+
+				<!--订单留言 开始-->
+				<div class="wrap_box">
+					<h3>
+						<span class="orange">订单附言</span>
+						<a class="normal f12" href="javascript:void(0)" id='messageToggleButton' onclick="orderFormInstance.messageModToggle();">[修改]</a>
+					</h3>
+
+					<table width="100%" class="border_table" id='message_show_box'>
+						<col width="120px" />
+						<col />
+						<tbody>
+							<tr>
+								<th>订单附言：</th>
+								<td id="messageShowBox"></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table width="100%" class="form_table" id='message_form' style='display:none'>
+						<col width="120px" />
+						<col />
+						<tr>
+							<th>订单附言：</th>
+							<td><input class="normal" type="text" name='message' /></td>
+						</tr>
+					</table>
+
+					<label class="btn_orange3" id='message_save_button' style='display:none'><input type="button" onclick="orderFormInstance.messageSave();" value="保存订单附言" /></label>
+				</div>
+				<!--订单留言 结束-->
+
+				<!--购买清单 开始-->
+				<div class="wrap_box">
+
+					<h3><span class="orange">购买的商品</span></h3>
+
+					<div class="cart_prompt f14 t_l m_10" {if:empty($this->promotion)}style="display:none"{/if}>
+						<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
+						{foreach:items = $this->promotion}
+						<p class="indent blue">{$item['plan']}，{$item['info']}</p>
+						{/foreach}
+					</div>
+
+					<table width="100%" class="cart_table t_c">
+						<colgroup>
+							<col width="115px" />
+							<col />
+							<col width="80px" />
+							<col width="80px" />
+							<col width="80px" />
+							<col width="80px" />
+							<col width="80px" />
+						</colgroup>
+
+						<thead>
+							<tr>
+								<th>图片</th>
+								<th>商品名称</th>
+								<th>赠送积分</th>
+								<th>单价</th>
+								<th>优惠</th>
+								<th>数量</th>
+								<th class="last">小计</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<!-- 商品展示 开始-->
+							{foreach:items = $this->goodsList}
+							<tr>
+								<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
+								<td class="t_l">
+									<a href="{url:/site/products/id/$item[goods_id]}" class="blue">{$item['name']}</a>
+									{if:isset($item['spec_array'])}
+									<p>
+									{set:$spec_array=Block::show_spec($item['spec_array']);}
+									{foreach:items=$spec_array item=$specValue key=$specName}
+										{$specName}：{$specValue} &nbsp&nbsp
+									{/foreach}
+									</p>
+									{/if}
+								</td>
+								<td>{$item['point']}</td>
+								<td><b>￥{$item['sell_price']}</b></td>
+								<td>减￥{$item['reduce']}</td>
+								<td>{$item['count']}</td>
+								<td id="deliveryFeeBox_{$item['goods_id']}_{$item['product_id']}_{$item['count']}"><b class="red2">￥{$item['sum']}</b></td>
+							</tr>
+							{/foreach}
+							<!-- 商品展示 结束-->
+						</tbody>
+					</table>
+				</div>
+				<!--购买清单 结束-->
+
+			</div>
+		</div>
+
+		<!--金额结算-->
+		<div class="cart_box" id='amountBox' style='display:none'>
+			<div class="cont_2">
+				<strong>结算信息</strong>		
+
+				<div class="pink_box gray m_10">
+					<table width="100%" class="form_table t_l">
+						<colgroup>
+							<col width="220px" />
+							<col />
+							<col width="250px" />
+						</colgroup>
+						<tr>
+							<td class="t_r"><b class="price f14">应付总额：<span class="red2">￥<b id='final_sum'>{$this->final_sum}</b></span>元</b></td>
+						</tr>
+					</table>
+				</div>
+				<p class="m_10 t_r"><input type="submit" class="submit_order" /></p>
+			</div>
+		</div>
+	</form>
+</div>

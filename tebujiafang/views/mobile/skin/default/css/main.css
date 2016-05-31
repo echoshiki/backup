@@ -1,0 +1,114 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,textarea,p,blockquote{margin:0px;padding:0px;font-size:12px;text-align:left; font-family:"Microsoft Yahei";}
+
+BODY {
+		FONT-SIZE: 9pt; MARGIN: 0px; LINE-HEIGHT: 14pt; color:#666; background:#ccc;
+		
+}
+TD {
+
+}
+P {
+	FONT-SIZE: 12px
+}
+
+LI {
+	FONT-SIZE: 12px;
+	list-style:none;
+}
+INPUT {
+	FONT-SIZE: 12px
+}
+SELECT {
+	FONT-SIZE: 12px
+}
+
+A{
+	FONT-SIZE: 9pt; COLOR: #666; TEXT-DECORATION: none;font-family:"Microsoft Yahei";
+}
+A:hover {
+	FONT-SIZE: 9pt; COLOR: #F00; TEXT-DECORATION: none;font-family:"Microsoft Yahei";
+}
+
+.left{ float:left;}
+.right{ float:right;}
+.clear{ clear:both}
+
+.pagewrapper {
+    background: #f9f9f9 none repeat scroll 0 0;
+    margin: 0 auto;
+    max-width: 640px;
+    min-width: 320px;
+    width: 100%;
+	padding-bottom:110px;
+}
+.logo{ padding-top:2%; padding-bottom:2%; overflow:hidden;}
+.nav{ width:100%; margin:auto; background:#fff; overflow:hidden;margin-top:10px;}
+.nav ul li{ width:22%;  float:left; text-align:center; margin:10px 1.5%; border-radius:5px; }
+
+.nav ul li a{ font:normal 1.0em/1.0em "Microsoft Yahei"; color:#fff;padding:70% 0 10%  0; display:block;}
+.nav ul li .nav1{  background:url(../images/front/nav1.png) no-repeat 70% 20% #f0d256; background-size:50%;}
+.nav ul li .nav2{  background:url(../images/front/nav2.png) no-repeat 50% 20% #70cbde; background-size:50%;}
+.nav ul li .nav3{  background:url(../images/front/nav3.png) no-repeat 50% 20% #d34d7d; background-size:50%;}
+.nav ul li .nav4{  background:url(../images/front/nav4.png) no-repeat 50% 20% #ee7272; background-size:50%;}
+.nav ul li .nav5{  background:url(../images/front/nav5.png) no-repeat 50% 20% #ee7272; background-size:50%;}
+.nav ul li .nav6{  background:url(../images/front/nav6.png) no-repeat 50% 20% #d34d7d; background-size:50%;}
+.nav ul li .nav7{  background:url(../images/front/nav7.png) no-repeat 50% 20% #70cbde; background-size:50%;}
+.nav ul li .nav8{  background:url(../images/front/nav8.png) no-repeat 50% 20% #f0d256; background-size:50%;}
+
+
+.nav11{ width:14%; float:right; text-align:center;  padding:3px; font-size:10px; line-height:14px;}
+.bt{ width:66%; float:left; margin-top:3%; text-align:center;font:normal 1.3em/1.0em "Microsoft Yahei";}
+
+.back{ width:10%; margin-left:3%; float:left;}
+
+
+
+
+
+.xbanner{ margin:10px auto 20px; width:95%;}
+
+.xnav{ width:100%; margin-top:2%; background:#fff;line-height:30px; color:#000; font:normal 14px "Microsoft Yahei";}
+.xnav a{ color:#000; float:right; margin-right:2%; margin-top:4%}
+.xnav img{ margin-right:5%; float:left;}
+.xnav span{ font-size:14px; line-height:50px;}
+
+
+.p_class{ width:100%;  background:#fff; line-height:30px; color:#000; font-size:12px; margin-top:2%; overflow:hidden;}
+.p_class ul{ margin-left:3%;}
+.p_class ul li{ margin:1% 1% 1%; padding-right:3%; line-height:30px; font-size:12px; float:left; background:url(../images/front/xian.jpg) right center no-repeat;}
+
+.product{width:100%; margin: auto;padding-top:10px; padding-bottom:10px; }
+.product ul li{ width:30%; background:#fff; border:1px solid #ededed; float:left; padding:1% 1% 1%; margin:10px 1.2% 10px 1.5%}
+.product ul li p{ text-align:center;font:normal 1.0em/2.5em "Microsoft Yahei"; line-height:22px;}
+.product ul li img{ display:block; margin-top:2%}
+.product ul li span{ font-size:14px; color:#ac184c;}
+
+.bqsy{ width:100%; background:#fff; line-height:30px; text-align:center; font-size:14px; }
+
+.foot{ background:#fff; padding:10px 0 5px 0; z-index:9; position:fixed; bottom:0px; margin: 0 auto;max-width: 640px; min-width: 320px;width: 100%;}
+.foot ul{ width:25%; float:left; text-align:center;}
+.foot ul img{ width:38%; margin:auto; display:block; }
+.foot ul  a{ color:#000;}
+
+.nav_n ul { width:30.6%; margin-left:2%; font-size:14px; float:left; line-height:30px; text-align:center; background:#f2f2f2; margin-top:10px;}
+.nav_n ul a:hover{ line-height:30px; background:#b90721; color:#fff; display:block; width:100%}
+
+.banner{ background:#fff; padding-top:2%; padding-bottom:2%}
+
+.swipe{width:96%; margin:auto;overflow:hidden;position:relative;}
+.swipe ul{
+	-webkit-transition:left 800ms ease-in 0;
+	-moz-transition:left 800ms ease-in 0;
+	-o-transition:left 800ms ease-in 0;
+	-ms-transition:left 800ms ease-in 0;
+	transition:left 800ms ease-in 0;
+}
+.swipe #pagenavi{position:absolute;left:0;bottom:0px;text-align:center;width:100%; background:rgba(0, 0, 0, 0.5) none repeat scroll 0 0; padding:5px 0; }
+.swipe #pagenavi a{width:10px;height:10px;line-height:99em;background:#fff;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;margin:0 4px;overflow:hidden;cursor:pointer;display:inline-block;*display:inline;*zoom:1;}
+.swipe #pagenavi a.active{background:#f00;}
+
+#CSSBox{width:100% margin:0 auto;overflow:hidden;}
+#CSSBox ul li{ width:8%; float:left; margin-left:1%; margin-top:20px;}
+#CSSBox ul li p{ text-align:center;font:normal 1.0em/2.5em "Microsoft Yahei"; background:#eeeeee;}
+#CSSBox ul li img{ width:100%; display:block}
+

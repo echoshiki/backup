@@ -1,0 +1,252 @@
+{set:
+	$seo_data=array();
+	$site_config=new Config('site_config');
+	$seo_data['title']=$title."_".$site_config->name;
+	$seo_data['keywords']=$keywords;
+	$seo_data['description']=$description;
+	seo::set($seo_data);
+}
+{js:artTemplate}
+{js:cookie}
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artdialog/artDialog.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artdialog/plugins/iframeTools.js"></script>
+<link rel="stylesheet" type="text/css" href="/runtime/_systemjs/artdialog/skins/aero.css" />
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artTemplate/artTemplate.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artTemplate/artTemplate-plugin.js"></script>
+<style type="text/css">
+	div.pop_win tr,div.pop_win td{border-bottom: 1px solid #ccc;line-height: 30px;}
+	div.aui_content{padding: 0px 25px;}
+	div.pop_win{margin-top: -25px;font-family:"MicrosoftYaHei";font-size: 13px;}
+	.name a { color:#fff;}
+</style>
+
+<script type='text/javascript' src="/views/sysdefault/javascript/common.js"></script>
+
+<script type="text/javascript" src="{theme:javascript/new/jquery.jqzoom.js}"></script>
+<script type="text/javascript" src="{theme:javascript/new/base.js}"></script>
+
+<!-- 中间部分开始 -->
+	<center class="clearfix">
+		<div class="project_details ">
+			<div class="pd_center">				
+				<h1>当前位置：首页 > 项目交易 > 详细页</h1>
+				<div class="left-right">
+					<div class="left">					
+						<div class="lefttop">
+							<h2>{$title}</h2>
+							<div class="right-extra">
+								<!--产品参数开始-->
+								<div class="bigpic" style="height:324px;">
+								    <div id="preview" class="spec-preview">
+								    <span class="jqzoom">
+								    	<img jqimg="{$pic}" src="{url:/pic/thumb/img/$pic/w/385/h/324}" /></span>
+								    </div>
+								    <!--缩图开始-->
+								    <!-- <div class="spec-scroll">
+								    <a class="prev"></a>
+								    <a class="next"></a>
+								    <div class="items">
+								        <ul>
+								          <li>
+								          	<img bimg="/upload/2016/05/23/20160523113210873.jpg" src="{url:/pic/thumb/img/upload/2016/05/23/20160523113210873.jpg/w/385/h/255}" onMouseMove="preview(this);">
+								          </li>
+								          <li>
+								          	<img bimg="images/pro/pd.jpg" src="images/pro/2.jpg" onMouseMove="preview(this);">
+								          </li>
+								          <li>
+								          	<img bimg="images/pro/pd.jpg" src="images/pro/3.jpg" onMouseMove="preview(this);">
+								          </li>
+								          <li>
+								          	<img bimg="images/pro/pd.jpg" src="images/pro/4.jpg" onMouseMove="preview(this);">
+								          </li>							          
+								        </ul>
+								      </div>
+								    </div> -->
+								    <!--缩图结束-->
+								  </div>
+								  <!--产品参数结束-->
+								  <div style="clear:both;height:10px;"></div>
+								</div>
+							<div class="left-extra">
+								<ul>
+									<li> 
+										<span class="name">项目价格：</span>
+										<span class="tip">￥{$t_amount}</span>
+										
+									</li>
+									<?php
+						$dbcategory = new IModel('project_category');
+						$categoryRow = $dbcategory->getObj('id = '.$category_id);
+					?>
+									<li> 
+										<span class="name">所属行业：</span>
+										<span class="tip c-l">{$categoryRow[name]}</span>
+									</li>
+									<li> 
+										<span class="name">项目类型：</span>
+										<span class="tip">融资</span>
+									</li>
+									<li> 
+										<span class="name">技术成熟度：</span>
+										<span class="tip">可以量产</span>
+									</li>
+									<li> 
+										<span class="name">交易方式：</span>
+										<span class="tip">完全转让，合作</span>
+									</li>
+									<?php
+									if($seller_id){
+										$dbmember = new IModel('member');
+						$memberRow = $dbmember->getObj('user_id = '.$seller_id);
+										// print_r($this->user);
+									?>
+									<li> 
+										<span class="name">联系方式：</span>
+										<span class="tip">{$memberRow['true_name']}，电话：{$memberRow['telephone']} {$memberRow['mobile']}	</span>
+									</li><?php
+											}
+									?>
+								</ul>
+								<button class="colorb" onclick="sendbook({$id},'{$title}',{$seller_id});">项目咨询</button><button onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={echo:$siteConfig->qq}&site=&menu=yes');">咨询平台客服</button><button onclick="javascript:top.location='{url:/ucenter/project_edit}';">发布项目需求</button>
+							</div>
+						</div>
+						<div class="leftbottom">
+							<div class="leftcenter">
+									<ul>
+										<li class="selected">
+											<a href="#">宝贝详情</a>
+											<div class="xian"></div>
+										</li>
+										<!-- <li>
+											<a href="#">累计评论</a>
+											<em></em>
+										</li> -->
+									</ul>
+							</div>
+							<div class="word">
+								{$content}
+								
+							</div>
+						</div>
+					</div>
+					<div class="right" style="margin-top:-20px;">
+						<div class="telpeo">
+							
+							<div class="top-service clearfix">
+								<h3><a>推荐服务</a></h3>
+								<div class="cgwgood">
+								<div class="cgwcenter">
+								<div class="center-tit">
+								<ul class="product clearfix">
+									{query:name=goods as go join=left join commend_goods as co on co.goods_id eq go.id fields=go.* where=go.is_del eq 0 and co.commend_id eq 4 order=go.id desc pagesize=5}
+											{set:$tmpId=$item['id'];}
+
+											<?php
+$categoryObj = new IModel('category_extend as ca,category as c');
+		$categoryRow = $categoryObj->getObj('ca.goods_id = '.$item[id].' and ca.category_id = c.id','c.id,c.name');
+											?>
+											<li>
+										<div class="list"><a title="{$item['name']}" target="_blank" href="{url:/site/products/id/$tmpId}">
+											<div class="pic">
+												<img src="{url:/pic/thumb/img/$item[img]/w/276/h/257}">
+											</div>
+											<div class="introduce">
+												<p class="name">{$item['name']}</p>
+												<p><span class="price">￥{$item['sell_price']}</span><span class="type">{$categoryRow[name]}类</span></p>
+											</div></a>
+											<button onclick="javascript:window.open('{url:/site/products/id/$tmpId}');">我需要</button>
+										</div>
+									</li>
+									{/query}
+									
+									
+								</ul>
+								</div>
+								</div>
+								</div>
+							</div>						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</center>
+	<!-- 中间部分结束 -->
+<script id="goodsCommendTemplate" type="text/html">
+<form name="commendForm">
+<input type='hidden' name='user_id' value='{$this->user[user_id]}' />
+<input type='hidden' name='project_id' value='<%=templateid%>' />
+<input type='hidden' name='seller_id' value='<%=seller_id%>' />
+<div class="pop_win" style="width:100%;height:100%">
+	<div class="content">
+		
+			<table class="form_table">
+			
+
+			<tbody>
+				<tr>
+					<td class="t_r">项目：</td>
+					<td><%=templateData%></td>
+				</tr>
+
+				<tr>
+					<td valign="top" style="vertical-align: top" class="t_r">内容：</td>
+					<td><textarea name="question" pattern="required"></textarea></td>
+				</tr>
+				<tr>
+					<td class="t_r">姓名：</td>
+					<td><input class="middle" type="text" name="name" id="form_title" value="" /></td>
+				</tr>
+				<tr>
+					<td class="t_r">手机：</td>
+					<td><input class="middle" type="text" name="mobile" id="form_title" value="" /></td>
+				</tr>
+				<tr>
+					<td class="t_r">地址：</td>
+					<td><input class="middle" type="text" name="address" id="form_title" value="" /></td>
+				</tr>
+			</tbody>
+			</table>
+		
+	</div>
+</div>
+</form>
+</script>
+<script type="text/javascript">
+	function sendbook(id,tite,seller_id)
+{
+	
+	if(!isNaN(id))
+	{
+	
+
+		
+			var templateHtml = template.render("goodsCommendTemplate",{'templateData':tite,'templateid':id,'seller_id':seller_id});
+			art.dialog(
+			{
+				title:'项目咨询',
+				okVal:"保存",
+			    content: templateHtml,
+			    ok:function(iframeWin)
+			    {
+			    	var formObj = iframeWin.document.forms['commendForm'];
+			    	$.getJSON("/index.php?controller=site&action=feedback_act",$(formObj).serialize(),function(content)
+			    	{
+			    		if(content.result == 'fail')
+			    		{
+			    			alert(content.data);
+			    			
+			    		}else{
+			    			alert("您的咨询内容已经成功提交！");
+			    		}
+			    	});
+			    }
+			});
+		
+	}
+	else
+	{
+		alert("请选择您要操作的项目");
+	}
+}
+</script>

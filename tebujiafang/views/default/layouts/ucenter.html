@@ -1,0 +1,335 @@
+{set:
+	$myCartObj  = new Cart();
+	$myCartInfo = $myCartObj->getMyCart();
+	$siteConfig = new Config("site_config");
+	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
+}
+
+{set: $countsumInstance = new countsum(); }
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>南通艾点商务有限公司</title>
+	<link href="{skin:css/css.css}" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="{theme:javascript/ana.min.js}"></script>
+	<script src="{theme:javascript/jquery.min.js}"></script>
+
+	<script type="text/javascript" src="{theme:javascript/jquery.js}"></script>
+	<script type="text/javascript" src="{theme:javascript/com.js}"></script>
+
+	<link href="{skin:css/global.css}" rel="stylesheet" type="text/css" />
+
+	<link rel="stylesheet" type="text/css" href="{skin:css/reset.css}" media="all">
+	<link rel="stylesheet" type="text/css" href="{skin:css/site_index.css}">
+	<link rel="stylesheet" type="text/css" href="{skin:css/SuperSlide_index.css}">
+	<link rel="stylesheet" href="{skin:css/index.css}" />
+	{js:jquery}
+	{js:form}
+	{js:validate}
+	{js:dialog}
+	{js:artTemplate}
+	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
+	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
+	{set:$sonline = new Sonline();$sonline->show($siteConfig->phone,$siteConfig->service_online);}
+	
+	<style>
+		.text { width: 350px;  height: 30px; padding-left: 15px; }
+		.hotwords { line-height: 30px; }
+		.btn { background-color: #AC184C !important; width: 80px; color: #fff; border: 0px; height: 34px; }
+		.btn input { background-color: #AC184C !important; font-size:12px !important; }
+		.tip-left { width:100px; float:left; border: 1px solid #bbb; margin:5px;}
+		.tip-right { width:120px; float:left; color:#333; line-height:25px; margin:13px 5px 5px 0px; text-align: left;}
+		.tip-right span ,.tip-right a{ color: #AC184C; font-weight:bold;}
+
+		.mycart{ position:relative;z-index:60;float:right;width:244px;height:22px;padding-top:6px;background:url(../images/front/sprites.gif) 0 -255px no-repeat}
+		.mycart dt,.mycart dd{float:left}
+		.mycart dt{ position:relative;width:120px;padding:0 20px 0 40px}
+		.mycart dt a{color:#626262}
+		.mycart dt a b{margin:0 3px;color:#db054b;font-size:11px}
+		.mycart dd{width:43px;margin:0 0 0 8px;color:#fff}
+		.mycart dd a:link,.mycart dd a:visited,.mycart dd a:hover,.mycart dd a:active{color:#fff}
+		.shopping{position:absolute;right:0; width:344px;padding:5px 5px 5px 0;border:2px solid #d3d3d3;background-color:#fff}
+		dl.cartlist dd{width:334px;height:60px;padding:5px 0;margin-bottom:5px;border-bottom:1px dashed #c7c7c7;text-align:left}
+		dl.cartlist dd .pic{width:55px;height:55px;margin-right:5px}
+		dl.cartlist dd .title{width:160px;height:60px}
+			dl.cartlist dd .title a{color:#373737;font:normal 12px/18px "宋体"}
+		dl.cartlist b{color:#da4901;font-size:11px}
+		dl.cartlist input.del{width:51px;height:19px;cursor:pointer;overflow:hidden;line-height:19px;text-align:left;padding-left:6px;color:#6e6e6e;border:none;background:url(../images/front/sprites.gif) -228px -195px no-repeat}
+		dl.cartlist dd.static{height:25px;margin-bottom:0;text-align:right;color:#6e6e6e;border-bottom:0}
+		dl.cartlist dd.static span{margin-right:20px}
+		dl.cartlist dd.static a{color:#757575;text-decoration:underline}
+		dl.cartlist dd.static label{margin:0}
+		dl.cartlist dd.static input{font-weight:normal;color:#fff;background-color: #AC184C;border: 0px;width: 120px;height: 26px;}
+		.cartlist { padding:0px 5px 0px 5px; }
+.f_r { float:inherit !important;}
+
+.main { float:right !important; }
+	   .wrapper { width:1000px }
+	   .content { width:auto; min-width:auto; }
+	   .position { padding:5px }
+	   .main { width:800px !important; }
+	   .sidebar { width:auto;}
+
+	</style>
+
+</head>
+
+<body>
+	<div id="head">
+		<div class="ewm" style="display:none"><ul><img src="{skin:images/front/ewm.jpg}" /></ul></div>
+	    <div class="ewm1" style="display:none"><ul><img src="{skin:images/front/ewm.jpg}" /></ul></div>
+		<div class="innerwrap">
+			<ul>
+				<li class="fl">
+					<a href="javascript:;" class="ph" id="openNav1">移动客户端</a>
+					{echo:$this->user['username']} 您好，欢迎登录南通艾点商务有限公司
+					{if:$this->user} 
+					     [<a href="{url:/simple/logout}" class="reg">安全退出</a>]
+					{else:}
+					    <a href="{url:/simple/login?callback=$callback}">登录</a> ,<a href="{url:/simple/reg?callback=$callback}">免费注册</a>
+					{/if}
+				</li>
+				<li class="in_right fr">
+					<a href="javascript:;" class="em" id="openNav">关注艾点</a>|<a href="{url:/ucenter/order}">我的订单</a>|<a href="/index.php?controller=ucenter">个人中心</a>| 全国热线：<span>138-1377-9637</span>
+				</li>
+				<script>
+					$("#openNav").click(function(){ $(".ewm").slideToggle("slow"); })
+					$("#openNav1").click(function(){ $(".ewm1").slideToggle("slow"); })
+				</script> 
+			</ul>
+    	</div>	
+    	<div class="clear"></div>
+        <div class="header">
+			<ul>
+				<li class="logo fl"><a href="{url:/site/index}"><img src="{skin:images/front/logo.jpg}" /></a></li>
+				<li class="ss fl">
+					<div class="searchbox">
+						<form method='get' action='{url:/}'>
+							<input type='hidden' name='controller' value='site' />
+							<input type='hidden' name='action' value='search_list' />
+							<input class="text" type="text" name='word' autocomplete="off" value="输入关键字..." />
+							<input class="btn" type="submit" value="商品搜索" onclick="checkInput('word','输入关键字...');" />
+						</form>
+						<!--自动完成div 开始-->
+						<ul class="auto_list" style='display:none'></ul>
+						<!--自动完成div 开始-->
+					</div>
+					<div class="hotwords">热门搜索：
+						{foreach:items=Api::run('getKeywordList') }
+						{set:$tmpWord = urlencode($item['word']);}
+						<a href="{url:/site/search_list/word/$tmpWord}">{$item['word']}</a>
+						{/foreach}
+					</div>
+				</li>
+				<div class="user-box">
+                <div class="btn-user btn-handle">
+                <div>
+                    <a href="#">
+                        <span class="icon-user"></span>
+                        <span>我的商城</span>
+                        <span class="icon-arrow-down"></span>
+                    </a>
+                </div>
+
+                <div class="hide-user ng-scope" ng-if="!isLogin">
+                	{if:$this->user} 
+					<div class="tip-Login">
+						<div class="tip-left"><img src="{$this->user[head_ico]}" width="90" height="90" /></div>
+						<div class="tip-right">
+							<p><span>会员ID：</span>{$this->user[user_id]}</p>
+							<p><span>会员名：</span>{$this->user[username]}</p>
+							<p><a href="/index.php?controller=ucenter">[会员中心]</a>&nbsp;<a href="/index.php?controller=ucenter&action=order">[我的订单]</a></p>
+						</div>
+					</div>
+					{else:}
+				    <div class="tips-unLogin">
+                    	<p>您未登录</p>
+                    	<p><a class="btn-login" href="{url:/simple/login?callback=$callback}">点击这里登录</a></p>
+                	</div>
+					{/if}  
+                </div>
+            	</div>
+	            <div class="btn-cart btn-handle no-border-l" id="cart-btn">
+	                <div class="icon-amount-cart ng-binding" ng-bind="cartAmount">{$myCartInfo['count']}</div>
+	                <a href="#">
+	                    <span class="icon-shoppingCart"></span>
+	                    <span class="label" style="color:#fff">购物车</span>
+	                    <span class="icon-arrow-down"></span>
+	                </a>
+	                <div class="hide-cart" ng-show="!isLogin||cartAmount<=0">
+	                	{if:$myCartInfo['count']} 
+						<div class="shopping" id='div_mycart' style='display:none;'>
+						</div>
+						{else:}
+	                    <div class="tips-cart-null">
+	                        <span class="icon-cart-null"></span>
+	                        <p>您的购物车空空如也</p>
+	                        <p> 赶紧去选购吧</p>
+	                    </div>
+	                    {/if}
+
+            <!--购物车模板 开始-->
+			<script type='text/html' id='cartTemplete'>
+			<dl class="cartlist">
+				<%for(var item in goodsData){%>
+				<%var data = goodsData[item]%>
+				<dd id="site_cart_dd_<%=item%>">
+					<div class="pic f_l"><img width="55" height="55" src="{webroot:<%=data['img']%>}"></div>
+					<h3 class="title f_l"><a href="{url:/site/products/id/<%=data['goods_id']%>}"><%=data['name']%></a></h3>
+					<div class="price f_r t_r">
+						<b class="block">￥<%=data['sell_price']%> x <%=data['count']%></b>
+						<input class="del" type="button" value="删除" onclick="removeCart('{url:/simple/removeCart}','<%=data['id']%>','<%=data['type']%>');$('#site_cart_dd_<%=item%>').hide('slow');" />
+					</div>
+				</dd>
+				<%}%>
+
+				<dd class="static"><span>共<b name="mycart_count"><%=goodsCount%></b>件商品</span>金额总计：<b name="mycart_sum">￥<%=goodsSum%></b></dd>
+
+				<%if(goodsData){%>
+				<dd class="static">
+					{if:ISafe::get('user_id')}
+					<a class="f_l" href="javascript:void(0)" onclick="deposit_ajax('{url:/simple/deposit_cart_set}');">寄存购物车>></a>
+					{/if}
+					<label class="btn_orange"><input type="button" value="去购物车结算" onclick="window.location.href='{url:/simple/cart}';" /></label>
+				</dd>
+				<%}%>
+			</dl>
+			</script>
+			<!--购物车模板 结束-->
+
+
+	                </div>
+	            </div>
+        		</div>
+			</ul>
+		</div>
+		<div class="menu">
+			<div class="menu_left fl">
+				<a href="{url:/site/sitemap}">全部产品分类</a>
+			</div>
+			<div class="menu_right fl">
+				<ul>
+					<li><a href="{url:/site/index}">首页</a></li>
+					{foreach:items=Api::run('getGuideList')}
+					<li><a href="{url:$item[link]}">{$item['name']}<span> </span></a></li>
+					{/foreach}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="ucenter container" >
+	<div class="wrapper clearfix">
+		<div class="position">
+			您当前的位置： <a href="{url:}">首页</a> » <a href="{url:/ucenter/index}">我的账户</a>
+		</div>
+		<div class="sidebar f_l">
+			<img src="{skin:images/front/ucenter/ucenter.gif}" width="180" height="40" />
+			<div class="box">
+				<div class="title"><h2>交易记录</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/order}">我的订单</a></li>
+						<!-- <li><a href="{url:/ucenter/integral}">我的积分</a></li> -->
+						<!-- <li><a href="{url:/ucenter/redpacket}">我的代金券</a></li> -->
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg2'>服务中心</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/refunds}">退款申请</a></li>
+						<li><a href="{url:/ucenter/complain}">站点建议</a></li>
+						<li><a href="{url:/ucenter/consult}">商品咨询</a></li>
+						<li><a href="{url:/ucenter/evaluation}">商品评价</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg3'>应用</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/message}">短信息</a></li>
+						<li><a href="{url:/ucenter/favorite}">收藏夹</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg4'>账户资金</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/account_log}">帐户余额</a></li>
+						<li><a href="{url:/ucenter/online_recharge}">在线充值</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg5'>个人设置</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/address}">地址管理</a></li>
+						<li><a href="{url:/ucenter/info}">个人资料</a></li>
+						<li><a href="{url:/ucenter/password}">修改密码</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		{viewcontent}
+	</div>
+</div>
+	<div id="foot">
+	  <div class="txt_algin pt30 pb20">Copyright 2016 南通艾点电子商务信息有限公司版权所有 使用本网站即表示接受本商城用户协议<br /><a href="http://www.miitbeian.gov.cn/" title="工信部">苏ICP备********号</a> <a href="http://www.jssdw.com" title="仕德伟科技" target="_blank">技术支持：仕德伟科技</a> 
+ 	</div>
+</div>
+<script type='text/javascript'>
+//DOM加载完毕后运行
+$(function()
+{
+	$(".tabs").each(function(i){
+	    var parrent = $(this);
+		$('.tabs_menu .node',this).each(function(j){
+			var current=".node:eq("+j+")";
+			$(this).bind('click',function(event){
+				$('.tabs_menu .node',parrent).removeClass('current');
+				$(this).addClass('current');
+				$('.tabs_content>.node',parrent).css('display','none');
+				$('.tabs_content>.node:eq('+j+')',parrent).css('display','block');
+			});
+		});
+	});
+
+	//隔行换色
+	$(".list_table tr:nth-child(even)").addClass('even');
+	$(".list_table tr").hover(
+		function () {
+			$(this).addClass("sel");
+		},
+		function () {
+			$(this).removeClass("sel");
+		}
+	);
+
+	// menu_current();
+
+	$('input:text[name="word"]').bind({
+		keyup:function(){autoComplete('{url:/site/autoComplete}','{url:/site/search_list/word/@word@}','{$siteConfig->auto_finish}');}
+	});
+
+	{set:$word = IReq::get('word') ? IFilter::act(IReq::get('word'),'text') : '输入关键字...'}
+	$('input:text[name="word"]').val("{$word}");
+
+	//购物车div层
+	$('#cart-btn').hover(
+		function(){
+			showCart('{url:/simple/showCart}');
+		},
+		function(){
+			$('#div_mycart').hide('slow');
+		}
+	);
+});
+</script>
+</body>
+</html>

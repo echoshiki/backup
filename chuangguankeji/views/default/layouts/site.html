@@ -1,0 +1,605 @@
+{set:
+	$myCartObj  = new Cart();
+	$myCartInfo = $myCartObj->getMyCart();
+	$siteConfig = new Config("site_config");
+	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
+}
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>创冠网络</title>
+	<link rel="stylesheet" type="text/css" href="{skin:bubugao/css/new/common.css}">
+	<link rel="stylesheet" type="text/css" href="{skin:bubugao/css/new/styles.css}">
+	<!-- banner -->
+	<link rel="stylesheet" type="text/css" href="{skin:bubugao/css/new/flickerplate.css}">
+	<script type="text/javascript" src="{theme:javascript/new/jquery-1.11.3.min.js}"></script>
+	<script type="text/javascript" src="{theme:javascript/new/modernizr-custom-v2.7.1.min.js}"></script>
+	<script type="text/javascript" src="{theme:javascript/new/banner.min.js}"></script>
+	<script>
+		$(document).ready(function(){		
+			$('.flicker-example').flicker();
+		});
+	</script>
+</head>
+<body>
+	<!-- 头部开始 -->
+	<header>
+		<div class="header-top">
+			<div class="width">
+				<div class="heatop-left">
+					<a href="{url:/simple/reg?callback=$callback}">快速注册</a>
+					<a href="{url:/simple/login?callback=$callback}">登录</a>
+				</div>
+				<div class="heatop-right">
+					<a href="#"><i class="icon-iphon"></i><span>手机版</span></a>
+					<a href="#"><i class="icon-wei"></i><span>微信公众号</span></a>
+					<a href="{url:/site/help_list}">帮助中心</a>
+					<a href="#">意见反馈</a>
+				</div>
+			</div>
+		</div>
+		<nav>
+			<div class="header-center">
+				<div class="logo">
+					<a></a>
+				</div>
+					<ul class="nav">
+						<li><a href="#" class="onnav">网站首页</a></li>
+						{foreach:items=Api::run('getGuideList')}
+						<li><a href="{url:$item[link]}">{$item['name']}<span> </span></a></li>
+						{/foreach}
+					</ul>
+			</div>
+		</nav>
+	</header>
+	<!-- 头部结束 -->
+	<!-- 中间部分开始 -->
+	<center class="clearfix">
+		<div class="banner">
+			<div class="banner-img">
+				<div class="flicker-example" data-block-text="false">			
+					<ul>
+						{foreach:items=$this->index_slide}	
+			      <li data-background="{webroot:$item[img]}"></li>
+			      {/foreach}		
+					</ul>		
+				</div>
+			</div>
+			<div class="banner-word clearfix">
+				<ul>
+					<li>
+						<a class="circle">
+							<P class="name">技术成果</P>
+							<p class="num">259,518项</p>
+						</a>
+					</li>
+					<li>
+						<a class="circle">
+						<P class="name">累积对接</P>
+						<p class="num">146062次</p>
+						</a>
+					</li>
+					<li>
+						<a class="circle">
+						<P class="name">合作院所</P>
+						<p class="num">1065所</p>
+						</a>
+					</li>
+					<li>
+						<a>
+						<P class="name">在线交易</P>
+						<p class="num">34330.71万</p>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="cgwgood clearfix">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>创冠的优势</h1>
+					<p>公司以诚实、信用、专业、高效为服务宗旨，充分发挥法律、技术、信息为一体的独特优势</p>
+				</div>
+				<ul class="list-good">
+					<li>
+						<i class="gongyin"></i>
+						<p class="china">供应发布</p>
+						<p class="english">Supply post</p>
+					</li>					
+					<li>
+						<i class="xqfb"></i>
+						<p class="china">需求发布</p>
+						<p class="english">Release</p>
+					</li>
+					<li>
+						<i class="hzsq"></i>
+						<p class="china">合作申请</p>
+						<p class="english">Cooperation</p>
+					</li>
+					<li>
+						<i class="jyjl"></i>
+						<p class="china">交易奖励</p>
+						<p class="english">Trading Rewards</p>
+					</li>
+					<li>
+						<i class="hdsb"></i>
+						<p class="china">活动申办</p>
+						<p class="english">Activity</p>
+					</li>
+					<li>
+						<i class="jscp"></i>
+						<p class="china">技术测评</p>
+						<p class="english">Technology</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="cgwgood clearfix bg">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>专利交易</h1>					
+						<ul class="clearfix">
+							<li><a href="javascript:void(0);" class="on" id="tab-all" onclick="tabSw('all');">所有专利</a></li>
+							<!-- 列出专列产品分类列表 -->
+							{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',0),7) item=$first key=$key}
+							<li><a href="javascript:void(0);" id="tab-{$first[id]}" onclick="tabSw({$first[id]});">{$first[name]}</a></li>
+							{/foreach}
+						</ul>					
+				</div>
+				<!-- 循环列出专利产品分类，展现一个，其余隐藏 -->
+				<ul class="product clearfix" id="zl-all" >
+					<!-- 获取分类下的专利产品列表 -->
+					{foreach:items=Api::run('getCategoryAllList',8)}
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{url:/pic/thumb/img/$item[img]/w/276/h/257}">
+							</div>
+							<div class="introduce">
+								<p class="name">{$item['name']}</p>
+								<p><span class="price">￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></span><span class="type">能源动力类</span></p>
+							</div>
+							<a href="{url:/site/products/id/$item[id]}"><button>我需要</button></a>
+						</div>
+					</li>					
+					{/foreach}
+					<button class="more">查看更多></button>
+				</ul>
+
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',0),7) item=$first key=$key}	
+				<?php $key = $key + 1; ?>			
+				<ul class="product clearfix" id="zl-{$first[id]}" style="display:none;" >
+					<!-- 获取分类下的推荐专利产品列表 -->
+					{foreach:items=Api::run('getCategoryExtendByCommendid',array('#childId#',$first['id']),8)}
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{url:/pic/thumb/img/$item[img]/w/276/h/257}">
+							</div>
+							<div class="introduce">
+								<p class="name">{$item['name']}</p>
+								<p><span class="price">￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></span><span class="type">能源动力类</span></p>
+							</div>
+							<a href="{url:/site/products/id/$item[id]}"><button>我需要</button></a>
+						</div>
+					</li>					
+					{/foreach}
+					<button class="more">查看更多></button>
+				</ul>
+				{/foreach}
+			</div>
+		</div>
+		<div class="cgwgood clearfix bgb">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>项目交易</h1>					
+					<p>让您的信息得到完美定制展示</p>					
+				</div>
+				<ul class="product clearfix product-jy">
+					{foreach:items=Api::run('getProjectListAll',array('#top#',1),3)}
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{$item['pic']}">
+							</div>
+							<div class="introduce">
+								<p class="name">{$item['title']}</p>
+								<div class="nameword">{$item['content']}</div>
+								<p><span class="price">￥{$item['t_amount']}</span><span class="type">{$item['name']}</span></p>
+							</div>
+							<button class="zixun">项目咨询</button><button class="xianqing">查看详情</button>
+						</div>
+					</li>
+					{/foreach}					
+				</ul>
+				<button class="more">查看更多></button>
+			</div>
+		</div>
+		<div class="cgwgood clearfix bg">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>人才展示</h1>					
+					<p>让您的信息得到完美定制展示</p>						
+				</div>
+				<ul class="product clearfix people">
+					{foreach:items=Api::run('getRencaiListAll',array('#top#',1),4)}
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{$item['pic']}">
+								<div class="introduce">
+								<p class="name">{$item['title']}</p>
+								<p class="name f-12">{$item['content']}</p>
+							</div>
+							</div>
+						</div>
+					</li>
+					{/foreach}
+				</ul>
+				<button class="more">查看更多></button>
+			</div>
+		</div>
+		<div class="cgwgood clearfix bgb">
+			<div class="cgwcenter">
+				<hr class="yellow">
+				<div class="center-tit">
+					<h1>项目众筹</h1>					
+					<p>一起携手，让我们一起成就一些梦想</p>					
+				</div>
+				<ul class="product clearfix product-zc">
+
+					{foreach:items=Api::run('getFundListAll',array('#top#',1),4)}
+					<li>
+						<div class="biao">
+							<div class="sanjiao"></div>
+							<a class="biaoqian">优质标</a>
+						</div>
+						<div class="cgwl-zc clearfix">
+							<div class="cgwl-zc-tit clearfix">
+								<h1>{$item['title']}</h1>
+								<span>2016-4-9</span>
+							</div>
+							<ul class="list-pro">
+								<li><div class="span">剩余:<a href="#">20</a>天</div></li>
+								<li><div class="span">参与数:<a href="#" class="color">184</a>人次</div></li>
+								<li><div class="span">众筹金额:<a href="#">188</a>万</div></li>
+								<li>
+									<div class="span"><div class="left">进度:</div>
+										<div class="loading">
+									        <div class="progress">
+									 
+									        </div>
+									    </div>
+									    <div class="left">
+									    33.59%</div>
+									</div>
+    							</li>
+							</ul>
+							<button class="hdbj">马上参与</button>
+						</div>
+					</li>
+					{/foreach}
+
+
+					<li>
+						<div class="biao">
+							<div class="sanjiao"></div>
+							<a class="biaoqian">优质标</a>
+						</div>
+						<div class="cgwl-zc clearfix">
+							<div class="cgwl-zc-tit clearfix">
+								<h1>项目众筹　项目一</h1>
+								<span>2016-4-9</span>
+							</div>
+							<ul class="list-pro">
+								<li><div class="span">剩余:<a href="#">20</a>天</div></li>
+								<li><div class="span">参与数:<a href="#" class="color">184</a>人次</div></li>
+								<li><div class="span">众筹金额:<a href="#">188</a>万</div></li>
+								<li>
+									<div class="span"><div class="left">进度:</div>
+										<div class="loading">
+									        <div class="progress">
+									 
+									        </div>
+									    </div>
+									    <div class="left">
+									    33.59%</div>
+									</div>
+    							</li>
+							</ul>
+							<button class="hdbj">马上参与</button>
+						</div>
+					</li>
+					<li>
+						<div class="cgwl-zc clearfix">
+							<div class="cgwl-zc-tit clearfix">
+								<h1>项目众筹　项目一</h1>
+								<span>2016-4-9</span>
+							</div>
+							<ul class="list-pro overleft">
+								<li><div class="span">剩余:<a href="#">20</a>天</div></li>
+								<li><div class="span">参与数:<a href="#" class="color">184</a>人次</div></li>
+								<li><div class="span">众筹金额:<a href="#">188</a>万</div></li>
+								<li>
+									<div class="span"><div class="left">进度:</div>
+										<div class="loading">
+									        <div class="progress">
+									 
+									        </div>
+									    </div>
+									    <div class="left">
+									    33.59%</div>
+									</div>
+    							</li>
+							</ul>
+							<button class="over">已结束</button>
+						</div>
+					</li>
+
+				</ul>
+				<button class="more">查看更多></button>
+			</div>
+		</div>
+
+
+
+{set:
+	$myCartObj  = new Cart();
+	$myCartInfo = $myCartObj->getMyCart();
+	$siteConfig = new Config("site_config");
+	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{echo:$siteConfig->name}</title>
+	<link type="image/x-icon" href="favicon.ico" rel="icon">
+	<link rel="stylesheet" href="{skin:css/index.css}" />
+	{js:jquery}
+	{js:form}
+	{js:validate}
+	{js:dialog}
+	{js:artTemplate}
+	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
+	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
+	{set:$sonline = new Sonline();$sonline->show($siteConfig->phone,$siteConfig->service_online);}
+</head> -->
+<body class="index">
+<div class="container">
+	<div class="header">
+		<h1 class="logo"><a title="{echo:$siteConfig->name}" style="background:url({if:$siteConfig->logo}{webroot:$siteConfig->logo}{else:}{skin:images/front/logo.gif}{/if});" href="{url:}">{echo:$siteConfig->name}</a></h1>
+		<ul class="shortcut">
+			<li class="first"><a href="{url:/ucenter/index}">我的账户</a></li>
+			<li><a href="{url:/ucenter/order}">我的订单</a></li>
+			<li><a href="{url:/simple/seller}">申请开店</a></li>
+			<li><a href="{url:/seller/index}">商家管理</a></li>
+			<li class='last'><a href="{url:/site/help_list}">使用帮助</a></li>
+		</ul>
+		<p class="loginfo">
+			{if:$this->user}
+			{echo:$this->user['username']}您好，欢迎您来到{echo:$siteConfig->name}购物！[<a href="{url:/simple/logout}" class="reg">安全退出</a>]
+			{else:}
+			[<a href="{url:/simple/login?callback=$callback}">登录</a><a class="reg" href="{url:/simple/reg?callback=$callback}">免费注册</a>]
+			{/if}
+		</p>
+	</div>
+	<div class="navbar">
+		<ul>
+			<li><a href="{url:/site/index}">首页</a></li>
+			{foreach:items=Api::run('getGuideList')}
+			<li><a href="{url:$item[link]}">{$item['name']}<span> </span></a></li>
+			{/foreach}
+		</ul>
+
+		<div class="mycart">
+			<dl>
+				<dt><a href="{url:/simple/cart}">购物车<b name="mycart_count">{$myCartInfo['count']}</b>件</a></dt>
+				<dd><a href="{url:/simple/cart}">去结算</a></dd>
+			</dl>
+
+			<!--购物车浮动div 开始-->
+			<div class="shopping" id='div_mycart' style='display:none;'>
+			</div>
+			<!--购物车浮动div 结束-->
+
+			<!--购物车模板 开始-->
+			<script type='text/html' id='cartTemplete'>
+			<dl class="cartlist">
+				<%for(var item in goodsData){%>
+				<%var data = goodsData[item]%>
+				<dd id="site_cart_dd_<%=item%>">
+					<div class="pic f_l"><img width="55" height="55" src="{webroot:<%=data['img']%>}"></div>
+					<h3 class="title f_l"><a href="{url:/site/products/id/<%=data['goods_id']%>}"><%=data['name']%></a></h3>
+					<div class="price f_r t_r">
+						<b class="block">￥<%=data['sell_price']%> x <%=data['count']%></b>
+						<input class="del" type="button" value="删除" onclick="removeCart('{url:/simple/removeCart}','<%=data['id']%>','<%=data['type']%>');$('#site_cart_dd_<%=item%>').hide('slow');" />
+					</div>
+				</dd>
+				<%}%>
+
+				<dd class="static"><span>共<b name="mycart_count"><%=goodsCount%></b>件商品</span>金额总计：<b name="mycart_sum">￥<%=goodsSum%></b></dd>
+
+				<%if(goodsData){%>
+				<dd class="static">
+					{if:ISafe::get('user_id')}
+					<a class="f_l" href="javascript:void(0)" onclick="deposit_ajax('{url:/simple/deposit_cart_set}');">寄存购物车>></a>
+					{/if}
+					<label class="btn_orange"><input type="button" value="去购物车结算" onclick="window.location.href='{url:/simple/cart}';" /></label>
+				</dd>
+				<%}%>
+			</dl>
+			</script>
+			<!--购物车模板 结束-->
+		</div>
+	</div>
+
+	<div class="searchbar">
+		<div class="allsort">
+			<a href="javascript:void(0);">全部商品分类</a>
+
+			<!--总的商品分类-开始-->
+			<ul class="sortlist" id='div_allsort' style='display:none'>
+				{foreach:items=Api::run('getCategoryListTop')  item=$first }
+				<li>
+					<h2><a href="{url:/site/pro_list/cat/$first[id]}">{$first['name']}</a></h2>
+
+					<!--商品分类 浮动div 开始-->
+					<div class="sublist" style='display:none'>
+						<div class="items">
+							<strong>选择分类</strong>
+							{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+							<dl class="category selected">
+								<dt>
+									<a href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a>
+								</dt>
+
+								<dd>
+									{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$second['id']))  item=$third}
+									<a href="{url:/site/pro_list/cat/$third[id]}">{$third['name']}</a>|
+									{/foreach}
+								</dd>
+							</dl>
+							{/foreach}
+						</div>
+					</div>
+					<!--商品分类 浮动div 结束-->
+				</li>
+				{/foreach}
+			</ul>
+			<!--总的商品分类-结束-->
+		</div>
+
+		<div class="searchbox">
+			<form method='get' action='{url:/}'>
+				<input type='hidden' name='controller' value='site' />
+				<input type='hidden' name='action' value='search_list' />
+				<input class="text" type="text" name='word' autocomplete="off" value="输入关键字..." />
+				<input class="btn" type="submit" value="商品搜索" onclick="checkInput('word','输入关键字...');" />
+			</form>
+
+			<!--自动完成div 开始-->
+			<ul class="auto_list" style='display:none'></ul>
+			<!--自动完成div 开始-->
+
+		</div>
+		<div class="hotwords">热门搜索：
+			{foreach:items=Api::run('getKeywordList') }
+			{set:$tmpWord = urlencode($item['word']);}
+			<a href="{url:/site/search_list/word/$tmpWord}">{$item['word']}</a>
+			{/foreach}
+		</div>
+	</div>
+	{echo:Ad::show(1)}
+
+	{viewcontent}
+
+	<div class="help m_10">
+		<div class="cont clearfix">
+			{foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat}
+			<dl>
+     			<dt><a href="{url:/site/help_list/id/$helpCat[id]}">{$helpCat['name']}</a></dt>
+				{foreach:items=Api::run('getHelpListByCatidAll',array('#cat_id#',$helpCat['id']))}
+					<dd><a href="{url:/site/help/id/$item[id]}">{$item['name']}</a></dd>
+				{/foreach}
+      		</dl>
+      		{/foreach}
+		</div>
+	</div>
+	{echo:IFilter::stripSlash($siteConfig->site_footer_code)}
+</div>
+
+<script type='text/javascript'>
+$(function()
+{
+	{set:$word = IReq::get('word') ? IFilter::act(IReq::get('word'),'text') : '输入关键字...'}
+	$('input:text[name="word"]').val("{$word}");
+
+	$('input:text[name="word"]').bind({
+		keyup:function(){autoComplete('{url:/site/autoComplete}','{url:/site/search_list/word/@word@}','{$siteConfig->auto_finish}');}
+	});
+
+	var mycartLateCall = new lateCall(200,function(){showCart('{url:/simple/showCart}')});
+
+	//购物车div层
+	$('.mycart').hover(
+		function(){
+			mycartLateCall.start();
+		},
+		function(){
+			mycartLateCall.stop();
+			$('#div_mycart').hide('slow');
+		}
+	);
+});
+
+//[ajax]加入购物车
+function joinCart_ajax(id,type)
+{
+	$.getJSON("{url:/simple/joinCart}",{"goods_id":id,"type":type,"random":Math.random()},function(content){
+		if(content.isError == false)
+		{
+			var count = parseInt($('[name="mycart_count"]').html()) + 1;
+			$('[name="mycart_count"]').html(count);
+			alert(content.message);
+		}
+		else
+		{
+			alert(content.message);
+		}
+	});
+}
+
+//列表页加入购物车统一接口
+function joinCart_list(id)
+{
+	$.getJSON('{url:/simple/getProducts}',{"id":id},function(content){
+		if(!content)
+		{
+			joinCart_ajax(id,'goods');
+		}
+		else
+		{
+			var url = "{url:/block/goods_list/goods_id/@goods_id@/type/radio/is_products/1}";
+			url = url.replace('@goods_id@',id);
+			artDialog.open(url,{
+				id:'selectProduct',
+				title:'选择货品到购物车',
+				okVal:'加入购物车',
+				ok:function(iframeWin, topWin)
+				{
+					var goodsList = $(iframeWin.document).find('input[name="id[]"]:checked');
+
+					//添加选中的商品
+					if(goodsList.length == 0)
+					{
+						alert('请选择要加入购物车的商品');
+						return false;
+					}
+					var temp = $.parseJSON(goodsList.attr('data'));
+
+					//执行处理回调
+					joinCart_ajax(temp.product_id,'product');
+					return true;
+				}
+			})
+		}
+	});
+}
+
+function tabSw(id){
+	$('#tab-'+id).parents('ul').find('a').attr('class',"none");
+	$('#tab-'+id).attr('class',"on");
+	$('#zl-'+id).parent().children('ul').hide();
+	$('#zl-'+id).show();
+}
+
+</script>
+</body>
+</html>

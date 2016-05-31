@@ -1,0 +1,71 @@
+{set:
+	$seo_data=array();
+	$site_config=new Config('site_config');
+	$seo_data['title']=$this->articleRow['title'];
+	$seo_data['title'].="_".$site_config->name;
+	$seo_data['keywords']=$this->articleRow['keywords'];
+	$seo_data['description']=$this->articleRow['description'];
+	seo::set($seo_data);
+}
+<link rel="stylesheet" type="text/css" href="http://zcs3.ncfstatic.com/v4/payapp/css/main.css?v=1460451720">
+
+<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » <a href="{url:/site/fund}">众筹列表</a> » {$this->articleRow['title']} </div>
+<div class="wrapper clearfix container_2">
+	<div class="sidebar f_l">
+		
+
+		
+		{echo:Ad::show(10)}
+	</div>
+	<div class="main_fr f_r">
+		<div class="box m_10">
+			<div class="title2">众筹信息</div>
+			<div class="cont">
+				<div class="c_box">
+					<h2>{$this->articleRow['title']}</h2>
+					<div class="partake_bar clearfix">
+						<span class="f_r"></span>发布日期：{$this->articleRow['create_time']}
+					</div>
+					<hr class="m_10" />
+					<div class="textcontent">
+						<p>{$this->articleRow['content']}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tjdd_item animate-reward">
+		<form action="/index.php?controller=simplef&amp;action=cart3" method="post" name="order_form">
+		<input type="hidden" name="fund_id" value="{$this->articleRow['id']}">
+		<input type="hidden" name="seller_id" value="{$this->articleRow['seller_id']}">
+		<input type="hidden" name="payment" value="9">
+                <div class="ng-scope">
+                    <div class="wyzz_h3">感谢您的支持</div>
+
+                    <p class="support_inforP">感谢您的支持，您将收到我们寄出的信件或贺卡，这份支持将助我们的梦想飞的更高更远。</p>
+                    <div class="wyzz_Cont">
+                    <label><input type="radio" name="order_amount" value="1" checked="checked" /> ¥ 1</label> 
+                    <label><input type="radio" name="order_amount" value="5" /> ¥ 5</label> 
+                    <label><input type="radio" name="order_amount" value="10" /> ¥ 10</label>
+                        
+                        
+
+                        <div class="wyzz_inputBox sitePHBox" style="margin-right: 22px;">
+                            <label style="float:left">其他&nbsp;¥</label>
+                            <input style="float:left;margin-top: -36px;margin-left: 50px;" type="text" class="wyzz_input sitePHInput ng-pristine ng-valid" name="order_amount1">
+                        </div>
+                        
+                    </div>
+                    姓名：<input class="normal" type="text" name="accept_name" pattern="required" alt="姓名不能为空"><br/>
+                    手机：<input class="normal" type="text" name="mobile" pattern="required" alt="手机号码不能为空"><br/>
+                    附言：<input class="normal" type="text" name="postscript"><br/>
+                    <br/><input type="submit" class="submit_order" value="立即支持">
+                </div>
+</form>
+                
+
+            </div>
+
+		
+	</div>
+</div>

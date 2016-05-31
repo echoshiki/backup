@@ -1,0 +1,294 @@
+{set:$seo_data=array();$site_config=new Config('site_config');$site_config=$site_config->getInfo();}
+{set:$seo_data['title']="商品搜索_".$site_config['name']}
+{set:seo::set($seo_data);}
+{set:$defaultWhere = array('search' => $this->word , 'category_extend' => $this->cat_id )}
+{set:$goodsObj = search_goods::find($defaultWhere,20);$resultData = $goodsObj->find();}
+
+<div class="maxPath">
+	<dl class="basic-ex-breadcrumbs clearfix">
+	<dd><a style="color:#666" href='{url:}'><span>首页</span></a>
+		<span>></span>
+			<span >
+			<div class="trigger">
+			<a style="color:#666">
+			搜索"{$this->word}"
+			</a>
+			</div>
+			 </span>
+		</dd>
+
+	</dl>
+</div>
+<!--maxwIn-->
+<div class="maxwIn">
+
+<div class="sidebar f_l" style="width:200px;float:left">
+		<!--侧边栏分类-->
+		{set:$catSide = goods_class::catTree($this->catId)}
+		{if:$catSide}
+		<div class="box_2 m_10">
+			<div class="title">所有分类</div>
+			<div class="content">
+				{foreach:items=$catSide item=$first}
+				<dl class="clearfix">
+					<dt><a href="{url:/site/pro_list/cat/$first[id]}">{$first['name']}</a></dt>
+					{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id'])) item=$second}
+					<dd><a href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a></dd>
+					{/foreach}
+				</dl>
+				{/foreach}
+			</div>
+		</div>
+		{/if}
+		<!--侧边栏分类-->
+	<!--热卖商品-->
+		<div class="box m_10">
+			<div class="title">热卖商品</div>
+			<div class="content">
+				<ul class="ranklist">
+				{foreach:items=Api::run('getCommendHot')}
+					<li class="current">
+						<a href="{url:/site/products/id/$item[id]}"><img width="58px" height="58px" alt="{$item['name']}" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" /></a>
+						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a>
+						<b>￥{$item['sell_price']}</b>
+					</li>
+				{/foreach}
+				</ul>
+			</div>
+		</div>
+		<!--热卖商品-->
+	</div>
+
+	<!--clearfix-->
+	<div id="main" class="clearfix">
+		<!--page-maincontent-->
+		<div class="page-maincontent" style="margin-left:10px;width:980px;float:left">
+			{set:$catExt = Api::run('getGoodsCategoryExtend',array('#word#',$this->word))}
+			{if:$catExt}
+			<div class="related-search clearfix">
+				<label class="related-search-label">搜索结果分类：</label>
+				<span class="related-search-content">
+					{foreach:items=$catExt}
+					{set:$tmpWord=urlencode($this->word);}
+					<a class='{if:IReq::get('cat') == $item['id']}active{/if}' href="{url:/site/search_list/word/$tmpWord/cat/$item[id]}">{$item['name']}({$item['num']})</a>
+					{/foreach}
+				</span>
+			</div>
+		    {/if}
+
+
+
+		    <!--bbg-tab tab-for-list-->
+			<div class="bbg-tab tab-for-list">
+				<!--tab-title clearfix-->
+				<div class="tab-title clearfix">
+					<a class="hover" href="">分类属性</a>
+				</div>
+				<!--tab-title clearfix-->
+			</div>
+			<!--bbg-tab tab-for-list-->
+			<!--filter_container-->
+			<div id="filter_container" class="filter-container">
+				<!--gallery_filter-->
+				<div id="gallery_filter" class="gallery-filter">
+					<!--filter_lists-->
+					<div id="filter_lists" class="filter-lists-container">
+						<!--品牌展示-->
+						{set:$brandList = search_goods::$brandSearch}
+						{if:$brandList}
+						<dl class="filter-entries clearfix">
+				            <dt class="filter-entries-label">品牌：</dt>
+				            <dd class="filter-entries-values" id='brand_dd'>
+				              <span class="filter-item active">
+				                   <a class="handle action-select-filter" href="{echo:search_goods::searchUrl('brand','')}">不限</a>
+				              </span>
+					          {foreach:items = $brandList}
+							<span class="filter-item" id='brand_{$item['id']}'>
+				              <a class="handle action-select-filter"  href="{echo:search_goods::searchUrl('brand',$item['id'])}">{$item['name']}</a>
+				              </span>
+							{/foreach}
+
+				           </dd>
+				          </dl>
+				         {/if}
+				         <!--品牌展示-->
+
+				         <!--商品属性-->
+						{foreach:items = search_goods::$attrSearch}
+						<dl class="filter-entries clearfix">
+							<dt class="filter-entries-label">{$item['name']}：</dt>
+							<dd id='attr_dd_{$item['id']}' class="filter-entries-values">
+								<span class="filter-item active">
+				                 <a class="handle action-select-filter" href="{echo:search_goods::searchUrl('attr['.$item["id"].']','')}">不限</a>
+				                </span>
+								{foreach:items=$item['value'] item=$attr}
+								<span class="filter-item" id="attr_{$item['id']}_{echo:urlencode($attr)}">
+				              <a class="handle action-select-filter" href="{echo:search_goods::searchUrl('attr['.$item["id"].']',$attr)}" id="attr_{$item['id']}_{echo:md5($attr)}">{$attr}</a>
+				              </span>
+								{/foreach}
+							</dd>
+						</dl>
+						{/foreach}
+						<!--商品属性-->
+
+
+
+						<dl class="filter-entries clearfix">
+							<dt class="filter-entries-label">价格：</dt>
+							<dd id="price_dd" class="filter-entries-values">
+								<span class="filter-item active">
+				                 <a class="handle action-select-filter" href="{echo:search_goods::searchUrl(array('min_price','max_price'),'')}">不限</a>
+				                </span>
+				               {foreach:items=search_goods::$priceSearch}
+							{set:$priceZone = explode('-',$item)}
+								<span class="filter-item" id="{$priceZone[0]}-{$priceZone[1]}">
+					              <a class="handle action-select-filter"  href="{echo:search_goods::searchUrl(array('min_price','max_price'),array($priceZone[0],$priceZone[1]))}" >{$item}</a>
+					              </span>
+								{/foreach}
+								<p class="f_r" style="width:300px;">
+								<input type="text" class="mini f_l" name="min_price" value="{echo:IFilter::act(IReq::get('min_price'),'url')}" onchange="checkPrice(this);">
+								 <font class="f_l">至</font>
+								<input type="text" class="mini f_l" name="max_price" onchange="checkPrice(this);" value="{echo:IFilter::act(IReq::get('max_price'),'url')}">
+								  <font class="f_l">元</font>
+								<label class="btn_gray_s" ><input type="button" onclick="priceLink();" value="确定"></label>
+								</p>
+								</dd>
+						</dl>
+
+
+
+					</div>
+					<!--filter_lists-->
+				</div>
+				<!--gallery_filter-->
+			</div>
+			<!--filter_container-->
+
+
+			<!--display_title-->
+			<div class="display_title" style="margin-top:10px;">
+				<span class="l"></span>
+				<span class="r"></span>
+				<span class="f_l">排序：</span>
+				<ul>
+					{foreach:items=search_goods::getOrderType()}
+					{set:$next = search_goods::getOrderValue($key)}
+					<li class="{echo:search_goods::isOrderCurrent($key) ? 'current':''}">
+						<span class="l"></span><span class="r"></span>
+						<a href="{echo:search_goods::searchUrl('order',$next)}">{$item}<span class="{echo:search_goods::isOrderDesc() ? 'desc':''}">&nbsp;</span></a>
+					</li>
+					{/foreach}
+				</ul>
+			</div>
+			<!--display_title-->
+
+			<!--gallery-show-->
+			<div id="gallery_show" class="gallery-show">
+				<!--gallery-grid-->
+				<div class="gallery-grid">
+
+					{if:$resultData}
+					{set:$listSize = search_goods::getListSize(IFilter::act(IReq::get('show_type')))}
+					<ul class="clearfix">
+						{foreach:items=$resultData}
+						<li class="goods-item" style="width: 206px;">
+				            <div class="goods-pic" style="width:180px;height:180px;line-height:178px;*font-size:162px;">
+							<a target="_blank" href="{url:/site/products/id/$item[id]}">
+							<img class="action-goods-img" alt="{$item['name']}" style="max-width:180px;max-height:180px;" src="{webroot:}{echo:Thumb::get($item['img'],180,180)}"></a>
+				              </div>
+						      <div class="goods-info">
+						        <h3 class="goods-name">
+						      		     <a target="_blank" href="{url:/site/products/id/$item[id]}">
+						        		{$item['name']}
+						        		</a>
+						        </h3>
+						        <div class="goods-price">
+						          <ins class="price">
+									  {$item['sell_price']}
+							      </ins>
+				                    <span class="goods-comment">
+				                    <a href="{url:/site/products/id/$item[id]}"><b>{$item['comments']}</b>条评论</a>
+				                    </span>
+				                    <del class="price">￥{$item['market_price']}</del>
+				                  </div>
+						      </div>
+
+						    </li>
+						    {/foreach}
+					</ul>
+
+					<div class="hl_page">
+					{$goodsObj->getPageBar()}
+					</div>
+					{else:}
+					<p class="display_list mt_10" style='margin-top:50px;margin-bottom:50px'>
+						<div style="text-align:center;line-height:150px" class="gray f14">对不起，没有找到相关商品</div>
+					</p>
+					{/if}
+				</div>
+				<!--gallery-grid-->
+			</div>
+			<!--gallery-show-->
+		</div>
+		<!--page-maincontent-->
+	</div>
+	<!--clearfix-->
+</div>
+<!--maxwIn-->
+
+
+<script type='text/javascript'>
+//价格跳转
+function priceLink()
+{
+	var minVal = $('[name="min_price"]').val();
+	var maxVal = $('[name="max_price"]').val();
+	if(isNaN(minVal) || isNaN(maxVal))
+	{
+		alert('价格填写不正确');
+		return '';
+	}
+	var urlVal = "{echo:IFilter::act(preg_replace('|&min_price=\w*&max_price=\w*|','',search_goods::searchUrl(array('min_price','max_price'),'')),'url')}";
+	window.location.href=urlVal+'&min_price='+minVal+'&max_price='+maxVal;
+}
+
+//价格检查
+function checkPrice(obj)
+{
+	if(isNaN(obj.value))
+	{
+		obj.value = '';
+	}
+}
+
+//筛选条件按钮高亮
+jQuery(function(){
+	{set:
+		$brand = IFilter::act(IReq::get('brand'),'int');
+	}
+
+	{if:$brand}
+	$('#brand_dd>a').removeClass('current');
+	$('#brand_{$brand}').addClass('current');
+	{/if}
+
+	{set:$tempArray = IFilter::act(IReq::get('attr'),'url')}
+	{if:$tempArray}
+		{set:$json = JSON::encode(array_map('md5',$tempArray))}
+		var attrArray = {$json};
+		for(val in attrArray)
+		{
+			if(attrArray[val])
+			{
+				$('#attr_dd_'+val+'>a').removeClass('current');
+				document.getElementById('attr_'+val+'_'+attrArray[val]).className = 'current';
+			}
+		}
+	{/if}
+
+	{if:IReq::get('min_price') != ''}
+	$('#price_dd>a').removeClass('current');
+	$('#{echo:IReq::get('min_price')}-{echo:IReq::get('max_price')}').addClass('current');
+	{/if}
+});
+</script>

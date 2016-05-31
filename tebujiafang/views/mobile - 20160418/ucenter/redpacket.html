@@ -1,0 +1,40 @@
+{set:$user_id = $this->user['user_id']}
+{set:$member_info = Api::run('getMemberInfo',$user_id)}
+{if:$member_info['prop']!=''}
+{set:$ids=trim($member_info['prop'],',')}
+{/if}
+<section>
+	<div class="pending-detial">
+
+
+	<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">代金券</h3>
+		  </div>
+		  {if:isset($ids) && $ids!=''}
+		{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+		{set:$queryPropList = Api::run('getPropList',$ids)}
+		{foreach:items = $queryPropList->find()}
+		  <div class="panel-body">
+				编号:{$item['card_name']}
+				面值:{$item['value']}元
+				有效时间:{echo:substr($item['end_time'],0,10)}
+				状况:{if:$item['is_userd']==1}已使用{elseif:$item['is_close']==1}已禁用{elseif:$item['is_close']==2}临时锁定{elseif:(strtotime('now')-strtotime($item['end_time']))>0}已过期{else:}可使用{/if}
+
+
+
+		  </div>
+
+		  {/foreach}
+		  	{$queryPropList->getPageBar()}
+	{else:}
+			  <div class="panel-body text-center">
+				您当前暂无代金券
+		  </div>
+		{/if}
+	</div>
+
+
+		
+	</div>
+</section>

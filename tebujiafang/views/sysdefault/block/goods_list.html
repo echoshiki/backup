@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>商品列表</title>
+<link rel="stylesheet" href="{skin:css/admin.css}" />
+{js:jquery}
+{js:dialog}
+</head>
+<body>
+<div class="pop_win" style="width:900px;height:1000px;overflow-y:scroll">
+	<div class="content">
+		<table class="border_table" style="width:100%">
+			<colgroup>
+				<col width="10px" />
+				<col width="70px" />
+				<col width="70px"  />
+				<col width="150px" />
+				<col width="70px" />
+			</colgroup>
+			<tbody>
+				<tr>
+					<th><a href="javascript:void(0)" id="allChecked">全选</a></th>
+					<th style="text-align:center">商品货号</th>
+					<th style="text-align:center">商品编号</th>
+					<th style="text-align:center">商品名称</th>
+					<th style="text-align:center">价格</th>
+					<!-- <th style="text-align:center">缩略图</th> -->
+				</tr>
+				{if:$this->data}
+				{foreach:items = $this->data}
+				<tr>
+					<td>
+						<input type='{echo:($this->type == null) ? 'checkbox' : $this->type}' name='id[]' value="{$item['goods_id']}" data='{echo:JSON::encode($item)}' />
+					</td>
+					<td>
+						<label class='attr'>
+							{$item['sid']}
+						</label>
+					</td>
+					<td>
+						<label class='attr'>
+							{$item['goods_no']}
+						</label>
+					</td>
+					<td class="t_l">
+						{$item['name']}
+					   <!-- {if:isset($item['spec_array']) && $item['spec_array']}
+							<p>
+								{foreach:items=JSON::decode($item['spec_array']) item=$spec}
+									{$spec['name']}：
+									{if:$spec['type'] == 1}
+										{$spec['value']}
+									{else:}
+										<img src="{webroot:$spec[value]}" width="15px" height="15px" class="spec_photo" />
+									{/if}
+								{/foreach}
+							</p>
+						{/if} -->
+					</td>
+					<td>￥{$item['sell_price']}</td>
+					<!-- <td><img src="{webroot:$item[img]}" width="40px" class="img_border" /></td> -->
+				</tr>
+				{/foreach}
+				{else:}
+				<tr>
+					<td colspan="4">对不起，没有找到相关商品</td>
+				</tr>
+				{/if}
+			</tbody>
+		</table>
+	</div>
+	<script type='text/javascript' src="http://lib.sinaapp.com/js/jquery/1.7/jquery.min.js"></script>
+	<script type="text/javascript">
+	//DOM加载完毕
+	$(document).ready(function(){
+		$("#allChecked").live("click",function(){
+			$("input:checkbox[name='id[]']").each(function() {
+       			$(this).attr('checked','checked');
+ 			});
+ 			$("#allChecked").attr('id','allCancel');
+		});
+
+		$("#allCancel").live("click",function(){
+			$("input:checkbox[name='id[]']").each(function() {
+       			$(this).attr('checked',false);
+ 			});
+ 			$("#allCancel").attr('id','allChecked');
+		});
+	})
+
+	</script>
+</div>
+</body>
+</html>

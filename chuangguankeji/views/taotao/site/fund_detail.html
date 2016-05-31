@@ -1,0 +1,233 @@
+{set:
+	$seo_data=array();
+	$site_config=new Config('site_config');
+	$seo_data['title']=$this->articleRow['title'];
+	$seo_data['title'].="_".$site_config->name;
+	$seo_data['keywords']=$this->articleRow['keywords'];
+	$seo_data['description']=$this->articleRow['description'];
+	seo::set($seo_data);
+}
+<!-- <link rel="stylesheet" type="text/css" href="http://zcs3.ncfstatic.com/v4/payapp/css/main.css?v=1460451720"> -->
+	<!-- 中间部分开始 -->
+	<center class="clearfix">
+		<div class="project_details ">
+			<div class="pd_center ma">				
+				<h1>当前位置：首页 > <a href="{url:/site/fund}">众筹列表</a> > {$this->articleRow['title']}</h1>
+				<div class="zongchou">
+					<div class="left">
+						<img src="{$this->articleRow['pic']}">
+					</div>
+					<div class="right">
+						<h3>{$this->articleRow['title']}</h3>
+						<p>参与数：<span class="color">{$this->articleRow['sup_count']}人</span></p>
+						<p>众筹金额：<span class="color">￥{$this->articleRow['t_amount']}</span></p>
+						<div class="loading"><div class="progress" style="width:<?php echo round($this->articleRow['a_amount']/$this->articleRow['t_amount'],2); ?>%"></div></div>
+						<div class="loadword"><span class="du">进度：<?php echo round($this->articleRow['a_amount']/$this->articleRow['t_amount'],2); ?>%</span><span class="dat">剩余时间：<?php echo (int)((strtotime($this->articleRow['end_time'])-strtotime($this->articleRow['start_time']))/86400); ?>天</span></div>
+						<p class="tip">此项目必须在 {$this->articleRow['end_time']} 前得到 ￥<?php echo (int)$this->articleRow['t_amount']; ?> 的支持才可成功！</p>
+						<div class="left-extra">
+							<button class="colorb">项目咨询</button><button>咨询平台客服</button><button>发布项目需求</button>
+						</div>
+						<button class="zhichi" onclick="sendbook({$this->articleRow['id']},'{$this->articleRow['title']}');">立即支持</button>
+					</div>
+				</div>
+				<div class="left-right">
+					<div class="left">
+						<div class="leftbottom">
+							<div class="leftcenter">
+									<ul>
+										<li class="selected">
+											<a href="#">项目主页</a>
+											<div class="xian"></div>
+										</li>
+									</ul>
+							</div>
+							<div class="groupjs">
+								<div class="word">
+									{$this->articleRow['content']}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="right">
+						<div class="telpeo">
+<!-- 							<div class="top-people">
+								<div class="name">
+									<h1>联系人：张娟</h1>
+									<button>+关注</button><button class="dengji">进入空间</button>
+								</div>
+								<div class="service-cn">
+									<h1>等级:<button>L2</button><span>展露头角</span></h1>
+									<h1>所在地:<span>山东济南</span></h1>
+									<div class="chengnuo">
+										<h3>服务承诺</h3>
+										<p>
+											<a>产权明晰</a>
+											<a>资料保密</a>
+											<a>如实描述</a>
+										</p>
+									</div>
+								</div>
+							</div> -->
+							<div class="top-service clearfix" style="margin-top:0px">
+								<h3><a>推荐服务</a></h3>
+								<div class="cgwgood">
+								<div class="cgwcenter">
+								<div class="center-tit">
+								<ul class="product clearfix">
+								
+									{query:name=fund where=top eq 1 order=id desc page=$page pagesize=4 item=$item}
+									<li>
+										<div class="rightlist">
+											<h4>
+												<span class="pic"><?php echo (int)$item['t_amount']; ?>￥</span><span class="zhi">{$item['sup_count']}位支持者</span>
+											</h4>
+											<h4 class="xiane">{$item[title]}</h4>
+											<p class="jian">此项目必须在 {$item['end_time']} 前得到 ￥<?php echo (int)$item['t_amount']; ?> 的支持才可成功！
+											</p>
+											<img src="{$item[pic]}">
+											<div class="weit">
+												<p class="f-14">已筹到：<span class="color"><?php echo (int)$item['a_amount']; ?>￥</span></p>
+												<p class="f-12">众筹发起时间：<span class="color">{$item['start_time']}
+												<p class="f-12">剩余时间：<span class="color"><?php echo (int)((strtotime($item['end_time'])-strtotime($item['start_time']))/86400); ?> 天</span></p>
+											</div>
+											<button class="zhichi" onclick="window.open('index.php?controller=site&action=fund_detail&id={$item[id]}')">立即支持</button>
+										</div>
+									</li>
+									{/query}
+								</ul>
+								</div>
+								</div>
+								</div>
+							</div>						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</center>
+	<!-- 中间部分结束 -->
+<style>
+	.form_table input { border: 1px #ccc solid; }
+
+</style>
+<script id="goodsCommendTemplate" type="text/html">
+<form name="commendForm" action="/index.php?controller=simplef&amp;action=cart3" method="post">
+	<input type='hidden' name='user_id' value='{$this->user[user_id]}' />
+	<input type='hidden' name='fund_id' value='<%=templateid%>' />
+	<div class="pop_win" style="width:100%;height:100%">
+		<div class="content">	
+				<table class="form_table">
+					<tbody>
+						<tr>
+							<td valign="top" style="vertical-align: top" class="t_r">支持：</td>
+							<td>
+								<label><input type="radio" name="order_amount" value="1" checked="checked" /> ¥ 1</label> 
+                <label><input type="radio" name="order_amount" value="5" /> ¥ 5</label> 
+                <label><input type="radio" name="order_amount" value="10" /> ¥ 10</label>
+                <label><input type="radio" name="order_amount" id="other"/> 其他</label>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="text" name="order_amount1" id="order_other" style="display:none; width: 80px;"/></td>
+						</tr>
+						<tr>
+							<td class="t_r">姓名：</td>
+							<td><input class="middle" type="text" name="accept_name" id="form_name" /></td>
+						</tr>
+						<tr>
+							<td class="t_r">手机：</td>
+							<td><input class="middle" type="text" name="mobile" id="form_mobile" value="" /></td>
+						</tr>
+						<tr>
+							<td class="t_r">附言：</td>
+							<td><input class="middle" type="text" name="postscript" id="form_postscript" value="" /></td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+	</div>
+</form>
+</script>
+<script type="text/javascript">
+	function sendbook(id,title)
+{
+	
+	if(!isNaN(id))
+	{	
+			var templateHtml = template.render("goodsCommendTemplate",{'templateData':title,'templateid':id});
+			art.dialog(
+			{
+				title:'我要支持',
+				okVal:"提交",
+			    content: templateHtml,
+			    ok:function(iframeWin)
+			    {
+			    	var formObj = iframeWin.document.forms['commendForm'];
+			    	if ($('#other').prop("checked") == true) { check($('#order_other')); };
+			    	if(check($('#form_name')) && check($('#form_mobile'))) $(formObj).submit();	
+			    	return false;	    	
+			    },
+    			cancel: true
+			});
+
+			// 表单验证
+			var check = function (input) {
+			    if (input.val() == '') {
+			        inputError(input);
+			        input.focus();
+			        return false;
+			    } else {
+			        return true;
+			    };
+			};
+
+			// 输入错误提示
+			var inputError = function (input) {
+			    clearTimeout(inputError.timer);
+			    var num = 0;
+			    var fn = function () {
+			        inputError.timer = setTimeout(function () {
+			            input.className = input.className === '' ? 'login-form-error' : '';
+			            if (num === 5) {
+			                input.className === '';
+			            } else {
+			                fn(num ++);
+			            };
+			        }, 150);
+			    };
+			    fn();
+			};
+		
+	}
+	else
+	{
+		alert("请选择您要操作的项目");
+	}
+}
+
+$(document).ready(function(){
+
+		$("input[name=order_amount]").live('change', function() {
+			if ($(this).attr('id') == 'other') {
+				 $('#order_other').show();
+			} else {
+				 $('#order_other').hide();
+			}
+		});
+
+		$('#order_other').live('blur', function() {
+			var va = $(this).val();
+			$("#other").attr('value',va);
+		});
+
+});
+
+
+</script>
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+{set:$seller_id = $this->seller_direct['seller_id'];$searchArray = Util::getUrlParam('search')}
+{set:$searchParam = http_build_query($searchArray)}
+<article class="module width_full">
+	<header>
+		<h3 class="tabs_involved">代理商列表</h3>
+	</header>
+
+	<form action="{url:/seller_direct/goods_del}" method="post" name="goodsForm">
+		<table class="tablesorter" cellspacing="0">
+			<colgroup>
+				<col width="25px" />
+				<col />
+				<col />
+				<col />
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th></th>
+					<th class="header">用户名</th>
+					<th class="header">商品种类</th>
+					<th class="header">操作</th>
+				</tr>
+			</thead>
+
+			<tbody>
+
+				{set:$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1}
+				{query:name=seller as se where=se.parent_id eq $seller_id $where page=$page id=$sellerObject fields=distinct se.id, se.*}
+				{set:$nums=$this->goods_num($item['id'])}
+				<tr>
+					<td></td>
+					<td>{$item['seller_name']}</td>
+					<td>{$nums}</td>
+					<td>
+						<a href="{url:/seller_direct/goods_list/id/$item[id]}"><img src="{skin:images/main/icn_search.png}" title="查看" />商品查看</a>
+					</td>
+				</tr>
+				{/query}
+			</tbody>
+		</table>
+	</form>
+	{$sellerObject->getPageBar()}
+</article>

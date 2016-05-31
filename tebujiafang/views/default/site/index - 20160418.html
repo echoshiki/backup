@@ -1,0 +1,267 @@
+{set:
+	$site_config=new Config('site_config');
+	$seo_data=array();
+	$seo_data['title']=$site_config->name;
+	$seo_data['title'].=$site_config->index_seo_title;
+	$seo_data['keywords']=$site_config->index_seo_keywords;
+	$seo_data['description']=$site_config->index_seo_description;
+	seo::set($seo_data);
+}
+
+  	<!-- 内容部分 index -->
+    <div id="main"> 
+	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',0),4) item=$first key=$kk}
+	<?php $kk = $kk + 1; ?>
+
+	<div class="textPannel_01 noFloat">
+		<div id="effect{$kk}F" class="titleField TT_01 TT_0{$kk} noFloat">
+  			<div class="title">{$first['name']}</div>
+  			<div class="link">
+  				<em class="on" id="cat{$kk}-0" onclick="floor({$kk},0)">热门推荐</em>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first[id])) item=$second key=$key}
+				<em id="cat{$kk}-<?php echo $key+1; ?>" onclick="floor({$kk},<?php echo $key+1; ?>)" class="">{$second['name']}</em>{/foreach}
+				<a href="/index.php?controller=site&action=pro_list&cat={$first[id]}" class="more">更多&gt;&gt;</a> 
+			</div>
+        </div>
+        <div class="textField_01 CC_0{$kk} noFloat">
+  		<div class="right">
+			<ul class="ul ul_01">
+				<div id="box{$kk}_0" class="hidden oddf" style="display: block;">
+					{foreach:items=Api::run('getCommendRecomEx',array('#categroy_id#',$first[id]),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+                </div>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first[id]),6) item=$second key=$key}
+				<div id="box{$kk}_<?php echo $key+1;?>" class="hidden oddf" style="display: none;">
+					{foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$second['id']),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+				</div>
+				{/foreach}
+			</ul>
+        </div>
+        </div>
+    </div>
+
+
+
+
+
+
+	{/foreach}
+
+
+
+	<!-- 1f -->  
+	<div class="textPannel_01 noFloat">
+		<div id="effect1F" class="titleField TT_01 noFloat">
+  			<div class="title">被子系列</div>
+  			<div class="link">
+  				<em class="on" id="cat1-0" onclick="floor(1,0)">热门推荐</em>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',3)) item=$second key=$key}
+				<em id="cat1-<?php echo $key+1; ?>" onclick="floor(1,<?php echo $key+1; ?>)" class="">{$second['name']}</em>{/foreach}
+				<a href="/index.php?controller=site&action=pro_list&cat=3" class="more">更多&gt;&gt;</a> 
+			</div>
+        </div>
+        <div class="textField_01 noFloat">
+  		<div class="right">
+			<ul class="ul ul_01">
+				<div id="box1_0" class="hidden oddf" style="display: block;">
+					{foreach:items=Api::run('getCommendRecomEx',array('#categroy_id#',3),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+                </div>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',3),6) item=$second key=$key}
+				<div id="box1_<?php echo $key+1;?>" class="hidden oddf" style="display: none;">
+					{foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$second['id']),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+				</div>
+				{/foreach}
+			</ul>
+        </div>
+        </div>
+    </div>
+
+    <!-- 2f -->  
+	<div class="textPannel_01 noFloat">
+		<div id="effect2F" class="titleField TT_01 TT_02 noFloat">
+  			<div class="title">枕头系列</div>
+  			<div class="link">
+  				<em class="on" id="cat2-0" onclick="floor(2,0)">热门推荐</em>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',4)) item=$second key=$key}
+				<em id="cat2-<?php echo $key+1; ?>" onclick="floor(2,<?php echo $key+1; ?>)" class="">{$second['name']}</em>{/foreach}
+				<a href="/index.php?controller=site&action=pro_list&cat=4" class="more">更多&gt;&gt;</a> 
+			</div>
+        </div>
+        <div class="textField_01 CC_02 noFloat">
+  		<div class="right">
+			<ul class="ul ul_01">
+				<div id="box2_0" class="hidden oddf" style="display: block;">
+					{foreach:items=Api::run('getCommendRecomEx',array('#categroy_id#',4),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+                </div>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',4),6) item=$second key=$key}
+				<div id="box2_<?php echo $key+1;?>" class="hidden oddf" style="display: none;">
+					{foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$second['id']),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+				</div>
+				{/foreach}
+			</ul>
+        </div>
+        </div>
+    </div>
+
+    <!-- 3f -->  
+	<div class="textPannel_01 noFloat">
+		<div id="effect3F" class="titleField TT_01 TT_03 noFloat">
+  			<div class="title">套件系列</div>
+  			<div class="link">
+  				<em class="on" id="cat3-0" onclick="floor(3,0)">热门推荐</em>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',5)) item=$second key=$key}
+				<em id="cat3-<?php echo $key+1; ?>" onclick="floor(3,<?php echo $key+1; ?>)" class="">{$second['name']}</em>{/foreach}
+				<a href="/index.php?controller=site&action=pro_list&cat=5" class="more">更多&gt;&gt;</a> 
+			</div>
+        </div>
+        <div class="textField_01 CC_03 noFloat">
+  		<div class="right">
+			<ul class="ul ul_01">
+				<div id="box3_0" class="hidden oddf" style="display: block;">
+					{foreach:items=Api::run('getCommendRecomEx',array('#categroy_id#',5),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+                </div>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',5),6) item=$second key=$key}
+				<div id="box3_<?php echo $key+1;?>" class="hidden oddf" style="display: none;">
+					{foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$second['id']),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+				</div>
+				{/foreach}
+			</ul>
+        </div>
+        </div>
+    </div>
+
+     <!-- 4f -->  
+	<div class="textPannel_01 noFloat">
+		<div id="effect4F" class="titleField TT_01 TT_04 noFloat">
+  			<div class="title">靠垫系列</div>
+  			<div class="link">
+  				<em class="on" id="cat4-0" onclick="floor(4,0)">热门推荐</em>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',6)) item=$second key=$key}
+				<em id="cat4-<?php echo $key+1; ?>" onclick="floor(4,<?php echo $key+1; ?>)" class="">{$second['name']}</em>{/foreach}
+				<a href="/index.php?controller=site&action=pro_list&cat=6" class="more">更多&gt;&gt;</a> 
+			</div>
+        </div>
+        <div class="textField_01 CC_04 noFloat">
+  		<div class="right">
+			<ul class="ul ul_01">
+				<div id="box4_0" class="hidden oddf" style="display: block;">
+					{foreach:items=Api::run('getCommendRecomEx',array('#categroy_id#',6),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+                </div>
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',5),6) item=$second key=$key}
+				<div id="box4_<?php echo $key+1;?>" class="hidden oddf" style="display: none;">
+					{foreach:items=Api::run('getCategoryExtendList',array('#categroy_id#',$second['id']),12)}
+						<?php $group_price = $countsumInstance->getGroupPrice($item['id'],'goods'); ?>
+			            <li class="item_01">
+							<a href="{url:/site/products/id/$item[id]}">
+								<div class="photo"><img src="{url:/pic/thumb/img/$item[img]/w/200/h/150}" alt="" title="" width="200" height="150"></div>
+								<div class="item_bt">{$item['name']}<p>￥<?php echo $price = $group_price ? $group_price : $item['sell_price']; ?></p></div>
+								<div class="rsp" style="display: block; opacity: 0;"></div>
+								<div class="text" style="left: -200px;"><h3>精品区</h3></div>
+							</a>
+						</li>
+		            {/foreach}
+				</div>
+				{/foreach}
+			</ul>
+        </div>
+        </div>
+    </div>
+</div>
+<!--main end-->
+<!-- 右侧导航 -->
+<div class="rightNav" id="rightNav">
+	<a href="index.html/#effect1F"><em>1F</em>被子系列</a>
+	<a href="index.html/#effect2F"><em>2F</em>枕头系列</a>
+	<a href="index.html/#effect3F"><em>3F</em>套件系列</a>
+	<a href="index.html/#effect4F"><em>4F</em>靠垫系列</a>
+	<a href="index/#" id="top"><em></em>回到顶部</a>
+</div>	

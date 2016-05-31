@@ -1,0 +1,256 @@
+{set:$seo_data=array(); $site_config=new Config('site_config');}
+{set:$seo_data['title'] = $this->catRow['title']?$this->catRow['title']:$this->catRow['name']}
+{set:$seo_data['title'].="_".$site_config->name}
+{set:$seo_data['keywords']=$this->catRow['keywords']}
+{set:$seo_data['description']=$this->catRow['descript']}
+{set:seo::set($seo_data);}
+{set:$breadGuide = goods_class::catRecursion($this->catId)}
+{set:$goodsObj = search_goods::find(array('category_extend' => $this->childId));$resultData = $goodsObj->find()}
+<style type="text/css">
+ .trigger {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  display: inline-block;
+  height: 22px;
+  line-height: 22px;
+  padding: 0 4px 0 8px;
+  position: relative;
+}	
+
+div.pop_win tr,div.pop_win td{border-bottom: 1px solid #ccc;line-height: 30px;}
+	div.aui_content{padding: 0px 25px;}
+	div.pop_win{margin-top: -25px;font-family:"MicrosoftYaHei";font-size: 13px;}
+	.name a { color:#fff;}
+
+.box .pages_bar {
+    margin: 5px 20px 25px;
+}
+.pages_bar {
+    /* margin: 20px 20px 25px; */
+}
+.pages_bar {
+    text-align: center;
+    color: #444;
+}
+a:link, a:visited {
+    color: #2d64b3;
+    text-decoration: none;
+}
+.pages_bar a, .pages_bar span {
+    display: inline-block;
+    height: 23px;
+    border: 1px solid #d5d5d5;
+    margin-right: 6px;
+    padding: 2px 7px 1px;
+    text-align: center;
+    color: #1a66b3;
+    /*font-weight: bold;*/
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+.pages_bar a.current_page {
+    border: 1px solid #c30;
+    background-color: #c30;
+    color: #fff;
+}
+.pages_bar span {
+    color: #878787;
+}
+.pages_bar a, .pages_bar span {
+    display: inline-block;
+    height: 23px;
+    border: 1px solid #d5d5d5;
+    margin-right: 6px;
+    padding: 2px 7px 1px;
+    text-align: center;
+    color: #1a66b3;
+    /*font-weight: bold;*/
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+a.current{color: #e85405;}
+</style>
+
+<?php
+function pro_category($cat,$catname)
+	{
+$url = $_SERVER['REQUEST_URI'];
+$urlArr = explode("&",$url);
+
+if(in_array("cat=".urlencode($_GET['cat']),$urlArr)){
+ foreach ($urlArr as $key => $value) {
+  if($value=="cat=".urlencode($_GET['cat'])){
+	unset( $urlArr[$key] );
+  }
+ }
+if($cat==$_GET['cat']){
+ echo "<a href=".implode("&",$urlArr)."&cat=".$cat." class=item-tit>".$catname."</a>";
+}else{
+	echo "<a href=".implode("&",$urlArr)."&cat=".$cat.">".$catname."</a>";
+}
+}else{
+ echo "<a href=index.php?controller=site&action=pro_list&cat=".$cat.">".$catname."</a>";
+}
+}
+?>
+<center class="clearfix leftnav">
+		<div class="centernav">
+			<div class="left">
+				<div class="leftbottom">
+					<div class="leftcenter">
+							<ul>
+								<li class="selected">
+									<a href="#">分类属性</a>
+									<div class="xian"></div>
+								</li>
+								<!-- <li>
+									<a href="#">全部行业分类</a>
+									<em></em>
+								</li> -->
+							</ul>
+					</div>
+					<div class="groupjs">
+						<div class="group">
+							<div class="groupnav">
+								<div class="grouphead">
+									<h4>行业分类：</h4>
+								</div>
+								
+
+								<div class="groupbody">{foreach:items=Api::run('getCategoryListTop')  item=$first }
+									<div class="items">
+										<div class="items-inner">
+											<?php echo pro_category($first[id],$first[name]);?>
+											{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+											<?php echo pro_category($second[id],$second[name]);?>
+							{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$second['id']))  item=$third}				
+					<dd><?php echo pro_category($third[id],$third[name]);?></dd>
+					{/foreach}
+										{/foreach}	
+											
+										</div>
+									</div>
+								{/foreach}</div>
+							</div>
+							
+							{foreach:items = search_goods::$attrSearch}
+							<div class="groupnav">
+								<div class="grouphead">
+									<h4>{$item['name']}：</h4>
+								</div>
+								<div class="groupbody">
+									<div class="items">
+										<div class="items-inner" id='attr_dd_{$item['id']}'>
+											<a href="{echo:search_goods::searchUrl('attr['.$item["id"].']','')}" class="item-tit">不限</a>
+											{foreach:items=$item['value'] item=$attr}<a href="{echo:search_goods::searchUrl('attr['.$item["id"].']',$attr)}" id="attr_{$item['id']}_{echo:md5($attr)}">{$attr}</a>
+											{/foreach}
+										</div>
+									</div>
+								</div>
+							</div>{/foreach}
+						</div>
+						<div class="a" style="display:none;">11111111</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="cgwgood clearfix">		
+			<div class="cgwcenter cgwborder">				
+				<ul class="product clearfix PCTproduct">
+					{if:$resultData}
+					{foreach:items=$resultData}
+					<?php
+$categoryObj = new IModel('category_extend as ca,category as c');
+		$categoryRow = $categoryObj->getObj('ca.goods_id = '.$item[id].' and ca.category_id = c.id','c.id,c.name');
+											?>
+					<li>
+						<div class="list">
+							<div class="pic">
+								<img src="{url:/pic/thumb/img/$item[img]/w/226/h/174}">
+							</div>
+							<div class="introduce">
+								<p class="name">{$item['name']}</p>
+								<p><span class="price">￥{$item['sell_price']}</span><span class="type">{$categoryRow[name]}类</span></p>
+							</div>
+							<button onclick="javascript:window.open('{url:/site/products/id/$item[id]}');">我需要</button>
+                            </div>
+					</li>
+					{/foreach}
+					{else:}
+		<p class="display_list mt_10" style='margin-top:50px;margin-bottom:50px'>
+			<strong class="gray f14">对不起，没有找到相关专利</strong>
+		</p>
+		{/if}					
+					
+				</ul>
+				<div class="footer_service">
+					<div id="pagination">
+				    
+						<ul class="pagination">
+						       <li> {$goodsObj->getPageBar()}</li></ul></div>
+						
+				</div>
+			</div>
+		</div>
+	</center>
+<script type='text/javascript'>
+//价格跳转
+function priceLink()
+{
+	var minVal = $('[name="min_price"]').val();
+	var maxVal = $('[name="max_price"]').val();
+	if(isNaN(minVal) || isNaN(maxVal))
+	{
+		alert('价格填写不正确');
+		return '';
+	}
+	var urlVal = "{echo:IFilter::act(preg_replace('|&min_price=\w*&max_price=\w*|','',search_goods::searchUrl(array('min_price','max_price'),'')),'url')}";
+	window.location.href=urlVal+'&min_price='+minVal+'&max_price='+maxVal;
+}
+
+//价格检查
+function checkPrice(obj)
+{
+	if(isNaN(obj.value))
+	{
+		obj.value = '';
+	}
+}
+
+//筛选条件按钮高亮
+jQuery(function(){
+	{set:
+		$brand = IFilter::act(IReq::get('brand'),'int');
+	}
+
+	{if:$brand}
+	$('#brand_dd>a').removeClass('current');
+	$('#brand_{$brand}').addClass('current');
+	{/if}
+
+	{set:$tempArray = IFilter::act(IReq::get('attr'),'url')}
+	{if:$tempArray}
+		{set:$json = JSON::encode(array_map('md5',$tempArray))}
+		var attrArray = {$json};
+		for(val in attrArray)
+		{
+			if(attrArray[val])
+			{
+				$('#attr_dd_'+val+'>a').removeClass('item-tit');
+
+				document.getElementById('attr_'+val+'_'+attrArray[val]).className = 'current';
+				document.getElementById('attr_'+val+'_'+attrArray[val]).style.color="#e85405";
+			}
+		}
+	{/if}
+
+	{if:IReq::get('min_price') != ''}
+	$('#price_dd>a').removeClass('current');
+	$('#{echo:IReq::get('min_price')}-{echo:IReq::get('max_price')}').addClass('current');
+	{/if}
+});
+</script>

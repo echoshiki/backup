@@ -1,0 +1,52 @@
+{set:
+	$seo_data=array();
+	$site_config=new Config('site_config');
+	$seo_data['title']=$this->articleRow['title'];
+	$seo_data['title'].="_".$site_config->name;
+	$seo_data['keywords']=$this->articleRow['keywords'];
+	$seo_data['description']=$this->articleRow['description'];
+	seo::set($seo_data);
+}
+<style>
+	.translate {     
+		text-align: left;
+    padding-top: 20px;
+    line-height: 28px;
+    font-size:14px;
+  }
+
+
+</style>
+
+	<!-- 中间部分开始 -->
+	<center class="clearfix">
+		<div class="personal">
+			<div class="personal-center">
+				<h4>当前位置：<a href="{url:}">首页</a> > <a href="{url:/site/article}">资讯列表</a> > {$this->articleRow['title']}</h4>
+				<div class="left-right">
+					<p class="lrtit"></p>
+					<div class="left">					
+						<ul class="lr-tit">
+							{foreach:items=Api::run('getHelpCategoryLeft',10)}
+								{foreach:items=Api::run('getHelpListByCatidAll',array('#cat_id#',$item['id'])) item=$help_row}
+								<li <?php if($help_row['id']=='58'){ ?> class="per-border" <?php } ?>><a href="{url:/site/help/id/$help_row[id]/}">{$help_row['name']}<span class="jiantou">></span></a></li>
+								{/foreach}
+							{/foreach}
+					  </ul>
+					</div>
+					<div class="right">
+						<h1 class="lr-tit">{$this->articleRow['title']}</h1>						
+						<div class="groupjs">
+							<div class="translate margin-tr">
+								{$this->articleRow['content']}
+							</div>							
+						</div>
+						
+					</div>
+				</div>
+			</div>		
+		</div>
+	</center>
+	<!-- 中间部分结束 -->
+
+

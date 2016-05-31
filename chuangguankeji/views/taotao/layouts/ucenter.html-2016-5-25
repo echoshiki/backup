@@ -1,0 +1,431 @@
+{set:
+	$myCartObj  = new Cart();
+	$myCartInfo = $myCartObj->getMyCart();
+	$siteConfig = new Config("site_config");
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{echo:$siteConfig->name}</title>
+	<link rel="stylesheet" href="{skin:bubugao/css/public.css}" />
+	<link rel="stylesheet" href="{skin:bubugao/css/index.css}" />
+	<link rel="stylesheet" href="{skin:bubugao/css/hl.css}" >
+	<link rel="shortcut icon" href="favicon.ico" />
+	<meta name="renderer" content="webkit">
+	{js:jquery}
+	{js:form}
+	{js:dialog}
+	{js:validate}
+	{js:artTemplate}
+	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
+	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
+	<script type='text/javascript'>
+		//用户中心导航条
+		function menu_current()
+		{
+		    var current = "{echo:$this->getAction()->getId()}";
+		    if(current == 'consult_old') current='consult';
+		    else if(current == 'isevaluation') current ='evaluation';
+		    else if(current == 'withdraw') current = 'account_log';
+		    var tmpUrl = "{url:/ucenter/current}";
+		    tmpUrl = tmpUrl.replace("current",current);
+		    $('div.cont ul.list li a[href^="'+tmpUrl+'"]').parent().addClass("current");
+		}
+	</script>
+</head>
+<body>
+
+<!--site-nav-->
+<div class="site-nav">
+	<!--w1190 clearfix-->
+	<div class="w1190 clearfix">
+		<!--sn-login f-l-->
+		<div class="sn-login f-l">
+			<!--small-signin-->
+			<div id="login_5717" class="small-signin" style="">
+				欢迎您来到{echo:$siteConfig->name}！
+			{if:$this->user}
+				<a href="{url:/ucenter/index}">个人中心</a>
+				<span class="split"></span>
+				<a href="{url:/simple/logout}">退出</a>
+			{else:}
+			  请<a href="{url:/simple/login?callback=$callback}">登录</a>
+				<span class="split"></span>
+			  <a href="{url:/simple/reg?callback=$callback}">免费注册</a>
+			{/if}
+
+			</div>
+			<!--small-signin-->
+		</div>
+		<!--sn-login f-l-->
+		<!--sn-quick f-r-->
+
+		<ul class="sn-quick f-r" id="jSiteNavQuick">
+			<li>
+				<a class="menu-hd quick-item" href="{url:ucenter/index}" rel="nofollow">个人中心<b></b></a>
+				<div class="menu-bd ">
+					<a href="{url:ucenter/order}" rel="nofollow">我的订单</a>
+					<span class="line"></span>
+					<a href="{url:ucenter/orderfund}" rel="nofollow">我的众筹订单</a>
+					<span class="line"></span>
+					<a href="{url:ucenter/address}" rel="nofollow">我的联系地址</a>
+					<span class="line"></span>
+					<!-- <a href="{url:ucenter/integral}" rel="nofollow">我的积分</a>
+					<span class="line"></span> -->
+					<a href="{url:ucenter/account_log}" rel="nofollow">我的资金</a>
+				</div>
+			</li>
+			<li class="split"></li>
+			<li>
+				<a class="quick-item" href="{url:/simple/seller}" rel="nofollow">申请开店</a>
+			</li>
+			<li class="split"></li>
+			<li>
+				<a class="quick-item"  href="{url:/seller/index}">商家管理</a>
+			</li>
+			<li class="split"></li>
+			<li>
+				<a class="quick-item" href="{url:/site/help_list}">使用帮助</a>
+			</li>
+			<li class="split"></li>
+			<li class="phone">
+				<span class="quick-item">客服电话：<span>4008-669-889</span></span>
+			</li>
+			</ul>
+
+		<!--sn-quick f-r-->
+	</div>
+	<!--w1190 clearfix-->
+</div>
+<!--site-nav-->
+
+<!--search-->
+<div class="search" style="background: #fff; height: 120px;">
+	<!--w1190 clearfix-->
+	<div class="w1190 clearfix">
+		<!--logo-->
+		<div class="logo" style="height:90px; width:auto;">
+			<a href="{url:}" class="go-home">
+				<img src="{skin:bubugao/images/logo.png}" alt="" class="png">
+			</a>
+		</div>
+		<!--logo-->
+
+		<!--cart f-r-->
+		<div class="cart f-r" id="jCart">
+			<span class="cart-count"><span name="mycart_count">{$myCartInfo['count']}</span></span>
+			<a href="{url:simple/cart}" class="cart-buying"><span class="cart-account">去购物车结算</span></a>
+		</div>
+		<!--cart f-r-->
+
+		<!--s-box f-r-->
+		<div class="s-box f-r">
+			<!--s-main-->
+			<form method='get' action='{url:/}'>
+			<input type='hidden' name='controller' value='site' />
+			<input type='hidden' name='action' value='search_list' />
+			<div class="s-main">
+				<input class="ipt-key" type="text" name='word' autocomplete="off" value="输入关键字..." />
+				<input class="btn-search" type="submit" value="搜索" onclick="checkInput('word','输入关键字...');" />
+			</div>
+			</form>
+			<!--s-main-->
+			<!--kw-suggest-->
+			<div class="kw-suggest">
+				{foreach:items=Api::run('getKeywordList') }
+				{set:$tmpWord = urlencode($item['word']);}
+				<a href="{url:/site/search_list/word/$tmpWord}">{$item['word']}</a>
+				{/foreach}
+			</div>
+			<!--kw-suggest-->
+		</div>
+		<!--s-box f-r-->
+
+	</div>
+	<!--w1190 clearfix-->
+</div>
+<!--search-->
+
+<!--nav-->
+<div class="nav">
+	<!--w1190 nav-main-->
+	<div class="w1190 nav-main">
+		<!--nav-cat-pos-->
+		<div class="nav-cat-pos">
+			<!--category-->
+			<div class="category {if:IReq::get('controller') == 'site' && IReq::get('action') == 'index' || IReq::get('controller') == ''}{else:}category-hide{/if}" id="jCat">
+				<h2 class="cat-title"><a class="t14" href="">全部商品分类<b class="png"></b></a></h2>
+				<!--cat-list-->
+				<ul class="cat-list">
+					{foreach:items=Api::run('getCategoryListTop')  item=$first }
+					<li class="list-item ">
+					<h3 class="cat-type-1">
+						<a href="{url:/site/pro_list/cat/$first[id]}">{$first['name']}</a>
+					</h3>
+					<p class="cat-rcmd">
+					{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+						<a href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a>
+					{/foreach}
+					</p>
+
+                    <div class="cat-pop">
+                    <!--cat-layer-->
+					<div class="cat-layer clearfix ">
+                        <ul class="cat-col">
+                        {foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+                        <li class="cat-item">
+                        <h3 class="level-title"><a href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a></h3>
+                        <p class="level-list clearfix">
+						{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$second['id']))  item=$third}
+						<a href="{url:/site/pro_list/cat/$third[id]}">{$third['name']}</a>
+						{/foreach}
+                        </p>
+                        </li>
+                       {/foreach}
+                        </ul>
+					</div>
+					<!--cat-layer-->
+                    </div>
+			      </li>
+			      {/foreach}
+				</ul>
+				<!--cat-list-->
+
+
+
+
+		  </div>
+			<!--category-->
+		</div>
+		<!--nav-cat-pos-->
+
+		<!--nav-cnt-->
+		<div class="nav-cnt">
+			<li class="nav-item"><a href="{url:/site/index}">首页</a></li>
+			{foreach:items=Api::run('getGuideList')}
+			<li class="nav-item"><a href="{url:$item[link]}">{$item['name']}</a></li>
+			{/foreach}
+		</div>
+		<!--nav-cnt-->
+
+	</div>
+	<!--w1190 nav-main-->
+</div>
+<!--nav-->
+
+<div class="position">
+		您当前的位置： <a href="{url:}">首页</a> » <a href="{url:/ucenter/index}">我的账户</a>
+	</div>
+	<div class="wrapper clearfix ucenter">
+		<div class="sidebar f_l">
+			<div class="box">
+				<div class="title"><h2>交易记录</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/order}">我的订单</a></li>
+						<li><a href="{url:/ucenter/iorderfund}">我的众筹订单</a></li>
+						<!-- <li><a href="{url:/ucenter/integral}">我的积分</a></li>
+						<li><a href="{url:/ucenter/redpacket}">我的代金券</a></li> -->
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg2'>服务中心</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<!-- <li><a href="{url:/ucenter/refunds}">退款申请</a></li> -->
+						<li><a href="{url:/ucenter/complain}">站点建议</a></li>
+						<li><a href="{url:/ucenter/consult}">专利咨询</a></li>
+						<li><a href="{url:/ucenter/evaluation}">专利评价</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg3'>应用</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/message}">短信息</a></li>
+						<li><a href="{url:/ucenter/favorite}">收藏夹</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg4'>账户资金</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/account_log}">帐户余额</a></li>
+						<li><a href="{url:/ucenter/online_recharge}">在线充值</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg6'>项目管理</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/project_list}">项目列表</a></li>
+						<li><a href="{url:/ucenter/project_edit}">项目添加</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg5'>个人设置</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="{url:/ucenter/address}">地址管理</a></li>
+						<li><a href="{url:/ucenter/info}">个人资料</a></li>
+						<li><a href="{url:/ucenter/password}">修改密码</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+		{viewcontent}
+	</div>
+
+
+<!-- help-->
+<div class="help">
+	<div class="w1190 clearfix">
+         {foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat}
+			<dl class="help-new">
+     			<dt class="t14">{$helpCat['name']}</dt>
+				{foreach:items=Api::run('getHelpListByCatidAll',array('#cat_id#',$helpCat['id']))}
+					<dd><a href="{url:/site/help/id/$item[id]}">{$item['name']}</a></dd>
+				{/foreach}
+      		</dl>
+      	{/foreach}
+          <div class="contact f-l">
+    			<div class="contact-border clearfix">
+        			<span class="ic tel t20">4008-669-889</span>
+        			<span class="ic mail">cs@bubugao.com</span>
+
+    			</div>
+    		</div>
+    </div>
+</div>
+<!-- help-->
+
+
+<!-- service-->
+<div class="service">
+		<ul class="w1190 clearfix">
+			<li class="item1">
+				<p class="t18">正品优选</p>
+				<span>共享集团供应链</span>
+			</li>
+			<li class="item2">
+				<p class="t18">上市公司 </p>
+				<span>诚信服务 品质保证</span>
+			</li>
+			<li class="item3">
+				<p class="t18">300家连锁门店 </p>
+				<span>门店体验 网上下单</span>
+			</li>
+			<li class="item4">
+				<p class="t18">长株潭次日达 </p>
+				<span>专业物流 及时送达</span>
+			</li>
+			<li class="item5">
+				<p class="t18">满99包邮 </p>
+				<span>轻松购物，超值贴心</span>
+			</li>
+		</ul>
+	</div>
+<!-- service-->
+
+<div class="copyright">
+{echo:IFilter::stripSlash($siteConfig->site_footer_code)}
+</div>
+
+<script type='text/javascript'>
+//DOM加载完毕后运行
+$(function()
+{
+	$(".tabs").each(function(i){
+	    var parrent = $(this);
+		$('.tabs_menu .node',this).each(function(j){
+			var current=".node:eq("+j+")";
+			$(this).bind('click',function(event){
+				$('.tabs_menu .node',parrent).removeClass('current');
+				$(this).addClass('current');
+				$('.tabs_content>.node',parrent).css('display','none');
+				$('.tabs_content>.node:eq('+j+')',parrent).css('display','block');
+			});
+		});
+	});
+
+
+	 {if:IReq::get('controller') == 'site' && IReq::get('action') == 'index' || IReq::get('controller') == ''}
+	 {else:}
+	 $('.nav-cat-pos .category').hover(
+			function(){
+				$(this).removeClass("category-hide")
+			},
+			function(){
+				$(this).addClass("category-hide")
+			}
+		);
+
+	 {/if}
+
+
+	   $("#jCat .list-item").hover(function(){
+	    $(this).addClass("cat-hover");
+	  	$(this).children(".cat-pop").show();
+	  },function(){
+		 $(this).removeClass("cat-hover");
+		 $(this).children(".cat-pop").hide();
+	  });
+
+	  $("#jSiteNavQuick li:first").hover(function(){
+	    $(this).children("a").addClass("menu-hd-hover");
+		$(this).children(".menu-bd").addClass("menu-bd-hover");
+	  },function(){
+		 $(this).children("a").removeClass("menu-hd-hover");
+		$(this).children(".menu-bd").removeClass("menu-bd-hover");
+	  });
+
+
+	   $(".tab-title li").hover(function(){
+	   	$(this).addClass('tab-title-hover').siblings().removeClass('tab-title-hover');
+		var p= $(this).index();
+		$(this).parent().parent().children(".tab-cnt").children(".tab-item").eq(p).show().siblings().hide();
+
+	  });
+
+
+	//隔行换色
+	$(".list_table tr:nth-child(even)").addClass('even');
+	$(".list_table tr").hover(
+		function () {
+			$(this).addClass("sel");
+		},
+		function () {
+			$(this).removeClass("sel");
+		}
+	);
+
+	menu_current();
+
+	$('input:text[name="word"]').bind({
+		keyup:function(){autoComplete('{url:/site/autoComplete}','{url:/site/search_list/word/@word@}','{$siteConfig->auto_finish}');}
+	});
+
+	{set:$word = IReq::get('word') ? IFilter::act(IReq::get('word'),'text') : '输入关键字...'}
+	$('input:text[name="word"]').val("{$word}");
+
+	//购物车div层
+	$('.mycart').hover(
+		function(){
+			showCart('{url:/simple/showCart}');
+		},
+		function(){
+			$('#div_mycart').hide('slow');
+		}
+	);
+});
+</script>
+</body>
+</html>

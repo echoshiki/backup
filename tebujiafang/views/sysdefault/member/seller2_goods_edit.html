@@ -1,0 +1,251 @@
+{js:artTemplate}
+<script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
+<div class="headbar clearfix">
+	<div class="position">会员<span>></span><span>代理商管理</span><span>></span><span>{if:isset($this->orderRow)}商品修改{else:}商品添加{/if}</span></div>
+
+	<div class="operating">
+		<!-- 区别于其他模块的产品搜索，只列出平台产品 kind=1 -->
+		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="searchGoods('{url:/block/search_goods/kind/1/type/}',searchGoodsCallback);"><span class="addition">添加商品</span></button></a>
+	</div>
+
+	<ul class="tab" name="menu">
+		<li id="button_1"  {if:!$_GET['page']} class="selected" {else:} {/if} ><a href="javascript:selectTab('1');" hidefocus="true">分配商品</a></li>
+		<li id="button_2"  {if:$_GET['page']} class="selected" {else:} {/if}><a href="javascript:selectTab('2');" hidefocus="true">已有商品</a></li>
+	</ul>
+
+
+</div>
+
+<form name="ModelForm" action="{url:/member/seller2_copy}" method="post">
+	<input type='hidden' name='id' value='' />
+	<input type='hidden' name='takeself' value='' />
+	<input type='hidden' name='seller_id' value='{$_GET["id"]}' />
+
+	<!--商品信息-->
+	<div id="tab-1" {if:$_GET['page']} style="display:none" {else:} {/if}>
+			<!--列表头-->
+		
+		<div class="content">
+
+			<div class="field">
+				<table class="list_table">
+					<thead>
+						<tr>
+							<th>商品名称</th>
+							<th>商品货号</th>
+							<th>商品价格</th>
+							<th>商品数量</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+
+			<table class="list_table">
+
+				<tbody id="goodsBox"></tbody>
+				<!--商品模板-->
+				<script type='text/html' id='goodsTrTemplate'>
+				<tr>
+					<input type='hidden' name='goods_id[]' value='<%=item.id%>' />
+					<input type='hidden' name='product_id[]' value='<%=item.product_id%>' />
+					<td>
+						<%=item.name%>
+						<%if(item.spec_array){%>
+							<label class="attr">
+							<%var spec_array = parseJSON(item.spec_array)%>
+							<%var sid = parseJSON(item.id)%>
+							<%for(var index in spec_array){%>
+								<%var value = spec_array[index]%>
+								<%=value['name']%>:
+								<%if(value['type'] == 1){%>
+									<%=value['value']%>
+								<%}else{%>
+									<img src="{echo:IUrl::creatUrl()}<%=value['value']%>" width="15px" height="15px" class="spec_photo" />
+								<%}%>
+							<%}%>
+							</label>
+						<%}%>
+					</td>
+					<td><%=item.sid%></td>
+					<td><%=item.real_price%></td>
+					<td><input class="tiny" name="goods_nums[]" value="<%=item.goods_nums ? item.goods_nums : 2000%>" /></td>
+					<td>
+						<a href="javascript:void(0)" onclick="$(this).parent().parent().remove();">
+							<img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" />
+						</a>
+					</td>
+				</tr>
+				</script>
+			</table>
+		</div>
+	</div>
+
+	<!--已有商品-->
+	<div id="tab-2" class="content_box" {if:!$_GET['page']} style="display:none" {else:} {/if}>
+		<div class="content form_content">
+				<!--列表头-->
+			<div class="field">
+				<table class="list_table">
+					<thead>
+						<tr>
+							<th width="32%">商品名称</th>
+							<th width="8%">商品货号</th>
+							<th width="8%">销售价</th>
+							<th width="8%">商品数量</th>
+<!-- 							<th>商品规格</th> -->
+							<th>操作</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<table class="form_table">
+				<tbody>
+					{foreach:items = $this->goodsInfo}
+					<tr>
+						<td width="32%"><a href="/index.php?controller=site&action=products&id={$item['id']}" target="_blank">{$item[name]}</a></td>
+						<td width="8%"><?php echo substr_replace(sprintf("%05d",$item['id']),'6',0,1); ?></td>
+						<td width="8%">{$item[sell_price]}</td>
+						<td width="8%">{$item[store_nums]}</td>
+<!-- 						<td><?php 	$spec = block::show_spec($item['spec_array']);
+									echo $spec['颜色'];  ?>
+						</td> -->
+						<td><a href="javascript:void(0)" onclick="delModel({link:'{url:/member/goods_recycle_del/id/$item[id]/seller_id/$_GET[id]}'})" ><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a></td>
+					</tr>
+					{/foreach}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div class="pages_bar">
+		<div>{$this->goodsObj->getPageBar()}</div>
+		<div class="t_c"><button type="submit" class="submit"><span>保 存</span></button></div></div>
+</form>
+
+<script type="text/javascript">
+//DOM加载完毕
+$(function(){
+	//表单回填
+	var formInstance = new Form();
+	formInstance.init({echo:JSON::encode($this->orderRow)});
+
+	//初始化地域联动
+	template.compile("areaTemplate",areaTemplate);
+
+	//动态数据回填
+	{if:isset($this->orderRow)}
+		var province = "{$this->orderRow['province']}";
+		var city     = "{$this->orderRow['city']}"
+		var area     = "{$this->orderRow['area']}"
+
+		createAreaSelect('province',0,province);
+		createAreaSelect('city',province,city);
+		createAreaSelect('area',city,area);
+
+		var goodsList = {echo:JSON::encode($this->orderGoods)};
+		for(var index in goodsList)
+		{
+			insertGoods(goodsList[index]);
+		}
+
+		{if:$this->takeself}
+		var takeselfJSON = {echo:JSON::encode($this->takeself)};
+		$('#takeself').html(template.render('takeselfTemplate',{"item":takeselfJSON}));
+		{/if}
+	{else:}
+		createAreaSelect('province',0,'');
+	{/if}
+});
+
+/**
+ * 筛选商品回调
+ * @param goodsList JQ选中的商品列表节点
+ */
+function searchGoodsCallback(goodsList)
+{
+	//循环插入DOM节点
+	goodsList.each(function()
+	{
+		var temp = $.parseJSON($(this).attr('data'));
+		var insertObject = {"id":temp.goods_id,"name":temp.name,"real_price":temp.sell_price,"product_id":temp.product_id,"spec_array":$.parseJSON(temp.spec_array),"goods_no":temp.goods_no,"sid":temp.sid};
+		insertGoods(insertObject);
+	});
+}
+
+/**
+ * 生成商品信息
+ */
+function insertGoods(goodsRow)
+{
+	var goodsRow = goodsRow ? goodsRow : {};
+	var goodsTrHtml = template.render('goodsTrTemplate',{item:goodsRow});
+	$('#goodsBox').append(goodsTrHtml,goodsRow);
+}
+
+//选择当前Tab
+function selectTab(curr_tab)
+{
+	// if(curr_tab == 1)
+	// {
+	// 	$('.field').show();
+	// }
+	// else
+	// {
+	// 	$('.field').hide();
+	// }
+
+	$("div[id^=tab-]").hide();
+	$("#tab-"+curr_tab).show();
+
+	$("li[id^='button-']").removeClass('selected');
+	$("#button-"+curr_tab).addClass('selected');
+}
+
+/**
+ * 生成地域js联动下拉框
+ * @param name
+ * @param parent_id
+ * @param select_id
+ */
+function createAreaSelect(name,parent_id,select_id)
+{
+	//生成地区
+	$.getJSON("{url:/block/area_child}",{"aid":parent_id,"random":Math.random()},function(json)
+	{
+		$('[name="'+name+'"]').html(template.render('areaTemplate',{"select_id":select_id,"data":json}));
+	});
+}
+
+//选择自提点
+function selectTakeself(obj)
+{
+	var type = $(obj).find("option:selected").attr("datatype");
+	if(type != 2)
+	{
+		$('[name="takeself"]').val(0);
+		$('#takeself').empty();
+		return;
+	}
+
+	art.dialog.open("{url:/block/takeself}",{
+		title:'选择自提点',
+		okVal:'选择',
+		ok:function(iframeWin, topWin)
+		{
+			var takeselfJson = $(iframeWin.document).find('[name="takeselfItem"]:checked').val();
+
+			if(!takeselfJson)
+			{
+				alert('请选择自提点');
+				return false;
+			}
+			var json = $.parseJSON(takeselfJson);
+			$('#takeself').empty();
+			$('[name="takeself"]').val(json.id);
+			$('#takeself').html(template.render('takeselfTemplate',{"item":json}));
+			return true;
+		}
+	});
+}
+</script>

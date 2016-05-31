@@ -1,0 +1,69 @@
+{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+{set:$user_id = $this->user['user_id']}
+{set:$queryRefundmentDocList = Api::run('getRefundmentDocList',$user_id)}
+{set:$items = $queryRefundmentDocList->find()}
+
+<section>
+	<!--退款申请列表 开始-->
+	<div class="pending-detial">
+
+	<div class="panel panel-default">
+			  <div class="panel-heading">
+					<h3 class="panel-title">退款申请</h3>
+			  </div>
+			
+
+			   <ul class="list-group">
+		{if:$items}
+	    	{foreach:items = $items}
+			   	<li class="list-group-item "><a href="{url:/ucenter/refunds_detail/id/$item[id]}" >退款订单：{$item['order_no']}状态:{echo:Order_Class::refundmentText($item['pay_status'])}</a>操作: 	{if:$item['pay_status']==0}<a class="blue" href='javascript:delModel({link:"{url:/ucenter/refunds_del/id/$item[id]}"})'>取消</a>|{/if}<i class="icon-chevron-right"></i></li>
+			   	{/foreach}
+			
+			   
+			   </ul>
+			
+
+
+		</div>
+		{$queryRefundmentDocList->getPageBar()}
+		{else:}
+		<ul class="">
+			<li>当前暂无数据</li>
+		</ul>
+		{/if}
+	</div>
+
+
+</section>
+
+<script type='text/javascript'>
+	//DOM加载完毕
+	$(function()
+	{
+		{if:IReq::get('order_no')}
+	    $('#refunds_list').toggle();
+	    $('#refunds_form').toggle();
+		{/if}
+	})
+
+	function form_back(obj)
+	{
+	    var form = new Form('refunds');
+	    form.init(obj);
+	    $('#refunds_list').hide();
+	    $('#refunds_form').show();
+	}
+
+	function form_add()
+	{
+	    var form = new Form('refunds');
+	    form.init({"order_no":"","amount":"","content":""});
+	}
+
+	{if:isset($this->msg) && $this->msg!=''}
+	alert('{$this->msg}');
+	var form = new Form('refunds');
+	var obj = {$this->info};
+	form.init(obj);
+	{/if}
+</script>

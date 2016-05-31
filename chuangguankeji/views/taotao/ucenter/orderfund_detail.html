@@ -1,0 +1,202 @@
+{set:$item = $this->order_info;}
+{set:$orderStatus = Order_Class::getOrderStatus($item)}
+
+{js:artTemplate}
+<script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
+
+<div class="main_fr f_r">
+	<div class="uc_title m_10">
+		<label class="current"><span>众筹订单详情</span></label>
+	</div>
+	<div class="prompt_2 m_10">
+		<div class="t_part">
+			{set:$orderStep = Order_Class::orderStep($item)}
+			{foreach:items=$orderStep item=$stepData key=$eventTime}
+			<p>{$eventTime}&nbsp;&nbsp;<span class="black">{$stepData}</span></p>
+			{/foreach}
+		</div>
+		<p>
+			<b>订单号：</b>{$item['order_no']}
+			<b>下单日期：</b>{$item['create_time']}
+			<b>状态：</b>
+			<span class="red2">
+				<b class="orange">{echo:Order_Class::orderStatusText($orderStatus)}</b>
+	        </span>
+        </p>
+
+        <form action='{url:/ucenter/orderfund_status}' method='post'>
+        <p>
+	        <input type="hidden" name="order_id" value="{$item['id']}" />
+	    	{if:in_array($orderStatus,array(1,2))}
+	        <label class="btn_orange3">
+	        	<input type="hidden" name='op' value='cancel' />
+	        	<input type="submit" value="取消订单" />
+	        </label>
+	        {/if}
+
+			{if:$orderStatus == 2}
+			<label class="btn_orange3">
+				<input type="button" value="立即付款" onclick="window.location.href='{url:/block/doPayfund/order_id/$item[id]}'" />
+			</label>
+			{/if}
+
+			
+	    </p>
+        </form>
+
+	</div>
+	<div class="box m_10">
+		<div class="title">
+			<h2><span class="orange">支持人信息</span></h2>
+		
+		</div>
+
+		<!--收获信息展示-->
+		<div class="cont clearfix" id="acceptShow">
+			<table class="dotted_table f_l" width="100%" cellpadding="0" cellspacing="0">
+				<col width="130px" />
+				<col />
+				<tr>
+					<th>支持人：</th>
+					<td>{$item['accept_name']}</td>
+				</tr>
+				<tr>
+					<th>手机：</th>
+					<td>{$item['mobile']}</td>
+				</tr>
+				<tr>
+					<th>附言：</th>
+					<td>{$item['postscript']}</td>
+				</tr>
+				
+			</table>
+		</div>
+
+	
+		
+	</div>
+
+	
+
+    
+
+	<!--众筹清单-->
+	<div class="box m_10">
+		<div class="title"><h2><span class="orange">众筹信息</span></h2></div>
+		<div class="cont clearfix">
+			<table class="list_table f_l" width="100%" cellpadding="0" cellspacing="0">
+				<tbody>
+					<tr>
+						<th>图片</th>
+						<th>项目名称</th>
+						
+						<th>已筹款</th>
+						
+						<th>目标筹资</th>
+						<th>支持数</th>
+						
+					</tr>
+                    {set:$order_id=$item['fund_id']}
+                    {query:name=fund where=id eq $order_id item=$good_info}
+					<tr>
+						<td><img class="pro_pic" src="{webroot:$good_info[pic]}" width="50px" height="50px" onerror='this.src="{skin:bubugao/images/nopic_100_100.gif}"' /></td>
+						<td class="t_l">
+							<a class="blue" href="{url:/site/fund_detail/id/$item['fund_id']}" target='_blank'>{$good_info['title']}</a>
+							
+						</td>
+						
+						<td class="red2">￥{$good_info['a_amount']}</td>
+						
+						<td>￥{$good_info['t_amount']}</td>
+						<td class="red2 bold">{$good_info['sup_count']}</td>
+						
+					</tr>
+                    {/query}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="gray_box">
+		
+
+		<div class="b_part">
+			<p>您的支持金额：<span class="red2">￥<label id="order_amount">{$item['order_amount']}</label></span></p>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//DOM加载完毕
+$(function(){
+	//初始化地域联动
+	template.compile("areaTemplate",areaTemplate);
+	createAreaSelect('province',0,{$item['province']});
+	createAreaSelect('city',{$item['province']},{$item['city']});
+	createAreaSelect('area',{$item['city']},{$item['area']});
+
+	//设置商品总重量
+	$('[name="goods_weight"]').val({$totalWeight});
+});
+
+//计算运费
+function countDelievey()
+{
+	var provinceId   = $('[name="province"]').val();
+	var total_weight = {$totalWeight};
+	var goodsSum     = {$item['real_amount']};
+	var distribution = {$item['distribution']};
+
+	$.getJSON('{url:/block/order_delivery}',{"province":provinceId,"total_weight":total_weight,"goodsSum":goodsSum,"distribution":distribution},function(json){
+		if(json)
+		{
+			//不能送达
+			if(json.if_delivery == 1)
+			{
+				alert('对不起，该地区不能送达，请您重新选择省份');
+				return;
+			}
+
+			//做订单差运算
+			var oldFreightFee  = $('#freightFee').text();
+			var oldOrderAmount = $('#order_amount').text();
+			var diff           = parseFloat(json.price) - parseFloat(oldFreightFee);
+			var diffAmount     = parseFloat(oldOrderAmount) + parseFloat(diff);
+
+			//更新数据
+			$('#freightFee').text(json.price);
+			$('#order_amount').text(diffAmount);
+		}
+	});
+}
+
+/**
+ * 生成地域js联动下拉框
+ * @param name
+ * @param parent_id
+ * @param select_id
+ */
+function createAreaSelect(name,parent_id,select_id)
+{
+	//生成地区
+	$.getJSON("{url:/block/area_child}",{"aid":parent_id,"random":Math.random()},function(json)
+	{
+		$('[name="'+name+'"]').html(template.render('areaTemplate',{"select_id":select_id,"data":json}));
+	});
+}
+
+//快递跟踪
+function freightLine(doc_id)
+{
+	var urlVal = "{url:/block/freight/id/@id@}";
+	urlVal = urlVal.replace("@id@",doc_id);
+	art.dialog.open(urlVal,{'title':'轨迹查询'});
+}
+
+//修改表单信息
+function editForm()
+{
+	$('#acceptShow').toggle();
+	$('#acceptForm').toggle();
+}
+</script>

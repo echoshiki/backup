@@ -1,0 +1,91 @@
+{set:
+	$myCartObj  = new Cart();
+	$myCartInfo = $myCartObj->getMyCart();
+	$siteConfig = new Config("site_config");
+	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>特步家纺</title>
+<script type="text/javascript" src="{theme:javascript/jQuery.js}" ></script>
+<script type="text/javascript" src="{theme:javascript/touchScroll.js}"></script>
+<script type="text/javascript" src="{theme:javascript/touchslider.dev.js}"></script>
+<script type="text/javascript" src="{theme:javascript/MSClass.js}" ></script>
+<LINK media=screen href="{skin:css/main.css}" type=text/css rel=stylesheet>
+
+	<link rel="apple-touch-icon-precomposed" href="{skin:images/front/logo.gif}">
+	<link rel="stylesheet" href="{skin:css/home.css}" />
+	{js:jquery}
+	{js:form}
+	{js:validate}
+	{js:dialog}
+	{js:artTemplate}
+	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
+	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
+	<link href="{skin:font/css/font-awesome.css}" rel="stylesheet">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<style>
+		.p_class A { color:#666 !important; }
+		.row { margin:0px; }
+	</style>
+
+</head>
+
+<body style="background-color: #f9f9f9; padding-bottom:100px">
+<!--头部信息 开始-->
+	<header>
+		<div class="header">
+			<a id="kros_user" class="icon iconfont back" href="javascript:void(0)" onclick="window.history.back();" title="返回">&#xe71f;</a>
+			<span class="headline">{echo:$siteConfig->name}</span>
+			<a class="icon iconfont search " href="javascript:void(0)" onclick="$('.kros_search').toggle('slow');" title="搜索商品">&#xe6fe;</a>
+		</div>
+	</header>
+	<!--头部信息 结束-->
+
+	<div class="viewport" style="margin-top:52px;margin-bottom:50px;min-height:220px;">
+		<!--搜索框 开始-->
+	<div class="">
+		<div class=" kros_search row">
+			<form method='get' action='{url:/}'>
+				<input type='hidden' name='controller' value='site' />
+				<input type='hidden' name='action' value='search_list' />
+				<div class="col-lg-12 col-xs-12">
+				 <div class="input-group">
+				<input class="  form-control"  style="height:31px" type="text" name='word' autocomplete="off" value="输入关键字..." />
+					<span class="input-group-btn">
+					<button type="submit" class='btn btn-xs btn-primary  ' onclick="checkInput('word','输入关键字...');">搜索</button>
+					 </span>
+				</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	{viewcontent}
+    
+	<div class="bqsy">版权所有：南通艾点电子商务信息有限公司</div>
+      
+	
+	<div class="foot">
+		<ul style="margin-bottom: 0px;"><a href="/"><img src="{skin:images/front/sy.jpg}" />首页</a></ul>
+		<ul style="margin-bottom: 0px;"><a href="{url:site/sitemap}"><img src="{skin:images/front/fl.jpg}" />分类</a></ul>
+		<ul style="margin-bottom: 0px;"><a href="{url:simple/cart}"><img src="{skin:images/front/gwc.jpg}" />购物车</a></ul>
+		<ul style="margin-bottom: 0px;"><a href="{url:/ucenter/index}"><img src="{skin:images/front/gr.jpg}" />个人中心</a></ul>
+		<div class="clear"></div>
+	</div>	
+	</div>
+<link rel="stylesheet" href="{skin:css/site.css}" type="text/css" />
+</body>
+</html>
+
+
+
+	

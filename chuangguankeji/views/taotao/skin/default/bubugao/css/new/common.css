@@ -1,0 +1,28 @@
+
+*,
+*:after,
+*:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+	margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    font-family: "微软雅黑";
+}
+ul,li{  list-style-type: none;  margin: 0;  padding: 0;}
+a{color:#000000; text-decoration:none;}
+img{border:none;vertical-align: middle;}
+.clear{clear:both;}
+.clearfix:after {
+    content: '';
+    clear: both;
+    height: 0;
+    display: block;
+    overflow: hidden;
+}

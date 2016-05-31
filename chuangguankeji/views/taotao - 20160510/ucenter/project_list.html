@@ -1,0 +1,44 @@
+<div class="main_fr f_r">
+    <div class="uc_title m_10">
+        <label class="current"><span>我的项目</span></label>
+    </div>
+
+    <div class="box m_10">
+        <table class="list_table" width="100%" cellpadding="0" cellspacing="0">
+        	<col width="180px" />
+            <tr>
+                <th>标题</th>
+                <th>项目分类</th>
+                <th>发布时间</th>
+                <th>展示</th>
+                <th>状态</th>
+                <th>排序</th>
+            </tr>
+            <?php
+            	// print_r($this->user);
+            	$user_id=$this->user['user_id'];
+            ?>
+
+            {set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+				{query: name=project as ar join=left join project_category as ac on ac.id eq ar.category_id where=ar.seller_id eq $user_id order=ar.sort asc,ar.id desc page=$page fields=ar.id,ar.title,ar.create_time,ar.top,ar.sort,ar.visibility,ac.name}
+            <tr>
+                <td>
+                	<a target="_blank" href='{url:/site/project_detail/id/$item[id]}' title='查看'>{echo:Article::showTitle($item['title'],$item['color'],$item['style'])}</a>
+                </td>
+                <td>{$item['name']}</td>
+                <td>{$item['create_time']}</td>
+                <td>{echo:($item['visibility']==1) ? '是':'否'}</td>
+                <td>{echo:($item['visibility']==2) ? '完成':'洽谈中'}</td>
+                <td>
+                	<b class="orange">{$item['sort']}</b>
+                </td>
+            
+            </tr>{/query}
+            <tfoot><tr><td colspan="6" class="t_l">{$query->getPageBar()}</td></tr></tfoot>
+        </table>
+    </div>
+</div>
+
+
+
+

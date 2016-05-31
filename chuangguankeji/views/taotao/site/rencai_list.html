@@ -1,0 +1,198 @@
+{set:$page = isset($_GET['page'])?intval($_GET['page']):1;}
+{set:$catId = IFilter::act(IReq::get('id'),'int');$catRow = array();
+	$searcht = IReq::get('searcht');
+	$where   .= IReq::get('searcht') ? " and title like '%$searcht%'" : "";}
+<?php
+$db = new IModel('rencai_category');
+$catRow = $db->getObj('id = '.$catId);
+$catRow1 = $db->query('FIND_IN_SET('.$catId.', path)','','path','DESC','1');
+
+$catId1 = $catRow1[0]['path'];
+$catId1 = trim($catId1, ','); 
+$catId1 = explode(",",$catId1);
+
+foreach($catId1 as $val) {
+	$val2=intval($val);
+	if($val2>=$catId){
+		$catId2[]=$val;
+	}
+}
+$catId2 = implode(",",$catId2);
+// print_r($catId2) ;exit();
+$where .= $catId ? " and category_id in ($catId2)" : "";
+
+?>
+{if:$catRow}
+{set:$seo_data=array();$site_config=new Config('site_config');}
+{set:$seo_data['description']=$seo_data['keywords']=$seo_data['title']=$catRow['name']."_".$site_config->name}
+{set:seo::set($seo_data);}
+{else:}
+{set:$seo_data=array();$site_config=new Config('site_config');}
+{set:$seo_data['description']=$seo_data['keywords']=$seo_data['title']="人才展示_".$site_config->name}
+{set:seo::set($seo_data);}
+{/if}
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artdialog/artDialog.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artdialog/plugins/iframeTools.js"></script>
+<link rel="stylesheet" type="text/css" href="/runtime/_systemjs/artdialog/skins/aero.css" />
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artTemplate/artTemplate.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/runtime/_systemjs/artTemplate/artTemplate-plugin.js"></script>
+<style type="text/css">
+	div.pop_win tr,div.pop_win td{border-bottom: 1px solid #ccc;line-height: 30px;}
+	div.aui_content{padding: 0px 25px;}
+	div.pop_win{margin-top: -25px;font-family:"MicrosoftYaHei";font-size: 13px;}
+	.name a { color:#fff;}
+
+.box .pages_bar {
+    margin: 5px 20px 25px;
+}
+.pages_bar {
+    /* margin: 20px 20px 25px; */
+}
+.pages_bar {
+    text-align: center;
+    color: #444;
+}
+a:link, a:visited {
+    color: #2d64b3;
+    text-decoration: none;
+}
+.pages_bar a, .pages_bar span {
+    display: inline-block;
+    height: 23px;
+    border: 1px solid #d5d5d5;
+    margin-right: 6px;
+    padding: 2px 7px 1px;
+    text-align: center;
+    color: #1a66b3;
+    /*font-weight: bold;*/
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+.pages_bar a.current_page {
+    border: 1px solid #c30;
+    background-color: #c30;
+    color: #fff;
+}
+.pages_bar span {
+    color: #878787;
+}
+.pages_bar a, .pages_bar span {
+    display: inline-block;
+    height: 23px;
+    border: 1px solid #d5d5d5;
+    margin-right: 6px;
+    padding: 2px 7px 1px;
+    text-align: center;
+    color: #1a66b3;
+    /*font-weight: bold;*/
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+</style>
+
+	<script type='text/javascript' src="/views/sysdefault/javascript/common.js"></script>
+	<script type="text/javascript" src="/views/taotao/javascript/new/lanrenzhijia.js"></script>
+
+	
+	<!-- 中间部分开始 -->
+	<center class="clearfix leftnav">
+		<div class="banner-lun" id="ppt">
+			<div class="rightbanner">
+				<div class="mimg" id="mpc">
+				{set:$i = 1;$j=1;}
+				{set:$tnow = date("Y-m-d");}
+				<?php $where2 = "and start_time <= '$tnow' and end_time >= '$tnow'";?>
+				{query:name=ad_manage where=position_id eq 11 and type eq 1 $where2 order=`order` desc,id desc page=$page pagesize=4 item=$item}
+				{set:$ppic = $item['content']}
+				    <div{if:$i == 1} style="display:block"{/if}><a href="#nogo"><img src="{url:/pic/thumb/img/$ppic/w/770/h/423}" alt="" /></a></div>
+				    {set:$i++;}
+				    {/query}
+				        
+				</div>
+				<div class="scroll_vertical">
+				  	<ul class="list">
+				  	{query:name=ad_manage where=position_id eq 11 and type eq 1 $where2 order=`order` desc,id desc page=$page pagesize=4 item=$item}
+				{set:$ppic = $item['content']}
+					    <li{if:$j == 1} class="cur"{/if}><img src="{webroot:$ppic}" width="197" height="102" alt="" /></li>
+					    {set:$j++;}
+				    {/query}
+					    			   
+				  	</ul>
+			  	</div>
+			</div>
+		</div>
+		<div class="cgwgood clearfix">
+			<div class="tityellow">
+				<h1>人才展示</h1>
+			</div>
+			<div class="cgwcenter">				
+				<ul class="product clearfix people">
+				{query:name=rencai where=visibility eq 1 $where order=sort desc,id desc page=$page pagesize=20}
+					<a href="{url:/site/rencai_detail/id/$item[id]}" title="" target="_blank"><li>
+						<div class="list">
+							<div class="pic">
+								<img src="{url:/pic/thumb/img/$item['pic']/w/226/h/296}">
+								<div class="introduce">
+								<p class="name">{$item['title']}</p>
+								<p class="name f-12">{$item['description']}</p>
+							</div>
+							</div>
+						</div>
+					</li></a>
+					{/query}
+					
+				</ul>
+				<div class="footer_service">
+					<div id="pagination">
+				    
+						<ul class="pagination">
+						       <li> {$query->getPageBar()}</li></ul></div>
+				</div>
+			</div>
+		</div>
+	</center>
+	<!-- 中间部分结束 -->
+
+
+<script type="text/javascript">
+	function sendbook(id,tite,seller_id)
+{
+	
+	if(!isNaN(id))
+	{
+	
+
+		
+			var templateHtml = template.render("goodsCommendTemplate",{'templateData':tite,'templateid':id,'seller_id':seller_id});
+			art.dialog(
+			{
+				title:'项目咨询',
+				okVal:"保存",
+			    content: templateHtml,
+			    ok:function(iframeWin)
+			    {
+			    	var formObj = iframeWin.document.forms['commendForm'];
+			    	$.getJSON("/index.php?controller=site&action=feedback_act",$(formObj).serialize(),function(content)
+			    	{
+			    		if(content.result == 'fail')
+			    		{
+			    			alert(content.data);
+			    			
+			    		}else{
+			    			alert("您的咨询内容已经成功提交！");
+			    		}
+			    	});
+			    }
+			});
+		
+	}
+	else
+	{
+		alert("请选择您要操作的项目");
+	}
+}
+</script>

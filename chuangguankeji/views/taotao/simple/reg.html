@@ -1,0 +1,84 @@
+{set:$seo_data=array(); $site_config=new Config('site_config');$site_config=$site_config->getInfo();}
+{set:$seo_data['title']="用户注册_".$site_config['name']}
+{set:seo::set($seo_data);}
+
+
+	<!-- 中间部分开始 -->
+	<center class="clearfix">
+		<div class="personal">
+			<div class="personal-center">
+				<div class="left-right lreft">
+					<div class="left">	
+						<div class="img">
+							<img src="{skin:bubugao/images/new/pro/logo.png}">
+						</div>
+					</div>
+					<div class="right">
+						<h1 class="lr-tit">新会员注册</h1>						
+						<div class="translate">
+							<form action="{url:/simple/reg_act}" id='regForm' method='post'>
+							<table class="margin">		
+								<tr style="position:absolute; top:65px;">
+									<td colspan="2" id="errorMsg"></td>
+								</tr>							
+								<tr>
+									<td class="tra-tit">邮箱：</td>
+									<td><input class="gray" type="text" name='email' pattern="email" alt="邮箱：填写正确的邮箱格式" /></td>					
+								</tr>
+								<tr>
+									<td class="tra-tit">用户名：</td>
+									<td><input class="gray" name='username' type="text" pattern="^[\w\u0391-\uFFE5]{2,20}$" alt="用户名：填写2-20个字符，可以为字数，数字下划线和中文" /></td>					
+								</tr>						
+								<tr>
+									<td class="tra-tit">设置密码：</td>
+									<td><input class="gray" type="password" name='password' pattern="^\S{6,32}$" bind='repassword' alt='密码：填写6-32个字符' /></td>
+								</tr>
+								<tr>
+									<td class="tra-tit">确认密码：</td>
+									<td><input class="gray" type="password" name='repassword' pattern="^\S{6,32}$" bind='password' alt='密码：重复所填写的密码' /></td>
+								</tr>
+								<tr>
+									<td class="tra-tit">验证码：</td>
+									<td><input type='text' class='gray_s' name='captcha' pattern='^\w{5,10}$' alt='验证码：填正确填写验证码' /></td>
+								</tr>
+								<tr>
+									<td class="tra-tit"></td>
+									<td><img src='{url:/simple/getCaptcha}' id='captchaImg' style="width:auto; height:auto; padding:0px;"/><span class="light_gray">看不清？<a class="link" href="javascript:changeCaptcha('{url:/simple/getCaptcha}');">换一张</a></span></td>
+								</tr>
+                <tr>
+									<td class="tra-tit"></td>
+									<td>
+										<input name="" type="checkbox" value="" checked class="dxan">
+                                        我已阅读并同意遵守<a href="#" class="color">《创冠条款》</a>
+									</td>														
+								</tr>								
+								<tr>
+									<td class="tra-tit"></td>
+									<td>
+										<button class="button-sub">注册</button>
+										<p><a href="{url:/simple/login}">已有账户</a>，<a href="{url:/simple/login}" class="color">登录</a></p>		
+									</td>														
+								</tr>
+							</table>
+							</form>								
+						</div>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</center>
+	<!-- 中间部分结束 -->
+
+
+
+<script type='text/javascript'>
+$(function(){
+	{set:$callback = IReq::get('callback') ? IFilter::clearUrl(IReq::get('callback')) : IUrl::getRefRoute()}
+	$('input[name="callback"]').val("{$callback}");
+	$(".form_table input").focus(function(){$(this).addClass('current');}).blur(function(){$(this).removeClass('current');})
+
+	//表单回填
+	var formObj = new Form('regForm');
+	formObj.init({"email":"{$this->email}","username":"{$this->username}"});
+});
+</script>

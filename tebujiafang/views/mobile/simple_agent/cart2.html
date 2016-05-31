@@ -1,0 +1,405 @@
+{js:artTemplate}
+<script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
+<script type='text/javascript' src='{theme:javascript/orderFormClass.js}'></script>
+<style>
+.block-row {
+border: none;
+}
+</style>
+<script type='text/javascript'>
+//创建订单表单实例
+orderFormInstance = new orderFormClass();
+
+//DOM加载完毕
+jQuery(function(){
+	//使用红包按钮
+	$('#ticket_a').click(function()
+	{
+		//第一次打开时生成缓存数据
+		if($.trim($('#ticket_show_box').text()) == '')
+		{
+			var ticketList = {echo:JSON::encode($this->prop)};
+			for(var index in ticketList)
+			{
+				var ticketHtml = template.render('ticketTrTemplate',{item:ticketList[index]});
+				$('#ticket_show_box').append(ticketHtml);
+			}
+		}
+
+		$(this).toggleClass('fold');
+		$(this).toggleClass('unfold');
+		$('#ticket_box').toggle('slow');
+	});
+
+
+	//支付方式
+	orderFormInstance.paymentInit("{$this->custom['payment']}");
+
+	//商品价格
+	orderFormInstance.goodsSum = "{$this->final_sum}";
+});
+
+/**
+ * 生成地域js联动下拉框
+ * @param name
+ * @param parent_id
+ * @param select_id
+ */
+function createAreaSelect(name,parent_id,select_id)
+{
+	//生成地区
+	$.getJSON("{url:/block/area_child}",{"aid":parent_id,"random":Math.random()},function(json)
+	{
+		$('[name="'+name+'"]').html(template.render('areaTemplate',{"select_id":select_id,"data":json}));
+	});
+}
+
+//[address]保存到常用的收货地址
+function address_save()
+{
+	if(orderFormInstance.addressCheck())
+	{
+		$.getJSON('{url:/simple/address_add}',$('form[name="order_form"]').serialize(),function(content){
+			if(content.data)
+			{
+				var addressLiHtml = template.render('addressLiTemplate',{"item":content.data});
+				$('.addr_list').prepend(addressLiHtml);
+				$('input:radio[name="radio_address"]:first').trigger('click');
+			}
+			orderFormInstance.addressSave();
+		});
+	}
+}
+
+//[delivery]根据省份地区ajax获取配送方式
+function get_delivery()
+{
+	var province = $('[name="province"]').val();
+	var delivery = $('[name="delivery_id"]:checked').val();
+	if(!province || !delivery)
+	{
+		return;
+	}
+
+	$('[id^="deliveryFeeBox_"]').each(function(i)
+	{
+		var idValue = $(this).attr('id');
+		var dataArray = idValue.split("_");
+		$.getJSON("{url:/block/order_delivery}",{"province":province,"distribution":delivery,"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},function(content){
+			//地区无法送达
+			if(content.if_delivery == 1)
+			{
+				alert('您选择地区部分商品无法送达');
+				$('#'+idValue).html("<span style='color:red'>无法送达</span>");
+			}
+			else
+			{
+				//免运费
+				if(orderFormInstance.freeFreight == 1)
+				{
+					var html = "活动免运费";
+					content.price = 0;
+				}
+				else
+				{
+					var html = "￥"+content.price;
+					orderFormInstance.deliveryPrice += parseFloat(content.price);
+					orderFormInstance.doAccount();
+				}
+
+				//允许保价
+				if(content.protect_price > 0)
+				{
+					html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"_"+dataArray[2]+"]' onchange='selectProtect(this);' />保价</label>";
+				}
+				$('#'+idValue).html(html);
+			}
+		});
+	});
+}
+
+//保价
+function selectProtect(obj)
+{
+	if($(obj).attr('checked') == 'checked')
+	{
+		orderFormInstance.protectPrice += parseFloat(obj.value);
+	}
+	else
+	{
+		orderFormInstance.protectPrice -= parseFloat(obj.value);
+	}
+	orderFormInstance.doAccount();
+}
+
+//添加代金券
+function add_ticket()
+{
+	var ticket_num = $('#ticket_num').val();
+	var ticket_pwd = $('#ticket_pwd').val();
+
+	if(ticket_num == '' || ticket_pwd == '')
+	{
+		alert('请填写卡号和密码');
+		return '';
+	}
+
+	$.getJSON('{url:/block/add_download_ticket}',{"ticket_num":ticket_num,"ticket_pwd":ticket_pwd},function(content){
+		if(content.isError == false)
+		{
+			is_success = true;
+			$('[name="ticket_id"]').each(
+				function()
+				{
+					if($(this).val() == content.data.id)
+					{
+						alert('代金券已经存在，不要重复添加');
+						is_success = false;
+					}
+				}
+			);
+
+			if(is_success)
+			{
+				var ticketHtml = template.render('ticketTrTemplate',{item:content.data});
+				$('#ticket_show_box').append(ticketHtml);
+				$('[name="ticket_id"]').attr('checked',true);
+				$('[name="ticket_id"]:last').trigger('click');
+			}
+			$('#ticket_num').val('');
+			$('#ticket_pwd').val('');
+		}
+		else
+		{
+			alert(content.message);
+		}
+	});
+}
+
+//取消红包
+function cancel_ticket()
+{
+	$('#ticket_a').trigger('click');
+	$('[name="ticket_id"]').attr('checked',false);
+	orderFormInstance.doAccount();
+}
+
+//选择自提点
+function selectTakeself(deliveryId)
+{
+	art.dialog.open("{url:/block/takeself}",{
+		title:'选择自提点',
+		okVal:'选择',
+		ok:function(iframeWin, topWin)
+		{
+			var takeselfJson = $(iframeWin.document).find('[name="takeselfItem"]:checked').val();
+
+			if(!takeselfJson)
+			{
+				alert('请选择自提点');
+				return false;
+			}
+			var json = $.parseJSON(takeselfJson);
+			$('#takeself'+deliveryId).empty();
+			$('[name="takeself"]').val(json.id);
+			$('#takeself'+deliveryId).html(template.render('takeselfTemplate',{"item":json}));
+			return true;
+		}
+	});
+}
+</script>
+<section class="member_main">
+<div class="white_bg">
+		<ul class="list-unstyled container">
+			<li><i class="fa fa-shopping-cart kcart"></i>
+</li>
+			<li><a href="#">填写和提交订单信息</a></li>
+		</ul>
+	</div>
+	<div class="height15"></div>
+
+
+<div class="container info">
+
+	<form action='{url:/simple_agent/cart3}' class="form" method='post' name='order_form' callback='orderFormInstance.isSubmit();'>
+
+		<input type='hidden' name='timeKey' value='{echo:time()}' />
+		<input type='hidden' name='direct_gid' value='{$this->gid}' />
+		<input type='hidden' name='direct_type' value='{$this->type}' />
+		<input type='hidden' name='direct_num' value='{$this->num}' />
+		<input type='hidden' name='direct_promo' value='{$this->promo}' />
+		<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
+		<input type='hidden' name='takeself' value='0' />
+
+
+
+<div class="cart_box m_10">
+
+
+			<div class="cont">
+
+
+		<!--支付方式 开始-->
+		<div class="" id='paymentBox' >
+			<div class="info_head">
+						
+						<a class="normal f12" href="javascript:void(0)" id='paymentToggleButton' onclick="orderFormInstance.paymentModToggle();">[关闭]</a>
+						支付方式
+					</div>
+
+			<ul class="block-row" id='payment_form' style="padding-bottom:0">
+				{set:$paymentList=Api::run('getPaymentList')}
+				{foreach:items = $paymentList}
+				{set:$paymentPrice = CountSum::getGoodsPaymentPrice($item['id'],$this->sum);}
+				<li>
+					<input class="radio" name="payment" alt="{$paymentPrice}" onclick='orderFormInstance.paymentSelected({echo:JSON::encode($item)});' title="{$item['name']}" type="radio" value="{$item['id']}" />{$item['name']}
+					{$item['note']} 支付手续费：￥{$paymentPrice}
+				</li>
+				{/foreach}
+			</ul>
+
+			<div id="payment_show_box" style='display:none;'>
+				<ul class="" id="paymentShowBox"></ul>
+
+				<!--支付方式模板-->
+				<script type='text/html' id='paymentShowTemplate'>
+					<li class="kli">
+						<div class="kleft left">支付方式：</div>
+						<div class="kright left"><%=name%></div>
+					</li>
+				</script>
+			</div>
+
+			<label id='payment_save_button' style="width:100%" ><input type="button"  style="width:100%"  class="btn btn-primary" onclick="orderFormInstance.paymentSave();" value="保存支付方式" /></label>
+		</div>
+		<!--支付方式 结束-->
+
+		<!--订单留言 开始-->
+		<div class="">
+		<div class="info_head">
+						
+						<a class="normal f12" href="javascript:void(0)" id='messageToggleButton' onclick="orderFormInstance.messageModToggle();">[修改]</a>
+						订单附言
+					</div>
+
+			<div id='message_show_box'>
+				<ul >
+					<li id="messageShowBox"></li>
+				</ul>
+			</div>
+
+			<ul  id='message_form' style='display:none;'>
+				<li>
+					订单附言：
+					<input class="form-control" type="text" name='message' />
+				</li>
+			</ul>
+
+			<label id='message_save_button' style='display:none;width:100%'><input type="button" class="btn btn-primary"  style="width:100%" onclick="orderFormInstance.messageSave();" value="保存订单附言" /></label>
+		</div>
+		<!--订单留言 结束-->
+
+		<!--购买清单 开始-->
+		<div class="block-box">
+			<div class="info_head">购买的商品</div >
+			<ul class="block-row" {if:empty($this->promotion)}style="display:none"{/if}>
+				{foreach:items = $this->promotion}
+				<li class="indent blue">{$item['plan']}，{$item['info']}</li>
+				{/foreach}
+			</ul>
+
+			<!-- 商品展示 开始-->
+			{foreach:items = $this->goodsList}
+
+<div class="pro_list border-bottom">
+		<div class="col-xs-4">
+			<a href="{url:/site/products/id/$item[goods_id]}"><img src="{url:/pic/thumb/img/$item[img]/w/80/h/80}" class="img-responsive" alt=""></a>
+		</div>
+		<div class="col-xs-5">
+			<h10><a href="{url:/site/products/id/$item[goods_id]}">{$item['name']}</a></h10><br>
+			{if:isset($item['spec_array'])}
+			<h10 >{set:$spec_array=Block::show_spec($item['spec_array']);}
+					{foreach:items=$spec_array item=$specValue key=$specName}
+						{$specName}：{$specValue} &nbsp&nbsp
+					{/foreach}
+					</h10>
+			{/if}
+
+		</div>
+
+		<div class="col-xs-3">							
+			<h10 class="disnone" id="deliveryFeeBox_{$item['goods_id']}_{$item['product_id']}_{$item['count']}"></h10><br>
+			<h10>数量：{$item['count']}</h10><br>
+			<h10>小计：￥{$item['sum']}</h10>
+
+		</div>
+	</div>
+
+
+
+
+
+
+			
+			{/foreach}
+			<!-- 商品展示 结束-->
+		</div>
+		<!--购买清单 结束-->
+
+		<!--金额结算-->
+		<div class="block-box" id='amountBox' style='display:none;'>
+			<div class="info_head">结算信息</div>
+
+				<ul class="list-group" style="background:#fff; display:none">
+					<li>
+						{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}：<strong>{$this->final_sum}</strong> - 代金券：<strong name='ticket_value'>0</strong> + 税金：<strong id='tax_fee'>0</strong> + 运费总计：<strong id='delivery_fee_show'>0</strong> + 保价：<strong id='protect_price_value'>0</strong> + 支付手续费：<strong id='payment_value'>0</strong>
+					</li>
+					<li>
+						<input type="button"  style="width:100%" class="btn btn-primary" id="ticket_a" value="使用代金券" />
+					</li>
+					<li>
+						<!--代金券列表 开始-->
+						<div style='display:none' id='ticket_box'>
+							<ul  id='ticket_show_box'></ul>
+
+							<!--代金券模板-->
+							<script type='text/html' id='ticketTrTemplate'>
+							<li>
+								<label><input class="radio" name="ticket_id" onclick="orderFormInstance.doAccount();" type="radio" value="<%=item.id%>" alt="<%=item.value%>" /><%=item.name%></label>
+								编号：<%=item.card_name%>
+								优惠：<span class="red2">￥<b><%=item.value%></b></span>
+							</li>
+							</script>
+
+							<ul >
+								<li><input type="button" class="btn btn-primary" style="width:100%;margin-top:10px" onclick="cancel_ticket();" value="取消代金券" /></li>
+								<li>卡号：<input type='text' class="form-control" id='ticket_num' /></li>
+								<li>密码：<input type='password' class="form-control" id='ticket_pwd' /></li>
+								<li style="margin-top:20px"><input type="button" style="width:100%" class="btn btn-primary" onclick="add_ticket();" value="添加" /></li>
+								<li>使用了代金券 可以优惠 <strong class="red2" name='ticket_value'>0</strong> 元</li>
+							</ul>
+						</div>
+						<!--代金券列表 结束-->
+					</li>
+				</ul>
+			</div>
+				<ul  style="padding-bottom:0">
+					<!-- <li>
+						是否需要发票？(税金:￥{$this->goodsTax}) <input class="radio" onclick="orderFormInstance.doAccount();$('#tax_title').toggle();" name="taxes" type="checkbox" value="{$this->goodsTax}" />
+					</li>
+					<li>
+						<label id="tax_title" style='display:none'>
+							发票抬头：<input type='text' class="form-control" name='tax_title' />
+						</label>
+					</li> -->
+					<li >
+						应付总额：<span class="red">￥<strong id='final_sum'>{$this->final_sum}</strong></span>元
+					</li>
+					<li>
+						<input type="submit" class="btn btn-primary" style="width:100%" value="提交订单" />
+					</li>
+				</ul>
+		</div>
+	</form>
+</div>
+</section>
